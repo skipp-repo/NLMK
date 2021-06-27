@@ -4,7 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from '../../redux/store'
 
 export type ProviderProps = {
-  children: React.ReactElement
+  children: React.ReactElement | React.ReactElement[]
 }
 
 const Provider: React.FC<ProviderProps> = ({ children }) => {
