@@ -29,6 +29,7 @@ var options = {
     main: path.join(__dirname, 'src', 'pages', 'Main', 'index.jsx'),
     background: path.join(__dirname, 'src', 'pages', 'Background', 'index.js'),
     contentScript: path.join(__dirname, 'src', 'pages', 'Content', 'index.js'),
+    index: path.join(__dirname, 'src', 'pages', 'PagesList', 'index.jsx'),
   },
   chromeExtensionBoilerplate: {
     notHotReload: ['contentScript'],
@@ -158,6 +159,12 @@ var options = {
       template: path.join(__dirname, 'src', 'pages', 'Main', 'index.html'),
       filename: 'main.html',
       chunks: ['main'],
+      cache: false,
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src', 'pages', 'PagesList', 'index.html'),
+      filename: 'index.html',
+      chunks: ['index'],
       cache: false,
     }),
   ],
