@@ -1,6 +1,10 @@
-import { printLine } from './modules/print';
+import React from 'react'
+import { render } from 'react-dom'
+import Content from './Content'
 
-console.log('Content script works!');
-console.log('Must reload extension for modifications to take effect.');
+const app = document.createElement('div')
+app.id = 'nlmk'
 
-printLine("Using the 'printLine' function from the Print Module");
+document.body.append(app)
+
+render(<Content />, window.document.querySelector(`#${app.id}`))
