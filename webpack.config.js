@@ -16,7 +16,7 @@ var alias = {
 // load the secrets
 var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js')
 
-var fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2']
+var fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'ttf', 'woff', 'woff2']
 
 if (fileSystem.existsSync(secretsPath)) {
   alias['secrets'] = secretsPath
@@ -85,6 +85,10 @@ var options = {
           },
         ],
         exclude: /node_modules/,
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack', 'file-loader'],
       },
     ],
   },
