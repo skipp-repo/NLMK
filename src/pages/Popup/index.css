@@ -12,4 +12,9 @@ body {
 
   position: relative;
   background-color: var(--light-gray);
+  padding: 1px;
+}
+
+* {
+  box-sizing: border-box;
 }
