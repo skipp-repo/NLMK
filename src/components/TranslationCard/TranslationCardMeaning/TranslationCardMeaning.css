@@ -1,0 +1,7 @@
+@import "../../../constants/Colors.css";
+
+.TranslationCardMeaning {
+	color: var(--light-gray-2);
+	font-size: 10px;
+	line-height: 15px;
+}

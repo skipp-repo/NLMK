@@ -4,6 +4,7 @@ import './TranslationCard.css'
 import { ReactComponent as GlossaryIcon } from '../../assets/icons/open-book.svg'
 import TranslationCardWord from './TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from './TranslationCardImage/TranslationCardImage'
+import TranslationCardMeaning from './TranslationCardMeaning/TranslationCardMeaning'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -40,7 +41,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
         <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
           {word}
         </TranslationCardWord>
-        <div className="TranslationCard-translation">{translation}</div>
+        <TranslationCardMeaning>{translation}</TranslationCardMeaning>
         <div className="TranslationCard-glossaries">
           <GlossaryIcon />
           <div className="TranslationCard-glossaries-list">{glossaries.map(renderGlossary)}</div>
