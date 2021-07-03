@@ -1,0 +1,15 @@
+import React from 'react'
+import clsx from 'clsx'
+import './{{pascalCase name}}.css'
+
+export type {{pascalCase name}}Props = JSX.IntrinsicElements['div'] & {}
+
+const {{pascalCase name}}: React.FC<{{pascalCase name}}Props> = ({ children, className, ...props }) => {
+  return (
+    <div {...props} className={clsx('{{pascalCase name}}', className)}>
+      {{pascalCase name}}
+    </div>
+  )
+}
+
+export default React.memo({{pascalCase name}})

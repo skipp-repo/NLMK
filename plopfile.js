@@ -11,10 +11,13 @@ module.exports = (plop) => {
     actions: [
       {
         type: 'add',
-        // Plop will create directories for us if they do not exist
-        // so it's okay to add files in nested locations.
         path: 'src/components/{{pascalCase name}}/{{pascalCase name}}.tsx',
-        templateFile: 'plop-templates/Component.js.hbs',
+        templateFile: 'plop-templates/Component.tsx.hbs',
+      },
+      {
+        type: 'add',
+        path: 'src/components/{{pascalCase name}}/{{pascalCase name}}.css',
+        templateFile: 'plop-templates/Component.css.hbs',
       },
     ],
   })
