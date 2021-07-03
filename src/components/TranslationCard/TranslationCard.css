@@ -9,33 +9,6 @@
 	flex-direction: row;
 }
 
-.TranslationCard-image {
-	border-radius: 5px;
-	width: 32px;
-	height: 32px;
-	margin-right: 10px;
-}
-
-
-.TranslationCard-glossaries {
-	margin-top: 8px;
-	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
-}
-
-.TranslationCard-glossaries-list-text {
-	color: var(--light-gray-2);
-	font-size: 10px;
-	line-height: 15px;
-}
-
-.TranslationCard-glossaries-list {
-	margin-left: 8px;
-	position: relative;
-	top: -2px;
-}
-
 .TranslationCard-action {
 	width: 15px;
 	margin-left: auto;

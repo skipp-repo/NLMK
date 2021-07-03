@@ -1,0 +1,20 @@
+@import "../../../constants/Colors.css";
+
+.TranslationCardGlossaries {
+	margin-top: 8px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+.TranslationCardGlossaries-list {
+	margin-left: 8px;
+	position: relative;
+	top: -2px;
+}
+
+.TranslationCardGlossaries-list-text {
+	color: var(--light-gray-2);
+	font-size: 10px;
+	line-height: 15px;
+}

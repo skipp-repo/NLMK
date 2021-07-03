@@ -1,10 +1,10 @@
 import React from 'react'
 import clsx from 'clsx'
 import './TranslationCard.css'
-import { ReactComponent as GlossaryIcon } from '../../assets/icons/open-book.svg'
 import TranslationCardWord from './TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from './TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from './TranslationCardMeaning/TranslationCardMeaning'
+import TranslationCardGlossaries from './TranslationCardGlossaries/TranslationCardGlossaries'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -30,9 +30,6 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
   onSpeech = () => {},
   ...props
 }) => {
-  const renderGlossary = (glossary: string) => (
-    <div className="TranslationCard-glossaries-list-text">{glossary}</div>
-  )
   return (
     <div {...props} className={clsx('TranslationCard', className)}>
       <TranslationCardImage src={image} />
@@ -42,10 +39,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
           {word}
         </TranslationCardWord>
         <TranslationCardMeaning>{translation}</TranslationCardMeaning>
-        <div className="TranslationCard-glossaries">
-          <GlossaryIcon />
-          <div className="TranslationCard-glossaries-list">{glossaries.map(renderGlossary)}</div>
-        </div>
+        <TranslationCardGlossaries glossaries={glossaries} />
       </div>
 
       {action && <div className="TranslationCard-action">{action}</div>}
