@@ -38,6 +38,8 @@ const cards: CardProp[] = [
 const Popup = () => {
   const handleOpenMain = () => window.open('main.html')
 
+  const handleSpeech = () => {}
+
   const renderCard = ({ input, word, translation, image, glossaries, inBookmarks }: CardProp) => {
     return (
       <TranslationCard
@@ -48,6 +50,7 @@ const Popup = () => {
         image={image}
         glossaries={glossaries}
         action={<BookmarkButton active={inBookmarks} />}
+        onSpeech={handleSpeech}
         speech
       />
     )

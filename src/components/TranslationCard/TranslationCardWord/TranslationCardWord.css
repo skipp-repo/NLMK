@@ -1,0 +1,30 @@
+@import "../../../constants/Colors.css";
+
+.TranslationCardWord {
+	font-size: 12px;
+	line-height: 18px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 2px;
+}
+.TranslationCardWord_highlight {
+	color: var(--blue-2);
+	font-weight: 700;
+	background-color: transparent;
+}
+
+.TranslationCardWord-speech {
+	margin-left: 10px;
+	color: var(--blue-2);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	top: 1px;
+	cursor: pointer;
+}
+
+.TranslationCardWord-speech:hover {
+	color: var(--blue-gray);
+}

@@ -16,29 +16,6 @@
 	margin-right: 10px;
 }
 
-.TranslationCard-word {
-	font-size: 12px;
-	line-height: 18px;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin-bottom: 2px;
-}
-
-.TranslationCard-speech {
-	margin-left: 10px;
-	color: var(--blue-2);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	top: 1px;
-	cursor: pointer;
-}
-
-.TranslationCard-speech:hover {
-	color: var(--blue-gray);
-}
 
 .TranslationCard-translation {
 	color: var(--light-gray-2);

@@ -2,8 +2,8 @@ import React from 'react'
 import clsx from 'clsx'
 import './TranslationCard.css'
 import { ReactComponent as GlossaryIcon } from '../../assets/icons/open-book.svg'
-import { ReactComponent as SpeechIcon } from '../../assets/icons/speech.svg'
 import img from '../../assets/img/picture.jpg'
+import TranslationCardWord from './TranslationCardWord/TranslationCardWord'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -13,6 +13,7 @@ export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   glossaries: string[]
   action?: React.ReactElement
   speech?: boolean
+  onSpeech(): void
 }
 
 const TranslationCard: React.FC<TranslationCardProps> = ({
@@ -25,6 +26,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
   className,
   action,
   speech = false,
+  onSpeech = () => {},
   ...props
 }) => {
   const renderGlossary = (glossary: string) => (
@@ -38,14 +40,9 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
         <img className="TranslationCard-image" src={img} alt="" />
       )}
       <div className="TranslationCard-content">
-        <div className="TranslationCard-word">
+        <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
           {word}
-          {speech && (
-            <div className="TranslationCard-speech">
-              <SpeechIcon />
-            </div>
-          )}
-        </div>
+        </TranslationCardWord>
         <div className="TranslationCard-translation">{translation}</div>
         <div className="TranslationCard-glossaries">
           <GlossaryIcon />
