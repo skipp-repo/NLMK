@@ -2,8 +2,8 @@ import React from 'react'
 import clsx from 'clsx'
 import './TranslationCard.css'
 import { ReactComponent as GlossaryIcon } from '../../assets/icons/open-book.svg'
-import img from '../../assets/img/picture.jpg'
 import TranslationCardWord from './TranslationCardWord/TranslationCardWord'
+import TranslationCardImage from './TranslationCardImage/TranslationCardImage'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -34,11 +34,8 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
   )
   return (
     <div {...props} className={clsx('TranslationCard', className)}>
-      {image ? (
-        <img className="TranslationCard-image" src={image} alt="" />
-      ) : (
-        <img className="TranslationCard-image" src={img} alt="" />
-      )}
+      <TranslationCardImage src={image} />
+
       <div className="TranslationCard-content">
         <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
           {word}
