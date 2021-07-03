@@ -1,11 +1,8 @@
 import React from 'react'
 import clsx from 'clsx'
 import './PopupHeader.css'
-// @ts-ignore
 import { ReactComponent as Logo } from '../../assets/icons/logo.svg'
-// @ts-ignore
 import { ReactComponent as Bookmark } from '../../assets/icons/bookmark.svg'
-// @ts-ignore
 import { ReactComponent as File } from '../../assets/icons/file.svg'
 
 export type PopupHeaderProps = JSX.IntrinsicElements['div'] & {}

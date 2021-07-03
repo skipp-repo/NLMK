@@ -1,3 +1,5 @@
+@import "../../constants/Colors.css";
+
 .Popup {}
 
 .Popup-header {
@@ -10,4 +12,15 @@
 
 .Popup-container {
 	padding: 0 11px;
+}
+
+.Popup-cards-title {
+	font-size: 10px;
+	line-height: 15px;
+	color: var(--light-gray-2);
+	margin-bottom: 4px;
+}
+
+.Popup-cards-list-item {
+	margin-bottom: 10px;
 }

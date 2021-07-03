@@ -1,0 +1,71 @@
+@import "../../constants/Colors.css";
+
+.TranslationCard {
+	background: var(--white);
+	box-shadow: 0px 6px 34px -20px rgba(117, 130, 147, 0.5);
+	border-radius: 5px;
+	padding: 10px 12px 6px 10px;
+	display: flex;
+	flex-direction: row;
+}
+
+.TranslationCard-image {
+	border-radius: 5px;
+	width: 32px;
+	height: 32px;
+	margin-right: 10px;
+}
+
+.TranslationCard-word {
+	font-size: 12px;
+	line-height: 18px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 2px;
+}
+
+.TranslationCard-speech {
+	margin-left: 10px;
+	color: var(--blue-2);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	top: 1px;
+	cursor: pointer;
+}
+
+.TranslationCard-speech:hover {
+	color: var(--blue-gray);
+}
+
+.TranslationCard-translation {
+	color: var(--light-gray-2);
+	font-size: 10px;
+	line-height: 15px;
+}
+
+.TranslationCard-glossaries {
+	margin-top: 8px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+.TranslationCard-glossaries-list-text {
+	color: var(--light-gray-2);
+	font-size: 10px;
+	line-height: 15px;
+}
+
+.TranslationCard-glossaries-list {
+	margin-left: 8px;
+	position: relative;
+	top: -2px;
+}
+
+.TranslationCard-action {
+	width: 15px;
+	margin-left: auto;
+}

@@ -1,7 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
 import './PopupSearch.css'
-// @ts-ignore
 import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg'
 
 export type PopupSearchProps = JSX.IntrinsicElements['input'] & {}
