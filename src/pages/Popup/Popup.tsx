@@ -2,18 +2,17 @@ import React from 'react'
 import Provider from '../../containers/Provider/Provider'
 import './Popup.css'
 import PopupHeader from '../../containers/PopupHeader/PopupHeader'
+import PopupSearch from '../../components/PopupSearch/PopupSearch'
 
 const Popup = () => {
   const handleOpenMain = () => window.open('main.html')
 
   return (
     <Provider>
-      <PopupHeader />
+      <PopupHeader className="Popup-header" />
 
-      <div className="App">
-        <button className="App-link" onClick={handleOpenMain}>
-          Открыть страницу со словарями
-        </button>
+      <div className="Popup-container">
+        <PopupSearch className="Popup-search" />
       </div>
     </Provider>
   )

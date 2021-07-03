@@ -1,0 +1,13 @@
+.Popup {}
+
+.Popup-header {
+	margin-bottom: 20px;
+}
+
+.Popup-search {
+	margin-bottom: 10px;
+}
+
+.Popup-container {
+	padding: 0 11px;
+}

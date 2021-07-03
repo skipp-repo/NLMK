@@ -1,0 +1,37 @@
+@import "../../constants/Colors.css";
+
+.PopupSearch {
+	box-sizing: border-box;
+	overflow: hidden;
+	position: relative;
+	color: var(--light-gray-2)
+}
+
+.PopupSearch-input {
+	width: 100%;
+	outline-width: 0;
+	padding: 8px 30px 8px 14px;
+	font-size: 12px;
+	border-radius: 50px;
+	border: 0.2px solid var(--light-gray-2);
+	background: #FFFFFF;
+	height: 30px;
+}
+
+.PopupSearch-input:focus {
+	border-color: var(--blue)
+}
+
+.PopupSearch-input:focus + .PopupSearch-icon {
+	color: var(--blue)
+}
+
+.PopupSearch-input::placeholder {
+	color: #BEC5CF;
+}
+
+.PopupSearch-icon {
+	position: absolute;
+	right: 13px;
+	top: 8px;
+}
