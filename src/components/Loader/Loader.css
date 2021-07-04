@@ -1,0 +1,20 @@
+@import "../../constants/Colors.css";
+
+.Loader {
+	height: 80vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.Loader-icon {
+	animation: 4s linear 0s infinite rotation;;
+}
+@keyframes rotation {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(359deg);
+	}
+}

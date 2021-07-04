@@ -4,6 +4,7 @@ import './Popup.css'
 import PopupHeader from '../../containers/PopupHeader/PopupHeader'
 import PopupSearch from '../../components/PopupSearch/PopupSearch'
 import TranslationCard from '../../components/TranslationCard/TranslationCard'
+import Loader from '../../components/Loader/Loader'
 
 type CardProp = {
   input: string
@@ -94,6 +95,8 @@ const Popup = () => {
 
       <div className="Popup-container">
         <PopupSearch className="Popup-search" />
+
+        {/*<Loader />*/}
 
         <div className="Popup-cards">
           <div className="Popup-cards-item">
