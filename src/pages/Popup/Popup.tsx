@@ -4,12 +4,11 @@ import './Popup.css'
 import PopupHeader from '../../containers/PopupHeader/PopupHeader'
 import PopupSearch from '../../components/PopupSearch/PopupSearch'
 import TranslationCard from '../../components/TranslationCard/TranslationCard'
-import BookmarkButton from '../../components/BookmarkButton/BookmarkButton'
 
 type CardProp = {
   input: string
   word: string
-  translation: string
+  translations: string[]
   image: string | undefined
   glossaries: string[]
   inBookmarks: boolean
@@ -19,7 +18,7 @@ const cards: CardProp[] = [
   {
     input: 'Sell',
     word: 'Sell',
-    translation: 'Продавать',
+    translations: ['Продавать'],
     image:
       'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
     glossaries: ['Сталелитейное производство', 'Доменное производство'],
@@ -28,7 +27,7 @@ const cards: CardProp[] = [
   {
     input: 'Sell',
     word: 'Sell out',
-    translation: 'Торговать',
+    translations: ['Торговать'],
     image: undefined,
     glossaries: ['Сталелитейное производство', 'Доменное производство'],
     inBookmarks: false,
@@ -40,16 +39,16 @@ const Popup = () => {
 
   const handleSpeech = () => {}
 
-  const renderCard = ({ input, word, translation, image, glossaries, inBookmarks }: CardProp) => {
+  const renderCard = ({ input, word, translations, image, glossaries, inBookmarks }: CardProp) => {
     return (
       <TranslationCard
         className="Popup-cards-list-item"
         input={input}
         word={word}
-        translation={translation}
+        translations={translations}
         image={image}
         glossaries={glossaries}
-        action={<BookmarkButton active={inBookmarks} />}
+        inBookmarks={inBookmarks}
         onSpeech={handleSpeech}
         speech
       />
