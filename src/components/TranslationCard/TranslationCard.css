@@ -6,10 +6,39 @@
 	border-radius: 5px;
 	padding: 10px 12px 6px 10px;
 	display: flex;
+	flex-direction: column;
+}
+
+.TranslationCard-wrapper {
+	display: flex;
 	flex-direction: row;
+	margin-bottom: 5px;
 }
 
 .TranslationCard-action {
 	width: 15px;
 	margin-left: auto;
+}
+
+.TranslationCard-arrow-button {
+	position: relative;
+	left: 2px;
+	margin-left: auto;
+	background-color: #E9EEF5;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.TranslationCard-item {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 10px;
+}
+
+.TranslationCard-items {
+
 }

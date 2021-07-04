@@ -1,16 +1,24 @@
 import React from 'react'
 import clsx from 'clsx'
+import useCollapse from 'react-collapsed'
 import './TranslationCard.css'
 import BookmarkButton from '../BookmarkButton/BookmarkButton'
 import TranslationCardWord from './TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from './TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from './TranslationCardMeaning/TranslationCardMeaning'
 import TranslationCardGlossaries from './TranslationCardGlossaries/TranslationCardGlossaries'
+import { ReactComponent as ArrowIcon } from '../../assets/icons/arrow.svg'
+
+type TranslationItem = {
+  translation: string
+  image: string
+  inBookmarks: boolean
+}
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
   word: string
-  translations: string[]
+  translation: string | TranslationItem[]
   image?: string
   glossaries: string[]
   action?: React.ReactElement
@@ -23,7 +31,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
   children,
   input,
   word,
-  translations,
+  translation,
   image,
   glossaries,
   className,
@@ -33,23 +41,67 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
   onSpeech = () => {},
   ...props
 }) => {
-  return (
-    <div {...props} className={clsx('TranslationCard', className)}>
+  const { getCollapseProps, getToggleProps } = useCollapse()
+
+  const translationIsArray = translation instanceof Array
+
+  const renderTranslationsString =
+    translationIsArray &&
+    // @ts-ignore
+    translation?.map(({ translation }: TranslationItem) => translation).join(', ')
+
+  const renderTranslationItem = ({ translation, inBookmarks }, index) => (
+    <div className="TranslationCard-item" key={`${index}-${translation}`}>
       <TranslationCardImage src={image} />
 
       <div className="TranslationCard-content">
         <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
           {word}
         </TranslationCardWord>
-        <TranslationCardMeaning>{translations[0]}</TranslationCardMeaning>
-        <TranslationCardGlossaries glossaries={glossaries} />
+        <TranslationCardMeaning>{translation}</TranslationCardMeaning>
       </div>
 
-      {inBookmarks && (
-        <div className="TranslationCard-action">
-          <BookmarkButton active={inBookmarks} />
+      <div className="TranslationCard-action">
+        <BookmarkButton active={inBookmarks} />
+      </div>
+    </div>
+  )
+
+  const renderTranslationItems = () => {
+    return typeof translation !== 'string' && translation?.map(renderTranslationItem)
+  }
+
+  return (
+    <div {...props} className={clsx('TranslationCard', className)}>
+      <div className="TranslationCard-wrapper">
+        <TranslationCardImage src={image} />
+
+        <div className="TranslationCard-content">
+          <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
+            {word}
+          </TranslationCardWord>
+          <TranslationCardMeaning>
+            {typeof translation === 'string' ? translation : renderTranslationsString}
+          </TranslationCardMeaning>
+          <TranslationCardGlossaries glossaries={glossaries} />
         </div>
-      )}
+
+        {inBookmarks && !translationIsArray && (
+          <div className="TranslationCard-action">
+            <BookmarkButton active={inBookmarks} />
+          </div>
+        )}
+
+        {translationIsArray && (
+          <div className="TranslationCard-arrow-button" {...getToggleProps()}>
+            <ArrowIcon />
+          </div>
+        )}
+      </div>
+
+      <div className="TranslationCard-items" {...getCollapseProps()}>
+        {renderTranslationItems()}
+      </div>
     </div>
   )
 }

@@ -8,7 +8,13 @@ import TranslationCard from '../../components/TranslationCard/TranslationCard'
 type CardProp = {
   input: string
   word: string
-  translations: string[]
+  translation:
+    | string
+    | {
+        image: string
+        translation: string
+        inBookmarks: boolean
+      }[]
   image: string | undefined
   glossaries: string[]
   inBookmarks: boolean
@@ -18,7 +24,7 @@ const cards: CardProp[] = [
   {
     input: 'Sell',
     word: 'Sell',
-    translations: ['Продавать'],
+    translation: 'Продавать',
     image:
       'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
     glossaries: ['Сталелитейное производство', 'Доменное производство'],
@@ -27,9 +33,36 @@ const cards: CardProp[] = [
   {
     input: 'Sell',
     word: 'Sell out',
-    translations: ['Торговать'],
+    translation: 'Торговать',
     image: undefined,
     glossaries: ['Сталелитейное производство', 'Доменное производство'],
+    inBookmarks: false,
+  },
+  {
+    input: 'Lif',
+    word: 'Life',
+    translation: [
+      {
+        translation: 'Жизнь',
+        image:
+          'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+        inBookmarks: false,
+      },
+      {
+        translation: 'образ жизни',
+        image:
+          'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+        inBookmarks: false,
+      },
+      {
+        translation: 'срок службы',
+        image:
+          'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+        inBookmarks: false,
+      },
+    ],
+    image: undefined,
+    glossaries: ['Доменное производство'],
     inBookmarks: false,
   },
 ]
@@ -39,13 +72,13 @@ const Popup = () => {
 
   const handleSpeech = () => {}
 
-  const renderCard = ({ input, word, translations, image, glossaries, inBookmarks }: CardProp) => {
+  const renderCard = ({ input, word, translation, image, glossaries, inBookmarks }: CardProp) => {
     return (
       <TranslationCard
         className="Popup-cards-list-item"
         input={input}
         word={word}
-        translations={translations}
+        translation={translation}
         image={image}
         glossaries={glossaries}
         inBookmarks={inBookmarks}

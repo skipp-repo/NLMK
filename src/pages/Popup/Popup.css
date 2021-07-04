@@ -14,6 +14,10 @@
 	padding: 0 11px;
 }
 
+.Popup-cards {
+	padding-bottom: 1px;
+}
+
 .Popup-cards-title {
 	font-size: 10px;
 	line-height: 15px;
