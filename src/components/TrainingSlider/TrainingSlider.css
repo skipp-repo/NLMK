@@ -1,0 +1,45 @@
+@import "../../constants/Colors.css";
+
+.TrainingSlider {
+	background: var(--white);
+	border-radius: 5px;
+	position: relative;
+	height: 76px;
+}
+
+.TrainingSlider-close {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+}
+
+.TrainingSlider-slider {
+	height: 100%;
+}
+
+.TrainingSlider-arrows {
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+
+.TrainingSlider-back-arrow {
+	transform: rotate(180deg);
+}
+
+.TrainingSlider-back, .TrainingSlider-next {
+	all: unset;
+	height: 12px;
+	line-height: 0;
+	color: #7D8BA0;
+	
+}
+
+.TrainingSlider-back {
+	margin-right: 6px;
+}
+
+.TrainingSlider-back[disabled], .TrainingSlider-next[disabled] {
+	color: var(--light-gray-2)
+	
+}

@@ -5,6 +5,7 @@ import PopupHeader from '../../containers/PopupHeader/PopupHeader'
 import PopupSearch from '../../components/PopupSearch/PopupSearch'
 import TranslationCard from '../../components/TranslationCard/TranslationCard'
 import Loader from '../../components/Loader/Loader'
+import TrainingSlider from '../../components/TrainingSlider/TrainingSlider'
 
 type CardProp = {
   input: string
@@ -89,12 +90,16 @@ const Popup = () => {
     )
   }
 
+  const handleClose = () => {}
+
   return (
     <Provider>
       <PopupHeader className="Popup-header" />
 
       <div className="Popup-container">
         <PopupSearch className="Popup-search" />
+
+        <TrainingSlider onClose={handleClose} />
 
         {/*<Loader />*/}
 
