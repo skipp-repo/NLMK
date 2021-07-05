@@ -18,6 +18,8 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
     <div {...props} className={clsx('BookmarkButton', className)}>
       {active && <BookmarkIconActive />}
       {!active && <BookmarkIconOutline />}
+
+      {children}
     </div>
   )
 }

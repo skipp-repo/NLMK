@@ -1,5 +1,6 @@
 @import "../../constants/Colors.css";
 
 .BookmarkButton {
-	color: var(--blue)
+	color: var(--blue);
+	position: relative;
 }

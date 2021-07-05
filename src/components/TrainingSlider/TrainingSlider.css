@@ -5,12 +5,18 @@
 	border-radius: 5px;
 	position: relative;
 	height: 76px;
+	margin-bottom: 14px;
+	padding: 10px;
 }
 
 .TrainingSlider-close {
 	position: absolute;
-	top: 8px;
-	right: 8px;
+	top: 5px;
+	right: 5px;
+	z-index: 1000000;
+	cursor: pointer;
+	width: 12px;
+	height: 12px;
 }
 
 .TrainingSlider-slider {
@@ -41,5 +47,68 @@
 
 .TrainingSlider-back[disabled], .TrainingSlider-next[disabled] {
 	color: var(--light-gray-2)
-	
+}
+
+.TrainingSlider-text {
+	color: var(--dark-gray);
+	font-size: 10px;
+	line-height: 15px;
+	width: 58%;
+}
+
+.TrainingSlider-text_slide_3 {
+	width: 56%;
+}
+
+.TrainingSlider-slide {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.TrainingSlider-selected-text {
+	background-color: var(--selection-color);
+	font-size: 12px;
+	line-height: 18px;
+	color: var(--black);
+	padding: 3px 4px;
+	border-radius: 2px;
+	position: relative;
+	user-select: none;
+}
+
+.TrainingSlider-selected-text-small {
+	font-size: 10px;
+	line-height: 15px;
+}
+
+.TrainingSlider-cursor {
+	position: absolute;
+	bottom: -9px;
+	right: -9px;
+}
+
+.TrainingSlider-word-card {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 90px;
+	padding: 10px;
+}
+
+.TrainingSlider-word-card-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.TrainingSlider-word {
+	margin-bottom: 0;
+}
+
+.TrainingSlider-bookmark .TrainingSlider-cursor {
+	right: -14px;
 }

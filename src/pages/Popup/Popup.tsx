@@ -1,4 +1,5 @@
 import React from 'react'
+import useCollapse from 'react-collapsed'
 import Provider from '../../containers/Provider/Provider'
 import './Popup.css'
 import PopupHeader from '../../containers/PopupHeader/PopupHeader'
@@ -71,6 +72,9 @@ const cards: CardProp[] = [
 
 const Popup = () => {
   const handleOpenMain = () => window.open('main.html')
+  const { getCollapseProps, getToggleProps } = useCollapse({
+    defaultExpanded: true,
+  })
 
   const handleSpeech = () => {}
 
@@ -90,7 +94,10 @@ const Popup = () => {
     )
   }
 
-  const handleClose = () => {}
+  const handleClose = () => {
+    console.log('close')
+    // setExpanded((prevExpanded) => !prevExpanded)
+  }
 
   return (
     <Provider>
@@ -99,7 +106,11 @@ const Popup = () => {
       <div className="Popup-container">
         <PopupSearch className="Popup-search" />
 
-        <TrainingSlider onClose={handleClose} />
+        <TrainingSlider
+          onClose={handleClose}
+          {...getCollapseProps()}
+          toggleProps={getToggleProps()}
+        />
 
         {/*<Loader />*/}
 
