@@ -112,6 +112,8 @@ const Popup = () => {
           toggleProps={getToggleProps()}
         />
 
+        {/*<div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>*/}
+
         {/*<Loader />*/}
 
         <div className="Popup-cards">
