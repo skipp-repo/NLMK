@@ -1,0 +1,11 @@
+@font-face {
+	font-family: "Circe";
+	src: url("../assets/fonts/Circe.otf") format("opentype");
+}
+
+
+@font-face {
+	font-family: "Circe Bold";
+	src: url("../assets/fonts/Circe-Bold.otf") format("opentype");
+	font-weight: 700;
+}

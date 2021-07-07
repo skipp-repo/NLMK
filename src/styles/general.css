@@ -1,0 +1,21 @@
+@import "../constants/Colors.css";
+@import "fonts.css";
+@import "variables.css";
+
+body {
+	font-family: var(--font-Circle);
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: #F9FAFC;
+	padding: 1px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+::selection {
+	background-color: var(--selection-color);
+	color: var(--black);
+}

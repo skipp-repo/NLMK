@@ -1,5 +1,3 @@
-@import "../../../constants/Colors.css";
-
 .TranslationCardWord {
 	font-size: 12px;
 	line-height: 18px;
@@ -11,6 +9,7 @@
 .TranslationCardWord_highlight {
 	color: var(--blue-2);
 	font-weight: 700;
+	font-family: var(--font-Circle-Bold);
 	background-color: transparent;
 }
 
