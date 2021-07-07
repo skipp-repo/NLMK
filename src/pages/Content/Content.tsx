@@ -1,30 +1,42 @@
-import React from 'react'
-import ReactTooltip from 'react-tooltip'
-import Provider from '../../containers/Provider/Provider'
+import { createPopper } from '@popperjs/core/lib/popper-lite.js'
+import RangeRef from '../../utils/RangeRef'
 
-const Content = () => {
-  const handleSelectionChange = (): void => {
-    const selection: any = document.getSelection()
-    // selection.baseNode.setAttribute('data-tip', 'test')
-    ReactTooltip.rebuild()
-    ReactTooltip.show(selection.baseNode)
+const popperId = 'nlmk-translation-popper'
+
+const getTooltip = (text) => {
+  let tooltip = document.getElementById(popperId)
+
+  if (tooltip) {
+    tooltip.textContent = text
+    return tooltip
   }
 
-  React.useEffect(() => {
-    const listener: any = document.addEventListener('selectionchange', handleSelectionChange)
+  tooltip = document.createElement('div')
+  tooltip.className = popperId
+  tooltip.id = popperId
+  tooltip.textContent = text
 
-    return () => document.removeEventListener('selectionchange', listener)
-  }, [])
+  document.body.append(tooltip)
 
-  return (
-    <Provider>
-      <p data-tip="hello world">Tooltip</p>
-
-      <div className="App">Content</div>
-
-      <ReactTooltip />
-    </Provider>
-  )
+  return tooltip
 }
 
-export default React.memo(Content)
+const handleSelectionChange = (): void => {
+  const selection: any = document.getSelection()
+
+  const text = selection.toString()
+
+  if (!selection.focusNode) return
+
+  console.log('test', selection.focusNode)
+
+  const tooltip = getTooltip(text)
+
+  console.log('test2', tooltip, tooltip.getBoundingClientRect)
+
+  createPopper(selection.focusNode, tooltip, {
+    placement: 'top',
+  })
+}
+
+// document.addEventListener('selectionchange', handleSelectionChange)
