@@ -30,9 +30,7 @@ export default class RangeRef {
     }
     document.querySelector('[contenteditable]').addEventListener('mouseup', update)
     document.querySelector('[contenteditable]').addEventListener('input', update)
-    document
-      .querySelector('[contenteditable]')
-      .addEventListener('keydown', (evt) => update(evt, true))
+    document.querySelector('[contenteditable]').addEventListener('keydown', (evt) => update(evt))
 
     window.addEventListener('scroll', update)
     document.scrollingElement.addEventListener('scroll', update)
