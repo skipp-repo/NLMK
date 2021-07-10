@@ -1,7 +1,19 @@
 import { createPopper } from '@popperjs/core/lib/popper-lite.js'
 import RangeRef from '../../utils/RangeRef'
+import './content.styles.css'
 
 const popperId = 'nlmk-translation-popper'
+
+var fa = document.createElement('style')
+
+fa.textContent = `
+  @font-face {
+    font-family: "Circe";
+    src: url(${chrome.runtime.getURL('Circe.otf')}) format("opentype");
+  }
+`
+
+document.head.appendChild(fa)
 
 const getTooltip = (text) => {
   let tooltip = document.getElementById(popperId)
@@ -28,15 +40,20 @@ const handleSelectionChange = (): void => {
 
   if (!selection.focusNode) return
 
-  console.log('test', selection.focusNode)
-
   const tooltip = getTooltip(text)
 
-  console.log('test2', tooltip, tooltip.getBoundingClientRect)
+  const rangeRef = new RangeRef()
 
-  createPopper(selection.focusNode, tooltip, {
+  const popper = createPopper(rangeRef, tooltip, {
     placement: 'top',
   })
+
+  rangeRef.rectChangedCallback = ({ width }) => {
+    if (width > 0) {
+      popper.update()
+    } else {
+    }
+  }
 }
 
 // document.addEventListener('selectionchange', handleSelectionChange)

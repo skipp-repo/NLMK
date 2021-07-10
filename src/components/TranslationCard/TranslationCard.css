@@ -1,5 +1,3 @@
-@import "../../constants/Colors.css";
-
 .TranslationCard {
 	background: var(--white);
 	box-shadow: 0px 6px 34px -20px rgba(117, 130, 147, 0.5);

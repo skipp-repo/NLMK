@@ -28,16 +28,29 @@ export default class RangeRef {
 
       this.updateRect()
     }
-    document.querySelector('[contenteditable]').addEventListener('mouseup', update)
-    document.querySelector('[contenteditable]').addEventListener('input', update)
-    document.querySelector('[contenteditable]').addEventListener('keydown', (evt) => update(evt))
+
+    document.querySelector('*').addEventListener('mouseup', update)
+    document.querySelector('*').addEventListener('input', update)
+    document.querySelector('*').addEventListener('keydown', (evt) => update(evt))
 
     window.addEventListener('scroll', update)
+
     document.scrollingElement.addEventListener('scroll', update)
   }
 
   updateRect() {
-    this.rect = this.range.getBoundingClientRect()
+    if (this.range) {
+      this.rect = this.range.getBoundingClientRect()
+    } else {
+      this.rect = {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: 0,
+        height: 0,
+      }
+    }
 
     this.rectChangedCallback(this.rect)
   }
