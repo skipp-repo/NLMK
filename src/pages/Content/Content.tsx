@@ -2,7 +2,7 @@ import { createPopper } from '@popperjs/core/lib/popper-lite.js'
 import RangeRef from '../../utils/RangeRef'
 import './content.styles.css'
 
-const popperId = 'nlmk-translation-popper'
+const popperId = 'NLMK-Extension-Tooltip'
 
 var fa = document.createElement('style')
 

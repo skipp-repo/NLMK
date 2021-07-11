@@ -1,6 +1,6 @@
 {
   "name": "NLMK",
-  "version": "4.0.1",
+  "version": "0.0.1",
   "description": "A chrome extension boilerplate built with React 17 and Webpack 5",
   "license": "MIT",
   "repository": {

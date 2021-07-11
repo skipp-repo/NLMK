@@ -1,14 +1,2 @@
 @import "../../styles/variables.css";
-
-.nlmk-translation-popper {
-	all: unset;
-	background-color: var(--white);
-	box-shadow: 0px 4px 22px -8px rgba(179, 182, 192, 0.7);
-	border-radius: 2px;
-	padding: 4px;
-	font-family: var(--font-Circle);
-	font-size: 16px;
-	line-height: 1.5;
-	z-index: 1000000000;
-}
-
+@import "../../components/Tooltip/Tooltip.css";
