@@ -3,6 +3,7 @@
 	border-radius: 5px;
 	position: relative;
 	height: 76px;
+	margin-bottom: 14px;
 }
 
 .TrainingSlider-close {
@@ -17,7 +18,6 @@
 
 .TrainingSlider-slider {
 	height: 100%;
-	margin-bottom: 14px;
 }
 
 .TrainingSlider-arrows {
@@ -110,4 +110,19 @@
 
 .TrainingSlider-bookmark .TrainingSlider-cursor {
 	right: -14px;
+}
+
+.NLMK-Extension-Tooltip.TrainingSlider-tooltip-1 {
+	position: absolute;
+	top: calc(100% + 5px);
+	right: -8px;
+}
+
+
+.NLMK-Extension-Tooltip.TrainingSlider-tooltip-3 {
+	position: absolute;
+	top: calc(100% + 5px);
+	left: 0;
+	font-size: 9px;
+	width: 100%;
 }

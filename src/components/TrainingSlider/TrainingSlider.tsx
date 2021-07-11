@@ -9,19 +9,17 @@ import TrainingSliderContent from './TrainingSliderContent'
 
 export type TrainingSliderProps = JSX.IntrinsicElements['div'] & {
   toggleProps: GetTogglePropsOutput
-  onClose(): void
 }
 
 const TrainingSlider: React.FC<TrainingSliderProps> = ({
   className,
   toggleProps,
   children,
-  onClose,
   ...props
 }) => {
   return (
     <div {...props} className={clsx('TrainingSlider', className)}>
-      <div className="TrainingSlider-close" {...toggleProps} onClick={onClose}>
+      <div className="TrainingSlider-close" {...toggleProps}>
         <CloseIcon />
       </div>
       <CarouselProvider naturalSlideWidth={270} naturalSlideHeight={56} totalSlides={3}>
