@@ -4,7 +4,14 @@ import { render } from 'react-dom'
 import Popup from './Popup'
 import './index.css'
 import 'normalize.css'
+import Provider from '../../containers/Provider/Provider'
 
-render(<Popup />, window.document.querySelector('#app-container'))
+const index = (
+  <Provider>
+    <Popup />
+  </Provider>
+)
+
+render(index, window.document.querySelector('#app-container'))
 
 if (module.hot) module.hot.accept()

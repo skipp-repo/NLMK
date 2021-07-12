@@ -1,12 +1,13 @@
 import React from 'react'
 import useCollapse from 'react-collapsed'
-import Provider from '../../containers/Provider/Provider'
 import './Popup.css'
 import PopupHeader from '../../containers/PopupHeader/PopupHeader'
 import PopupSearch from '../../components/PopupSearch/PopupSearch'
 import TranslationCard from '../../components/TranslationCard/TranslationCard'
 import Loader from '../../components/Loader/Loader'
 import TrainingSlider from '../../components/TrainingSlider/TrainingSlider'
+import useReduxAction from '../../hooks/useReduxAction'
+import * as userSlice from '../../redux/slices/user'
 
 type CardProp = {
   input: string
@@ -71,7 +72,12 @@ const cards: CardProp[] = [
 ]
 
 const Popup = () => {
+  const reduxAction = useReduxAction()
+
+  const getStatus = reduxAction(userSlice.getStatus)
+
   const handleOpenMain = () => window.open('main.html')
+
   const { getCollapseProps, getToggleProps } = useCollapse({
     defaultExpanded: true,
   })
@@ -99,8 +105,12 @@ const Popup = () => {
     // setExpanded((prevExpanded) => !prevExpanded)
   }
 
+  React.useEffect(() => {
+    getStatus()
+  }, [])
+
   return (
-    <Provider>
+    <>
       <PopupHeader className="Popup-header" />
 
       <div className="Popup-container">
@@ -120,7 +130,7 @@ const Popup = () => {
           </div>
         </div>
       </div>
-    </Provider>
+    </>
   )
 }
 
