@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { SVGProps } from 'react'
 import clsx from 'clsx'
 import './BookmarkButton.css'
 import { ReactComponent as BookmarkIconActive } from '../../assets/icons/bookmark2.svg'
@@ -6,19 +6,20 @@ import { ReactComponent as BookmarkIconOutline } from '../../assets/icons/bookma
 
 export type BookmarkButtonProps = JSX.IntrinsicElements['div'] & {
   active?: boolean
+  iconProps?: SVGProps<any>
 }
 
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   children,
   active = false,
   className,
+  iconProps,
   ...props
 }) => {
   return (
     <div {...props} className={clsx('BookmarkButton', className)}>
-      {active && <BookmarkIconActive />}
-      {!active && <BookmarkIconOutline />}
-
+      {active && <BookmarkIconActive {...iconProps} />}
+      {!active && <BookmarkIconOutline {...iconProps} />}
       {children}
     </div>
   )

@@ -106,11 +106,7 @@ const Popup = () => {
       <div className="Popup-container">
         <PopupSearch className="Popup-search" />
 
-        <TrainingSlider
-          onClose={handleClose}
-          {...getCollapseProps()}
-          toggleProps={getToggleProps()}
-        />
+        <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
 
         {/*<div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>*/}
 

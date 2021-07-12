@@ -18,7 +18,7 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
         <div className="TrainingSlider-slide">
           <div className="TrainingSlider-selected-text">
             a lot of money
-            <Cursor className="TrainingSlider-cursor" />
+            <Cursor className="TrainingSlider-cursor-1" />
             <Tooltip className="TrainingSlider-tooltip-1">много денег</Tooltip>
           </div>
 
@@ -48,7 +48,7 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
               <TranslationCardMeaning>Работа</TranslationCardMeaning>
             </div>
             <BookmarkButton active className="TrainingSlider-bookmark">
-              <Cursor className="TrainingSlider-cursor" />
+              <Cursor className="TrainingSlider-cursor-2" />
             </BookmarkButton>
           </div>
           <div className="TrainingSlider-text">
@@ -69,6 +69,7 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
             <Tooltip className="TrainingSlider-tooltip-3" isBookmark>
               Выключите свои
               <br /> устройства
+              <Cursor className="TrainingSlider-cursor-3" />
             </Tooltip>
           </div>
           <div className="TrainingSlider-text TrainingSlider-text_slide_3">
