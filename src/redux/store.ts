@@ -13,14 +13,12 @@ import {
 import createChromeStorage from 'redux-persist-chrome-storage'
 import reducer from './reducer'
 import localStorage from 'redux-persist/lib/storage'
-
-const isLocalhost = location.hostname === 'localhost'
-const isHeroku = location.hostname.includes('herokuapp')
+import { isDevServer } from '../constantes'
 
 const persistConfig = {
   key: 'root',
   whitelist: [],
-  storage: isLocalhost || isHeroku ? localStorage : createChromeStorage(window.chrome, 'sync'),
+  storage: isDevServer ? localStorage : createChromeStorage(window.chrome, 'sync'),
 }
 
 const middlewares = getDefaultMiddleware({

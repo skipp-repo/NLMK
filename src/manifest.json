@@ -25,6 +25,7 @@
     }
   ],
   "permissions": [
-    "storage"
-  ]
+    "storage", "identity", "identity.email"
+  ],
+  "host_permissions": ["<all_urls>"]
 }
