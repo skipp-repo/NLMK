@@ -87,6 +87,7 @@ const Popup = () => {
   const renderCard = ({ input, word, translation, image, glossaries, inBookmarks }: CardProp) => {
     return (
       <TranslationCard
+        key={word}
         className="Popup-cards-list-item"
         input={input}
         word={word}

@@ -9,12 +9,12 @@ import TranslationCardMeaning from '../TranslationCard/TranslationCardMeaning/Tr
 import BookmarkButton from '../BookmarkButton/BookmarkButton'
 import Tooltip from '../Tooltip/StaticTooltip'
 
-export type TrainingSliderContentProps = JSX.IntrinsicElements['div'] & {}
+export type TrainingSliderContentProps = {}
 
 const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
   const slide1 = React.useMemo(
     () => (
-      <Slide index={1}>
+      <Slide index={1} key={1}>
         <div className="TrainingSlider-slide">
           <div className="TrainingSlider-selected-text">
             a lot of money
@@ -33,7 +33,7 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
 
   const slide2 = React.useMemo(
     () => (
-      <Slide index={2}>
+      <Slide index={2} key={2}>
         <div className="TrainingSlider-slide">
           <div className="TrainingSlider-word-card">
             <div className="TrainingSlider-word-card-content">
@@ -62,7 +62,7 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
 
   const slide3 = React.useMemo(
     () => (
-      <Slide index={3}>
+      <Slide index={3} key={3}>
         <div className="TrainingSlider-slide">
           <div className="TrainingSlider-selected-text TrainingSlider-selected-text-small">
             Turn off your devices

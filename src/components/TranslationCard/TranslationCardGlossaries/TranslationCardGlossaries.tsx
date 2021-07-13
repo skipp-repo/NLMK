@@ -14,7 +14,9 @@ const TranslationCardGlossaries: React.FC<TranslationCardGlossariesProps> = ({
   ...props
 }) => {
   const renderGlossary = (glossary: string) => (
-    <div className="TranslationCardGlossaries-list-text">{glossary}</div>
+    <div className="TranslationCardGlossaries-list-text" key={glossary}>
+      {glossary}
+    </div>
   )
 
   return (
