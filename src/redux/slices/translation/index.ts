@@ -5,7 +5,6 @@ import { TranslationRequest, TranslationResult } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
-import { getStatus } from '../user'
 
 const name = 'translation'
 
@@ -18,6 +17,8 @@ const initialState = {
 }
 
 export type Space = 'Popup' | 'Documents'
+
+const defaultSpace: Space = 'Popup'
 
 export type Translate = {
   query: string
@@ -40,6 +41,7 @@ export const translate = createAsyncThunk(
       }
 
       return await createRequest(`/translation`, {
+        method: 'POST',
         headers: {
           'X-USER-ID': token,
         },
@@ -52,7 +54,7 @@ export const translate = createAsyncThunk(
 )
 
 const translateSlice = makeExtraReducers({
-  action: getStatus,
+  action: translate,
   extraReducers: {
     fulfilled: (
       state,
@@ -65,7 +67,7 @@ const translateSlice = makeExtraReducers({
         },
       },
     ) => {
-      state[space] = {
+      state[space || defaultSpace] = {
         searchPhrase,
         orthographicCorrections,
         results,

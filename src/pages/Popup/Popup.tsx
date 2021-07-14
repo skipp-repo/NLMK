@@ -8,6 +8,7 @@ import Loader from '../../components/Loader/Loader'
 import TrainingSlider from '../../components/TrainingSlider/TrainingSlider'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as userSlice from '../../redux/slices/user'
+import * as translationSlice from '../../redux/slices/translation'
 
 type CardProp = {
   input: string
@@ -75,6 +76,7 @@ const Popup = () => {
   const reduxAction = useReduxAction()
 
   const getStatus = reduxAction(userSlice.getStatus)
+  const translate = reduxAction(translationSlice.translate)
 
   const handleOpenMain = () => window.open('main.html')
 
@@ -108,6 +110,10 @@ const Popup = () => {
 
   React.useEffect(() => {
     getStatus()
+
+    translate({
+      query: 'cat',
+    })
   }, [])
 
   return (
