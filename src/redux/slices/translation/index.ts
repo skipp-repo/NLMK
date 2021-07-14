@@ -44,6 +44,7 @@ export const translate = createAsyncThunk(
         method: 'POST',
         headers: {
           'X-USER-ID': token,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(params),
       })
