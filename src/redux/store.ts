@@ -9,16 +9,13 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
-// @ts-ignore
-import createChromeStorage from 'redux-persist-chrome-storage'
 import reducer from './reducer'
-import localStorage from 'redux-persist/lib/storage'
-import { isDevServer } from '../constantes'
+import storage from './storage'
 
 const persistConfig = {
   key: 'root',
   whitelist: [],
-  storage: isDevServer ? localStorage : createChromeStorage(window.chrome, 'sync'),
+  storage,
 }
 
 const middlewares = getDefaultMiddleware({
@@ -38,3 +35,5 @@ const store = configureStore({
 const persistor = persistStore(store)
 
 export { store, persistor }
+
+export type RootState = ReturnType<typeof store.getState>

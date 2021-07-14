@@ -25,6 +25,7 @@
     "@typescript-eslint/parser": "^4.28.0",
     "chrome-promise": "^3.0.5",
     "clsx": "^1.1.1",
+    "nanoid": "^3.1.23",
     "normalize.css": "^8.0.1",
     "pure-react-carousel": "^1.27.6",
     "react": "^17.0.1",

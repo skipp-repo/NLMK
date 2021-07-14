@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import chromep from 'chrome-promise'
 import createRequest from '../../../utils/createRequest'
 import { UserStatus } from '../../../types'
-import { isDevServer } from '../../../constantes'
+import getUserToken from '../../../utils/getUserToken'
+import { RootState } from '../../store'
 
 const name = 'user'
 
@@ -39,11 +39,14 @@ export const getStatus = createAsyncThunk(
   `${name}/getStatus`,
   async ({}: GetStatus, { getState }) => {
     try {
-      const userData = !isDevServer ? chromep.identity.getProfileUserInfo() : 'testUser'
+      const state = getState() as RootState
+      const { user } = state
+
+      const token = user.token || (await getUserToken())
 
       return await createRequest(`/user/status`, {
         headers: {
-          'X-USER-ID': userData.email,
+          'X-USER-ID': token,
         },
       })
     } catch (error) {
@@ -59,6 +62,7 @@ const usersSlice = createSlice({
   extraReducers: {
     [getStatus.pending.type]: (state) => {
       state.flags.getStatusLoading = true
+      state.flags.getStatusError = undefined
     },
     [getStatus.fulfilled.type]: (
       state,
