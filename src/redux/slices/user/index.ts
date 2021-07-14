@@ -4,6 +4,7 @@ import createRequest from '../../../utils/createRequest'
 import { UserStatus } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
+import makeExtraReducers from '../../helpers/makeExtraReducers'
 
 const name = 'user'
 
@@ -55,32 +56,17 @@ export const getStatus = createAsyncThunk(
   },
 )
 
-const usersSlice = createSlice({
-  name: 'users',
-  initialState,
-  reducers: {},
+const getStatusSlice = makeExtraReducers({
+  action: getStatus,
   extraReducers: {
-    [getStatus.pending.type]: (state) => {
-      state.flags.getStatusLoading = true
-      state.flags.getStatusError = undefined
-    },
-    [getStatus.fulfilled.type]: (
+    fulfilled: (
       state,
       {
         payload: {
           data: { token, translationHistory, vocabs, documents, glossaries, newUser },
-          status,
-          error,
         },
       },
     ) => {
-      state.flags.getStatusLoading = false
-
-      if (status !== 200 || error) {
-        state.flags.getStatusError = error || `Server Code ${status}`
-        return
-      }
-
       state.token = token
       state.translationHistory = translationHistory
       state.vocabs = vocabs
@@ -88,10 +74,15 @@ const usersSlice = createSlice({
       state.glossaries = glossaries
       state.newUser = newUser
     },
-    [getStatus.rejected.type]: (state, { error }) => {
-      state.flags.getStatusLoading = false
-      state.flags.getStatusError = error
-    },
+  },
+})
+
+const usersSlice = createSlice({
+  name: 'users',
+  initialState,
+  reducers: {},
+  extraReducers: {
+    ...getStatusSlice,
   },
 })
 
