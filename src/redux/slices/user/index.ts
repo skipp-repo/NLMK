@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import createRequest from '../../../utils/createRequest'
 import { UserStatus } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
-import { RootState } from '../../store'
+import { RootState } from '../../types'
 
 const name = 'user'
 
