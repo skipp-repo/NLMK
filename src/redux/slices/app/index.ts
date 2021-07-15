@@ -1,11 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {}
+const name = 'app'
+
+export type InitialState = {
+  showTrainingSlider: boolean
+}
+
+const initialState: InitialState = {
+  showTrainingSlider: true,
+}
 
 const appSlice = createSlice({
-  name: 'app',
+  name,
   initialState,
-  reducers: {},
+  reducers: {
+    hideTrainingSlider: (state) => {
+      state.showTrainingSlider = false
+    },
+  },
 })
 
 export default appSlice.reducer
+
+export const { hideTrainingSlider } = appSlice.actions
+
+export * as selectors from './selectors'

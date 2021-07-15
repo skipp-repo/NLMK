@@ -11,6 +11,7 @@ import TrainingSlider from '../../components/TrainingSlider/TrainingSlider'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as userSlice from '../../redux/slices/user'
 import * as translationSlice from '../../redux/slices/translation'
+import * as appSlice from '../../redux/slices/app'
 
 const Popup = () => {
   const reduxAction = useReduxAction()
@@ -19,14 +20,18 @@ const Popup = () => {
   const { translateLoading } = useSelector(translationSlice.selectors.translationFlags)
   const translationHistory = useSelector(userSlice.selectors.translationHistory)
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
+  const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
 
   const getStatus = reduxAction(userSlice.getStatus)
   const translate = reduxAction(translationSlice.translate)
+  const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
 
   const handleOpenMain = () => window.open('main.html')
 
   const { getCollapseProps, getToggleProps } = useCollapse({
     defaultExpanded: true,
+    // onCollapseEnd: hideTrainingSlider,
+    onCollapseStart: hideTrainingSlider,
   })
 
   const handleSpeech = () => {}
@@ -59,11 +64,6 @@ const Popup = () => {
     return results?.map(renderTranslationCard)
   }
 
-  const handleClose = () => {
-    console.log('close')
-    // setExpanded((prevExpanded) => !prevExpanded)
-  }
-
   const handleSearch = useDebouncedCallback(({ target }) => {
     translate({
       query: target.value,
@@ -81,14 +81,16 @@ const Popup = () => {
       <div className="Popup-container">
         <PopupSearch className="Popup-search" onChange={handleSearch} />
 
-        <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
+        {showTrainingSlider && (
+          <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
+        )}
 
         {/*<div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>*/}
 
         {(translateLoading || getStatusLoading) && <Loader />}
 
         <div className="Popup-cards">
-          {translationData?.results?.length && (
+          {!!translationData?.results?.length && (
             <div className="Popup-cards-item">
               <div className="Popup-cards-title">Результат поиска</div>
 
@@ -98,7 +100,7 @@ const Popup = () => {
             </div>
           )}
 
-          {translationHistory?.length && (
+          {!!translationHistory?.length && (
             <div className="Popup-cards-item">
               <div className="Popup-cards-title">Недавно просмотренные</div>
 

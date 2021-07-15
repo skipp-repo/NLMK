@@ -78,7 +78,7 @@ const translateSlice = makeExtraReducers({
 })
 
 const translationSlice = createSlice({
-  name: 'users',
+  name,
   initialState,
   reducers: {},
   extraReducers: {

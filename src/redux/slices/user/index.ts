@@ -21,7 +21,7 @@ export type InitialState = {
   newUser?: UserStatus['newUser']
 }
 
-const initialState = {
+const initialState: InitialState = {
   flags: {
     getStatusError: undefined,
     getStatusLoading: undefined,
@@ -78,7 +78,7 @@ const getStatusSlice = makeExtraReducers({
 })
 
 const usersSlice = createSlice({
-  name: 'users',
+  name,
   initialState,
   reducers: {},
   extraReducers: {

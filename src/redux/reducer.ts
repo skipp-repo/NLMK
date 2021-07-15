@@ -11,8 +11,14 @@ const userPersistConfig = {
   storage,
 }
 
+const appPersistConfig = {
+  key: 'app',
+  blacklist: ['flags'],
+  storage,
+}
+
 const reducer = combineReducers({
-  app: appSlice,
+  app: persistReducer(appPersistConfig, appSlice),
   user: persistReducer(userPersistConfig, userSlice),
   translation: translationSlice,
 })
