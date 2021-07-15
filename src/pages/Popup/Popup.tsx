@@ -1,5 +1,7 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import useCollapse from 'react-collapsed'
+import { useDebouncedCallback } from 'use-debounce'
 import './Popup.css'
 import PopupHeader from '../../containers/PopupHeader/PopupHeader'
 import PopupSearch from '../../components/PopupSearch/PopupSearch'
@@ -10,70 +12,13 @@ import useReduxAction from '../../hooks/useReduxAction'
 import * as userSlice from '../../redux/slices/user'
 import * as translationSlice from '../../redux/slices/translation'
 
-type CardProp = {
-  input: string
-  word: string
-  translation:
-    | string
-    | {
-        image: string
-        translation: string
-        inBookmarks: boolean
-      }[]
-  image: string | undefined
-  glossaries: string[]
-  inBookmarks: boolean
-}
-
-const cards: CardProp[] = [
-  {
-    input: 'Sell',
-    word: 'Sell',
-    translation: 'Продавать',
-    image:
-      'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-    glossaries: ['Сталелитейное производство', 'Доменное производство'],
-    inBookmarks: true,
-  },
-  {
-    input: 'Sell',
-    word: 'Sell out',
-    translation: 'Торговать',
-    image: undefined,
-    glossaries: ['Сталелитейное производство', 'Доменное производство'],
-    inBookmarks: false,
-  },
-  {
-    input: 'Lif',
-    word: 'Life',
-    translation: [
-      {
-        translation: 'Жизнь',
-        image:
-          'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-        inBookmarks: false,
-      },
-      {
-        translation: 'образ жизни',
-        image:
-          'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-        inBookmarks: false,
-      },
-      {
-        translation: 'срок службы',
-        image:
-          'https://images.unsplash.com/photo-1625242824625-8ad744a64a55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-        inBookmarks: false,
-      },
-    ],
-    image: undefined,
-    glossaries: ['Доменное производство'],
-    inBookmarks: false,
-  },
-]
-
 const Popup = () => {
   const reduxAction = useReduxAction()
+
+  const translationData = useSelector(translationSlice.selectors.popupSearchResults)
+  const { translateLoading } = useSelector(translationSlice.selectors.translationFlags)
+  const translationHistory = useSelector(userSlice.selectors.translationHistory)
+  const { getStatusLoading } = useSelector(userSlice.selectors.flags)
 
   const getStatus = reduxAction(userSlice.getStatus)
   const translate = reduxAction(translationSlice.translate)
@@ -86,21 +31,32 @@ const Popup = () => {
 
   const handleSpeech = () => {}
 
-  const renderCard = ({ input, word, translation, image, glossaries, inBookmarks }: CardProp) => {
+  const renderTranslationCard = ({
+    translation,
+    image,
+    glossaries,
+    // inBookmarks,
+    text,
+    _id,
+  }) => {
     return (
       <TranslationCard
-        key={word}
+        key={_id}
         className="Popup-cards-list-item"
-        input={input}
-        word={word}
+        input={text}
+        word={text}
         translation={translation}
         image={image}
         glossaries={glossaries}
-        inBookmarks={inBookmarks}
+        // inBookmarks={inBookmarks}
         onSpeech={handleSpeech}
         speech
       />
     )
+  }
+
+  const renderHistoryCard = ({ results }) => {
+    return results?.map(renderTranslationCard)
   }
 
   const handleClose = () => {
@@ -108,12 +64,14 @@ const Popup = () => {
     // setExpanded((prevExpanded) => !prevExpanded)
   }
 
+  const handleSearch = useDebouncedCallback(({ target }) => {
+    translate({
+      query: target.value,
+    })
+  }, 1000)
+
   React.useEffect(() => {
     getStatus()
-
-    translate({
-      query: 'cat',
-    })
   }, [])
 
   return (
@@ -121,20 +79,32 @@ const Popup = () => {
       <PopupHeader className="Popup-header" />
 
       <div className="Popup-container">
-        <PopupSearch className="Popup-search" />
+        <PopupSearch className="Popup-search" onChange={handleSearch} />
 
         <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
 
         {/*<div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>*/}
 
-        {/*<Loader />*/}
+        {(translateLoading || getStatusLoading) && <Loader />}
 
         <div className="Popup-cards">
-          <div className="Popup-cards-item">
-            <div className="Popup-cards-title">Недавно просмотрено</div>
+          {translationData?.results?.length && (
+            <div className="Popup-cards-item">
+              <div className="Popup-cards-title">Результат поиска</div>
 
-            <div className="Popup-cards-list">{cards.map(renderCard)}</div>
-          </div>
+              <div className="Popup-cards-list">
+                {translationData?.results?.map(renderTranslationCard)}
+              </div>
+            </div>
+          )}
+
+          {translationHistory?.length && (
+            <div className="Popup-cards-item">
+              <div className="Popup-cards-title">Недавно просмотренные</div>
+
+              <div className="Popup-cards-list">{translationHistory?.map(renderHistoryCard)}</div>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -42,8 +42,8 @@ export default ({
 
   return {
     [actions.pending.type]: (state: any, secondArg: SecondArg): void => {
-      state[names.error] = undefined
-      state[names.loading] = true
+      state.flags[names.error] = undefined
+      state.flags[names.loading] = true
 
       if (pending) pending(state, secondArg)
     },
@@ -51,10 +51,10 @@ export default ({
       const { payload } = secondArg
       const { status, error } = payload || {}
 
-      state[names.loading] = false
+      state.flags[names.loading] = false
 
       if (apiRequest && status !== 200 && !ignoreError) {
-        state[names.error] = error || `Server Code ${status}`
+        state.flags[names.error] = error || `Server Code ${status}`
 
         return
       }
@@ -64,8 +64,8 @@ export default ({
     [actions.rejected.type]: (state: any, secondArg: SecondArg): void => {
       const { error } = secondArg
 
-      state[names.loading] = false
-      state[names.error] = error.message
+      state.flags[names.loading] = false
+      state.flags[names.error] = error.message
 
       if (rejected) rejected(state, secondArg)
     },

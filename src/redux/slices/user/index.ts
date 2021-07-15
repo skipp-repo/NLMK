@@ -87,3 +87,5 @@ const usersSlice = createSlice({
 })
 
 export default usersSlice.reducer
+
+export * as selectors from '../user/selectors'

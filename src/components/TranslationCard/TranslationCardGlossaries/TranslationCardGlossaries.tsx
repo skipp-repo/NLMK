@@ -19,12 +19,16 @@ const TranslationCardGlossaries: React.FC<TranslationCardGlossariesProps> = ({
     </div>
   )
 
-  return (
-    <div {...props} className={clsx('TranslationCardGlossaries', className)}>
-      <GlossaryIcon />
-      <div className="TranslationCardGlossaries-list">{glossaries.map(renderGlossary)}</div>
-    </div>
-  )
+  if (glossaries.length) {
+    return (
+      <div {...props} className={clsx('TranslationCardGlossaries', className)}>
+        <GlossaryIcon />
+        <div className="TranslationCardGlossaries-list">{glossaries.map(renderGlossary)}</div>
+      </div>
+    )
+  }
+
+  return null
 }
 
 export default React.memo(TranslationCardGlossaries)

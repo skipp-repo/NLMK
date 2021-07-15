@@ -12,7 +12,7 @@ export type InitialState = {
   flags: {}
 }
 
-const initialState = {
+const initialState: InitialState = {
   flags: {},
 }
 
@@ -87,3 +87,5 @@ const translationSlice = createSlice({
 })
 
 export default translationSlice.reducer
+
+export * as selectors from './selectors'

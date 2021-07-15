@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
-  key: 'value',
-}
+const initialState = {}
 
 const appSlice = createSlice({
   name: 'app',
