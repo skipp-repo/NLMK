@@ -74,6 +74,10 @@ const Popup = () => {
     getStatus()
   }, [])
 
+  const isLoading = translateLoading || getStatusLoading
+
+  const isEmpty = !translationData?.results?.length && !translationHistory?.length
+
   return (
     <>
       <PopupHeader className="Popup-header" />
@@ -85,29 +89,33 @@ const Popup = () => {
           <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
         )}
 
-        {/*<div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>*/}
+        {isEmpty && (
+          <div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>
+        )}
 
-        {(translateLoading || getStatusLoading) && <Loader />}
+        {isLoading && <Loader />}
 
-        <div className="Popup-cards">
-          {!!translationData?.results?.length && (
-            <div className="Popup-cards-item">
-              <div className="Popup-cards-title">Результат поиска</div>
+        {!isLoading && (
+          <div className="Popup-cards">
+            {!!translationData?.results?.length && (
+              <div className="Popup-cards-item">
+                <div className="Popup-cards-title">Результат поиска</div>
 
-              <div className="Popup-cards-list">
-                {translationData?.results?.map(renderTranslationCard)}
+                <div className="Popup-cards-list">
+                  {translationData?.results?.map(renderTranslationCard)}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {!!translationHistory?.length && (
-            <div className="Popup-cards-item">
-              <div className="Popup-cards-title">Недавно просмотренные</div>
+            {!!translationHistory?.length && (
+              <div className="Popup-cards-item">
+                <div className="Popup-cards-title">Недавно просмотренные</div>
 
-              <div className="Popup-cards-list">{translationHistory?.map(renderHistoryCard)}</div>
-            </div>
-          )}
-        </div>
+                <div className="Popup-cards-list">{translationHistory?.map(renderHistoryCard)}</div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </>
   )
