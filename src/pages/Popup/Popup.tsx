@@ -2,7 +2,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import useCollapse from 'react-collapsed'
 import { useDebouncedCallback } from 'use-debounce'
-import './Popup.css'
+import './index.scss'
+import './Popup.scss'
 import PopupHeader from '../../containers/PopupHeader/PopupHeader'
 import PopupSearch from '../../components/PopupSearch/PopupSearch'
 import TranslationCard from '../../components/TranslationCard/TranslationCard'
@@ -79,15 +80,13 @@ const Popup = () => {
   const isEmpty = !translationData?.results?.length && !translationHistory?.length
 
   return (
-    <>
+    <div className="Popup">
       <PopupHeader className="Popup-header" />
 
       <div className="Popup-container">
         <PopupSearch className="Popup-search" onChange={handleSearch} />
 
-        {showTrainingSlider && (
-          <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
-        )}
+        <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
 
         {isEmpty && (
           <div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>
@@ -117,7 +116,7 @@ const Popup = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   )
 }
 

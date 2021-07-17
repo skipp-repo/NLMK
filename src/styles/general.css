@@ -1,5 +1,6 @@
 @import "fonts.css";
 @import "variables.css";
+@import "functions.scss";
 
 body {
 	font-family: var(--font-Circle);
@@ -18,3 +19,5 @@ body {
 	background-color: var(--selection-color);
 	color: var(--black);
 }
+
+

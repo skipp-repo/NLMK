@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import Highlighter from 'react-highlight-words'
-import './TranslationCardWord.css'
+import './TranslationCardWord.scss'
 import { ReactComponent as SpeechIcon } from '../../../assets/icons/speech.svg'
 
 export type TranslationCardWordProps = JSX.IntrinsicElements['div'] & {

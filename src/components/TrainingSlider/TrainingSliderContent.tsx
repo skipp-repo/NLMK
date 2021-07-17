@@ -1,7 +1,7 @@
 import React from 'react'
 import { Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel'
 import 'pure-react-carousel/dist/react-carousel.es.css'
-import './TrainingSlider.css'
+import './TrainingSlider.scss'
 import { ReactComponent as SliderArrow } from '../../assets/icons/slider-arrow.svg'
 import { ReactComponent as Cursor } from '../../assets/icons/cursor.svg'
 import TranslationCardWord from '../TranslationCard/TranslationCardWord/TranslationCardWord'

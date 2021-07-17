@@ -1,28 +1,31 @@
 @import "../../styles/general.css";
 
-.Popup {}
+.Popup {
+	width: r(294px);
+	height: r(500px);
+}
 
 .Popup-header {
-	margin-bottom: 20px;
+	margin-bottom: r(20px);
 }
 
 .Popup-search {
-	margin-bottom: 10px;
+	margin-bottom: r(10px);
 }
 
 .Popup-container {
-	padding: 0 11px;
+	padding: 0 r(11px);
 }
 
 .Popup-cards {
-	padding-bottom: 1px;
+	padding-bottom: r(1px);
 }
 
 .Popup-cards-title {
-	font-size: 10px;
-	line-height: 15px;
+	font-size: r(10px);
+	line-height: 1.5;
 	color: var(--light-gray-2);
-	margin-bottom: 4px;
+	margin-bottom: r(4px);
 }
 
 .Popup-cards-list-item {

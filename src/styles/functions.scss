@@ -1,0 +1,5 @@
+$resize_constant: 1.4;
+
+@function r($size) {
+  @return $size * $resize_constant;
+}

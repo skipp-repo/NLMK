@@ -1,8 +1,10 @@
+@import "../../styles/general.css";
+
 .TrainingSlider {
 	background: var(--white);
 	border-radius: 5px;
 	position: relative;
-	height: 76px;
+	height: r(76px);
 	margin-bottom: 14px;
 }
 
@@ -12,8 +14,8 @@
 	right: 5px;
 	z-index: 1000000;
 	cursor: pointer;
-	width: 12px;
-	height: 12px;
+	width: r(12px);
+	height: r(12px);
 }
 
 .TrainingSlider-slider {
@@ -32,14 +34,14 @@
 
 .TrainingSlider-back, .TrainingSlider-next {
 	all: unset;
-	height: 12px;
+	height: r(12px);
 	line-height: 0;
 	color: #7D8BA0;
 
 }
 
 .TrainingSlider-back {
-	margin-right: 6px;
+	margin-right: r(6px);
 }
 
 .TrainingSlider-back[disabled], .TrainingSlider-next[disabled] {
@@ -48,8 +50,8 @@
 
 .TrainingSlider-text {
 	color: var(--dark-gray);
-	font-size: 10px;
-	line-height: 15px;
+	font-size: r(10px);
+	line-height: 1.5;
 	width: 58%;
 }
 
@@ -64,42 +66,42 @@
 	align-items: center;
 	width: 100%;
 	height: 100%;
-	padding: 10px;
+	padding: r(10px);
 }
 
 .TrainingSlider-selected-text {
 	background-color: var(--selection-color);
-	font-size: 12px;
+	font-size: r(12px);
 	line-height: 12px;
 	color: var(--black);
-	padding: 3px 4px;
-	border-radius: 2px;
+	padding: r(3px) r(4px);
+	border-radius: r(2px);
 	position: relative;
-	margin-top: -20px;
+	margin-top: r(-20px);
 	user-select: none;
 }
 
 .TrainingSlider-selected-text-small {
-	font-size: 10px;
-	line-height: 15px;
+	font-size: r(10px);
+	line-height: r(15px);
 }
 
 .TrainingSlider-cursor-1 {
 	position: absolute;
-	bottom: -9px;
-	right: -9px;
+	bottom: r(-9px);
+	right: r(-9px);
 }
 
 .TrainingSlider-cursor-2 {
 	position: absolute;
-	bottom: -6px;
-	right: -13px;
+	bottom: r(-6px);
+	right: r(-13px);
 }
 
 .TrainingSlider-cursor-3 {
 	position: absolute;
-	bottom: -11px;
-	right: -8px;
+	bottom: r(-11px);
+	right: r(-8px);
 }
 
 .TrainingSlider-word-card {
@@ -107,8 +109,8 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	width: 90px;
-	padding: 10px;
+	width: r(90px);
+	padding: r(10px);
 }
 
 .TrainingSlider-word-card-content {
@@ -121,13 +123,13 @@
 }
 
 .TrainingSlider-bookmark .TrainingSlider-cursor {
-	right: -14px;
+	right: r(-14px);
 }
 
 .NLMK-Extension-Tooltip.TrainingSlider-tooltip-1 {
 	position: absolute;
-	top: calc(100% + 5px);
-	right: -8px;
+	top: calc(100% + 12px);
+	right: r(-8px);
 }
 
 
@@ -135,9 +137,9 @@
 	position: absolute;
 	top: calc(100% + 5px);
 	left: 0;
-	font-size: 9px;
+	font-size: r(9px);
 	line-height: 1;
-	height: 25px;
+	height: r(25px);
 	width: 100%;
 	align-items: center;
 }

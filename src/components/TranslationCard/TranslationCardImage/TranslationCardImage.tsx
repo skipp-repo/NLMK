@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import './TranslationCardImage.css'
+import './TranslationCardImage.scss'
 import placeholder from '../../../assets/img/picture.jpg'
 
 export type TranslationCardImageProps = JSX.IntrinsicElements['img'] & {}

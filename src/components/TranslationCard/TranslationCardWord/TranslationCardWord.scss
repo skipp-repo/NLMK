@@ -1,10 +1,12 @@
+@import "../../../styles/functions";
+
 .TranslationCardWord {
-	font-size: 12px;
-	line-height: 18px;
+	font-size: r(12px);
+	line-height: 1.3;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-bottom: 2px;
+	margin-bottom: r(2px);
 }
 .TranslationCardWord_highlight {
 	color: var(--blue-2);
@@ -14,7 +16,7 @@
 }
 
 .TranslationCardWord-speech {
-	margin-left: 10px;
+	margin-left: r(10px);
 	color: var(--blue-2);
 	display: flex;
 	justify-content: center;

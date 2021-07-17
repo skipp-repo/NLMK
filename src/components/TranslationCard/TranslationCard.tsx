@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import useCollapse from 'react-collapsed'
-import './TranslationCard.css'
+import './TranslationCard.scss'
 import BookmarkButton from '../BookmarkButton/BookmarkButton'
 import TranslationCardWord from './TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from './TranslationCardImage/TranslationCardImage'

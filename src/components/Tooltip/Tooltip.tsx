@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import { usePopper } from 'react-popper'
-import './Tooltip.css'
+import './Tooltip.scss'
 import * as PopperJS from '@popperjs/core'
 
 export type TooltipProps = JSX.IntrinsicElements['div'] & {

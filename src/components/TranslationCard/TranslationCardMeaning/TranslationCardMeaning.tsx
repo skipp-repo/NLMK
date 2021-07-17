@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import './TranslationCardMeaning.css'
+import './TranslationCardMeaning.scss'
 
 export type TranslationCardMeaningProps = JSX.IntrinsicElements['div'] & {}
 

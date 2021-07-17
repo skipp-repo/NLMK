@@ -1,3 +1,5 @@
+@import "../../styles/general.css";
+
 .PopupSearch {
 	box-sizing: border-box;
 	overflow: hidden;
@@ -9,11 +11,11 @@
 	width: 100%;
 	outline-width: 0;
 	padding: 8px 30px 8px 14px;
-	font-size: 12px;
+	font-size: r(12px);
 	border-radius: 50px;
 	border: 0.2px solid var(--light-gray-2);
 	background: #FFFFFF;
-	height: 30px;
+	height: r(30px);
 }
 
 .PopupSearch-input:focus {
@@ -30,6 +32,6 @@
 
 .PopupSearch-icon {
 	position: absolute;
-	right: 13px;
-	top: 8px;
+	right: r(13px);
+	top: calc(50% - 7px);
 }

@@ -1,8 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
-
 import Popup from './Popup'
-import './index.css'
+import './index.scss'
 import 'normalize.css'
 import Provider from '../../containers/Provider/Provider'
 

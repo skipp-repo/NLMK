@@ -56,4 +56,4 @@ const handleSelectionChange = (): void => {
   }
 }
 
-// document.addEventListener('selectionchange', handleSelectionChange)
+document.addEventListener('selectionchange', handleSelectionChange)

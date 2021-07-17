@@ -13,6 +13,8 @@ var alias = {
   'react-dom': '@hot-loader/react-dom',
 }
 
+const pathSrc = path.resolve(__dirname, './src')
+
 // load the secrets
 var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js')
 
@@ -56,6 +58,11 @@ var options = {
             loader: 'sass-loader',
             options: {
               sourceMap: true,
+              additionalData: `
+              
+              @import "${pathSrc}/styles/functions";
+              
+              `,
             },
           },
         ],

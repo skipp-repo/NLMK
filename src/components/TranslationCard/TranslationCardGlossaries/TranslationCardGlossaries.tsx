@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import './TranslationCardGlossaries.css'
+import './TranslationCardGlossaries.scss'
 import { ReactComponent as GlossaryIcon } from '../../../assets/icons/open-book.svg'
 
 export type TranslationCardGlossariesProps = JSX.IntrinsicElements['div'] & {

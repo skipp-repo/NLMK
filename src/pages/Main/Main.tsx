@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'wouter'
 import Provider from '../../containers/Provider/Provider'
 import MainRouter from '../../containers/MainRouter/MainRouter'
-import './Main.css'
+import './Main.scss'
 
 const Main = () => {
   return (

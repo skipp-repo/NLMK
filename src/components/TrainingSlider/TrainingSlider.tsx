@@ -2,7 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import { CarouselProvider } from 'pure-react-carousel'
 import 'pure-react-carousel/dist/react-carousel.es.css'
-import './TrainingSlider.css'
+import './TrainingSlider.scss'
 import { GetTogglePropsOutput } from 'react-collapsed/dist/types'
 import { ReactComponent as CloseIcon } from '../../assets/icons/close.svg'
 import TrainingSliderContent from './TrainingSliderContent'
@@ -22,7 +22,7 @@ const TrainingSlider: React.FC<TrainingSliderProps> = ({
       <div className="TrainingSlider-close" {...toggleProps}>
         <CloseIcon />
       </div>
-      <CarouselProvider naturalSlideWidth={270} naturalSlideHeight={56} totalSlides={3}>
+      <CarouselProvider naturalSlideWidth={390} naturalSlideHeight={76 * 1.4} totalSlides={3}>
         <TrainingSliderContent />
       </CarouselProvider>
     </div>
