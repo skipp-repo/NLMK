@@ -1,5 +1,3 @@
-@import "../../styles/general.css";
-
 .NLMK-Extension-Tooltip {
     all: unset;
     background-color: var(--white);
@@ -14,4 +12,6 @@
     flex-direction: row;
     justify-content: space-between;
     box-sizing: border-box;
+    max-width: 800px;
+    white-space: pre-wrap;
 }

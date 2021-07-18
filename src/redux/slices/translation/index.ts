@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import createRequest from '../../../utils/createRequest'
+import { translation as translationRequest } from '../../../api/requests/translation'
 import { TranslationRequest, TranslationResult } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
@@ -35,18 +35,10 @@ export const translate = createAsyncThunk(
 
       const token = user.token || (await getUserToken())
 
-      const params: TranslationRequest = {
+      return await translationRequest({
+        token,
         q: query,
         filters,
-      }
-
-      return await createRequest(`/translation`, {
-        method: 'POST',
-        headers: {
-          'X-USER-ID': token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params),
       })
     } catch (error) {
       throw error
