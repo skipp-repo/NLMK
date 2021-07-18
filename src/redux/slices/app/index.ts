@@ -30,6 +30,4 @@ export default appSlice.reducer
 
 export const { hideTrainingSlider, showTrainingSlider } = appSlice.actions
 
-console.log(showTrainingSlider.type)
-
 export * as selectors from './selectors'
