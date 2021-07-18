@@ -25,6 +25,9 @@ if (fileSystem.existsSync(secretsPath)) {
 }
 
 var options = {
+  experiments: {
+    asset: true,
+  },
   mode: process.env.NODE_ENV || 'development',
   entry: {
     popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.jsx'),
@@ -95,7 +98,15 @@ var options = {
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack', 'file-loader'],
+        oneOf: [
+          {
+            resourceQuery: /raw/,
+            type: 'asset/source',
+          },
+          {
+            use: ['@svgr/webpack', 'file-loader'],
+          },
+        ],
       },
     ],
   },

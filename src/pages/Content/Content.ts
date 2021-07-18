@@ -3,8 +3,7 @@ import RangeRef from '../../utils/RangeRef'
 import { translation as translationRequest } from '../../api/requests/translation'
 import { store } from '../../redux/store'
 import './content.styles.css'
-
-const popperId = 'NLMK-Extension-Tooltip'
+import { getTooltip, clearTooltip } from './helpers/getTooltip'
 
 var fa = document.createElement('style')
 
@@ -16,28 +15,6 @@ fa.textContent = `
 `
 
 document.head.appendChild(fa)
-
-const getTooltip = (text) => {
-  let tooltip = document.getElementById(popperId)
-
-  if (tooltip) {
-    tooltip.textContent = text
-    return tooltip
-  }
-
-  tooltip = document.createElement('div')
-  tooltip.className = popperId
-  tooltip.id = popperId
-  tooltip.textContent = text
-
-  document.body.append(tooltip)
-
-  return tooltip
-}
-
-const clearTooltip = () => {
-  getTooltip('')
-}
 
 let controller
 

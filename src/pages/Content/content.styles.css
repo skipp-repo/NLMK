@@ -1,2 +1,3 @@
 @import "../../styles/variables.css";
 @import "../../components/Tooltip/Tooltip.scss";
+@import "../../components/BookmarkButton/BookmarkButton.css";
