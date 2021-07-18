@@ -68,7 +68,8 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
             Turn off your devices
             <Tooltip className="TrainingSlider-tooltip-3" isBookmark>
               Выключите свои
-              <br /> устройства
+              <br />
+              устройства
               <Cursor className="TrainingSlider-cursor-3" />
             </Tooltip>
           </div>

@@ -85,7 +85,9 @@ const Popup = () => {
       <div className="Popup-container">
         <PopupSearch className="Popup-search" onChange={handleSearch} />
 
-        <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
+        {showTrainingSlider && (
+          <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
+        )}
 
         {isEmpty && (
           <div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>

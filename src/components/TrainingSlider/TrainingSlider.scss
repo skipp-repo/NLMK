@@ -137,9 +137,12 @@
 	position: absolute;
 	top: calc(100% + 5px);
 	left: 0;
-	font-size: r(9px);
-	line-height: 1;
 	height: r(25px);
 	width: 100%;
 	align-items: center;
+
+	.NLMK-Extension-Tooltip-text {
+		font-size: r(9px);
+		line-height: 1;
+	}
 }

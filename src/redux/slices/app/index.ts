@@ -17,11 +17,19 @@ const appSlice = createSlice({
     hideTrainingSlider: (state) => {
       state.showTrainingSlider = false
     },
+    // {
+    //   type: 'app/showTrainingSlider'
+    // }
+    showTrainingSlider: (state) => {
+      state.showTrainingSlider = true
+    },
   },
 })
 
 export default appSlice.reducer
 
-export const { hideTrainingSlider } = appSlice.actions
+export const { hideTrainingSlider, showTrainingSlider } = appSlice.actions
+
+console.log(showTrainingSlider.type)
 
 export * as selectors from './selectors'
