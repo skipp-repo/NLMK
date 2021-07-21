@@ -3,8 +3,13 @@ import clsx from 'clsx'
 import './TranslationCardGlossaries.scss'
 import { ReactComponent as GlossaryIcon } from '../../../assets/icons/open-book.svg'
 
+export type Glossary = {
+  _id: string
+  name: string
+}
+
 export type TranslationCardGlossariesProps = JSX.IntrinsicElements['div'] & {
-  glossaries: string[]
+  glossaries: Glossary[]
 }
 
 const TranslationCardGlossaries: React.FC<TranslationCardGlossariesProps> = ({
@@ -13,9 +18,9 @@ const TranslationCardGlossaries: React.FC<TranslationCardGlossariesProps> = ({
   className,
   ...props
 }) => {
-  const renderGlossary = (glossary: string) => (
-    <div className="TranslationCardGlossaries-list-text" key={glossary}>
-      {glossary}
+  const renderGlossary = (glossary: Glossary) => (
+    <div className="TranslationCardGlossaries-list-text" key={glossary._id}>
+      {glossary.name}
     </div>
   )
 

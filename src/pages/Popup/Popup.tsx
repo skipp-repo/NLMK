@@ -18,7 +18,7 @@ const Popup = () => {
 
   const translationData = useSelector(translationSlice.selectors.popupSearchResults)
   const { translateLoading } = useSelector(translationSlice.selectors.translationFlags)
-  const translationHistory = useSelector(userSlice.selectors.translationHistory)
+  const translationHistory = useSelector(userSlice.selectors.history)
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
   const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
 
@@ -113,7 +113,9 @@ const Popup = () => {
               <div className="Popup-cards-item">
                 <div className="Popup-cards-title">Недавно просмотренные</div>
 
-                <div className="Popup-cards-list">{translationHistory?.map(renderHistoryCard)}</div>
+                <div className="Popup-cards-list">
+                  {translationHistory?.map(renderTranslationCard)}
+                </div>
               </div>
             )}
           </div>
