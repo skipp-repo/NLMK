@@ -37,12 +37,14 @@ const Popup = () => {
   const handleSpeech = () => {}
 
   const renderTranslationCard = ({
-    translation,
-    image,
-    glossaries,
-    // inBookmarks,
-    text,
-    _id,
+    translation: {
+      translation,
+      image,
+      glossaries,
+      // inBookmarks,
+      text,
+      _id,
+    },
   }) => {
     return (
       <TranslationCard

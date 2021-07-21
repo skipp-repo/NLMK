@@ -19,7 +19,7 @@ const TranslationCardGlossaries: React.FC<TranslationCardGlossariesProps> = ({
     </div>
   )
 
-  if (glossaries.length) {
+  if (glossaries?.length) {
     return (
       <div {...props} className={clsx('TranslationCardGlossaries', className)}>
         <GlossaryIcon />

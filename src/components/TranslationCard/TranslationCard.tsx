@@ -68,7 +68,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
   )
 
   const renderTranslationItems = () => {
-    return typeof translation !== 'string' && translation?.map(renderTranslationItem)
+    return typeof translation !== 'string' ? translation?.map(renderTranslationItem) : null
   }
 
   return (
