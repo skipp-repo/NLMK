@@ -50,7 +50,7 @@ const Popup = () => {
       <TranslationCard
         key={_id}
         className="Popup-cards-list-item"
-        input={text}
+        input={translationData?.searchPhrase}
         word={text}
         translation={translation}
         image={image}
@@ -62,9 +62,38 @@ const Popup = () => {
     )
   }
 
-  const renderHistoryCard = ({ results }) => {
-    return results?.map(renderTranslationCard)
-  }
+  const renderHistoryCard = React.useCallback(
+    ({ results, request: { q } }) => {
+      return results?.map(
+        ({
+          translation: {
+            translation,
+            image,
+            glossaries,
+            // inBookmarks,
+            text,
+            _id,
+          },
+        }) => {
+          return (
+            <TranslationCard
+              key={_id}
+              className="Popup-cards-list-item"
+              input={q}
+              word={text}
+              translation={translation}
+              image={image}
+              glossaries={glossaries}
+              // inBookmarks={inBookmarks}
+              onSpeech={handleSpeech}
+              speech
+            />
+          )
+        },
+      )
+    },
+    [translationHistory],
+  )
 
   const handleSearch = useDebouncedCallback(({ target }) => {
     translate({
@@ -114,7 +143,9 @@ const Popup = () => {
                 <div className="Popup-cards-title">Недавно просмотренные</div>
 
                 <div className="Popup-cards-list">
-                  {translationHistory?.map(renderTranslationCard)}
+                  <div className="Popup-cards-list">
+                    {translationHistory?.map(renderHistoryCard)}
+                  </div>{' '}
                 </div>
               </div>
             )}
