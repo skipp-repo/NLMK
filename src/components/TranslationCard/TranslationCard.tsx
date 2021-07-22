@@ -6,7 +6,9 @@ import BookmarkButton from '../BookmarkButton/BookmarkButton'
 import TranslationCardWord from './TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from './TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from './TranslationCardMeaning/TranslationCardMeaning'
-import TranslationCardGlossaries from './TranslationCardGlossaries/TranslationCardGlossaries'
+import TranslationCardGlossaries, {
+  Glossary,
+} from './TranslationCardGlossaries/TranslationCardGlossaries'
 import { ReactComponent as ArrowIcon } from '../../assets/icons/arrow.svg'
 
 type TranslationItem = {
@@ -20,7 +22,7 @@ export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   word: string
   translation: string | TranslationItem[]
   image?: string
-  glossaries: string[]
+  glossaries: Glossary[]
   action?: React.ReactElement
   speech?: boolean
   inBookmarks?: boolean

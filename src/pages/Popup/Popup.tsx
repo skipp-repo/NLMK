@@ -11,6 +11,7 @@ import TrainingSlider from '../../components/TrainingSlider/TrainingSlider'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as userSlice from '../../redux/slices/user'
 import * as translationSlice from '../../redux/slices/translation'
+import * as autocompleteSlice from '../../redux/slices/autocomplete'
 import * as appSlice from '../../redux/slices/app'
 
 const Popup = () => {
@@ -18,12 +19,14 @@ const Popup = () => {
 
   const translationData = useSelector(translationSlice.selectors.popupSearchResults)
   const { translateLoading } = useSelector(translationSlice.selectors.translationFlags)
+  const autoCompleteData = useSelector(autocompleteSlice.selectors.autoCompleteData)
   const translationHistory = useSelector(userSlice.selectors.history)
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
   const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
 
   const getStatus = reduxAction(userSlice.getStatus)
   const translate = reduxAction(translationSlice.translate)
+  const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
 
   const handleOpenMain = () => window.open('main.html')
@@ -99,6 +102,9 @@ const Popup = () => {
     translate({
       query: target.value,
     })
+    autocomplete({
+      query: target.value,
+    })
   }, 1000)
 
   React.useEffect(() => {
@@ -114,7 +120,11 @@ const Popup = () => {
       <PopupHeader className="Popup-header" />
 
       <div className="Popup-container">
-        <PopupSearch className="Popup-search" onChange={handleSearch} />
+        <PopupSearch
+          className="Popup-search"
+          onChange={handleSearch}
+          suggestions={autoCompleteData}
+        />
 
         {showTrainingSlider && (
           <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />

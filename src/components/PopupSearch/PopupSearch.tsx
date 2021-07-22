@@ -4,35 +4,19 @@ import Autosuggest from 'react-autosuggest'
 import './PopupSearch.scss'
 import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg'
 
-export type PopupSearchProps = JSX.IntrinsicElements['input'] & {}
+export type PopupSearchProps = JSX.IntrinsicElements['input'] & {
+  suggestions: string[]
+}
 
-const suggestions = [
-  {
-    text: 'Apple',
-  },
-  {
-    text: 'Banana',
-  },
-  {
-    text: 'Cherry',
-  },
-  {
-    text: 'Grapefruit',
-  },
-  {
-    text: 'Lemon',
-  },
-  {
-    text: 'Lemon2',
-  },
-  {
-    text: 'Lemon3',
-  },
-]
+const renderSuggestion = (suggestion) => suggestion
 
-const renderSuggestion = (suggestion) => suggestion.text
-
-const PopupSearch: React.FC<PopupSearchProps> = ({ children, className, onChange, ...props }) => {
+const PopupSearch: React.FC<PopupSearchProps> = ({
+  children,
+  className,
+  onChange,
+  suggestions,
+  ...props
+}) => {
   const [value, setValue] = React.useState('')
 
   const handleChange = (event) => {
