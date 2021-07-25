@@ -7,7 +7,7 @@ import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg'
 export type PopupSearchProps = {
   suggestions: string[]
   className?: string
-  inputProps: JSX.IntrinsicElements['input']
+  inputProps?: JSX.IntrinsicElements['input']
   onChange(value: string): void
 }
 

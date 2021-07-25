@@ -115,7 +115,10 @@ const Popup = () => {
   }, 300)
 
   const handleSearch = (newValue) => {
+    if (queryRef.current.length < 2 && newValue.length < 2) return
+
     queryRef.current = newValue
+
     debouncedTranslate(newValue)
     debouncedAutocomplete(newValue)
   }

@@ -80,12 +80,32 @@ const getStatusSlice = makeExtraReducers({
 const usersSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    updateTranslationHistory: (state, { payload }) => {
+      if (!payload) return
+
+      const { results, searchPhrase, orthographicCorrections } = payload
+
+      const fixedItem = {
+        results,
+        searchPhrase,
+        orthographicCorrections,
+        request: {
+          q: searchPhrase,
+        },
+        createdAt: undefined,
+      }
+
+      state.translationHistory = [fixedItem, ...state.translationHistory]
+    },
+  },
   extraReducers: {
     ...getStatusSlice,
   },
 })
 
 export default usersSlice.reducer
+
+export const { updateTranslationHistory } = usersSlice.actions
 
 export * as selectors from '../user/selectors'

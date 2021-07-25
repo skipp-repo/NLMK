@@ -5,6 +5,7 @@ import { TranslationRequest, TranslationResult } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
+import { updateTranslationHistory } from '../user'
 
 const name = 'translation'
 
@@ -28,12 +29,17 @@ export type Translate = {
 
 export const translate = createAsyncThunk(
   `${name}/translate`,
-  async ({ query, filters, space }: Translate, { getState }): Promise<TranslationResult> => {
+  async (
+    { query, filters, space }: Translate,
+    { getState, dispatch },
+  ): Promise<TranslationResult> => {
     try {
       const state = getState() as RootState
-      const { user } = state
+      const { user, translation } = state
 
       const token = user.token || (await getUserToken())
+
+      dispatch(updateTranslationHistory(translation.Popup))
 
       return await translationRequest({
         token,
