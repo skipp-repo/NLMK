@@ -17,9 +17,13 @@ import * as appSlice from '../../redux/slices/app'
 const Popup = () => {
   const reduxAction = useReduxAction()
 
+  const queryRef = React.useRef('')
+
   const translationData = useSelector(translationSlice.selectors.popupSearchResults)
   const { translateLoading } = useSelector(translationSlice.selectors.translationFlags)
-  const autoCompleteData = useSelector(autocompleteSlice.selectors.autoCompleteData)
+  const autoCompleteData = useSelector(
+    autocompleteSlice.selectors.autocompleteByQuery(queryRef.current),
+  )
   const translationHistory = useSelector(userSlice.selectors.history)
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
   const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
@@ -98,14 +102,23 @@ const Popup = () => {
     [translationHistory],
   )
 
-  const handleSearch = useDebouncedCallback(({ target }) => {
+  const debouncedTranslate = useDebouncedCallback((query) => {
     translate({
-      query: target.value,
-    })
-    autocomplete({
-      query: target.value,
+      query,
     })
   }, 1000)
+
+  const debouncedAutocomplete = useDebouncedCallback((query) => {
+    autocomplete({
+      query,
+    })
+  }, 300)
+
+  const handleSearch = (newValue) => {
+    queryRef.current = newValue
+    debouncedTranslate(newValue)
+    debouncedAutocomplete(newValue)
+  }
 
   React.useEffect(() => {
     getStatus()
@@ -122,8 +135,8 @@ const Popup = () => {
       <div className="Popup-container">
         <PopupSearch
           className="Popup-search"
-          onChange={handleSearch}
           suggestions={autoCompleteData}
+          onChange={handleSearch}
         />
 
         {showTrainingSlider && (

@@ -9,12 +9,12 @@ const name = 'autocomplete'
 
 export type InitialState = {
   flags: {}
-  data: string[]
+  data: {}
 }
 
 const initialState: InitialState = {
   flags: {},
-  data: [],
+  data: {},
 }
 
 export type Autocomplete = {
@@ -32,11 +32,16 @@ export const autocomplete = createAsyncThunk(
   async ({ query }: Autocomplete, { getState }): Promise<AutoCompleteResult> => {
     try {
       const state = getState() as RootState
-      const { user } = state
+      const { user, autocomplete } = state
+
+      if (autocomplete.data[query]) {
+        return {
+          data: autocomplete.data[query],
+          status: 200,
+        }
+      }
 
       const token = user.token || (await getUserToken())
-
-      console.log('autoc')
 
       return await autocompleteRequest({
         token,
@@ -51,8 +56,16 @@ export const autocomplete = createAsyncThunk(
 const autocompleteSlice = makeExtraReducers({
   action: autocomplete,
   extraReducers: {
-    fulfilled: (state, { payload: { data } }) => {
-      state.data = data
+    fulfilled: (
+      state,
+      {
+        payload: { data },
+        meta: {
+          arg: { query },
+        },
+      },
+    ) => {
+      state.data[query] = data.filter((item) => item !== query)
     },
   },
 })

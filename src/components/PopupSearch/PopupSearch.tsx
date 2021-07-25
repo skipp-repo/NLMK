@@ -4,8 +4,11 @@ import Autosuggest from 'react-autosuggest'
 import './PopupSearch.scss'
 import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg'
 
-export type PopupSearchProps = JSX.IntrinsicElements['input'] & {
+export type PopupSearchProps = {
   suggestions: string[]
+  className?: string
+  inputProps: JSX.IntrinsicElements['input']
+  onChange(value: string): void
 }
 
 const renderSuggestion = (suggestion) => suggestion
@@ -13,18 +16,27 @@ const renderSuggestion = (suggestion) => suggestion
 const PopupSearch: React.FC<PopupSearchProps> = ({
   children,
   className,
-  onChange,
   suggestions,
+  inputProps,
+  onChange,
   ...props
 }) => {
   const [value, setValue] = React.useState('')
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event
-    setValue(value)
-    onChange(event)
+  const handleChange = (event, { newValue }) => {
+    setValue(newValue)
+
+    onChange && onChange(newValue)
+  }
+
+  const handleSuggestionsFetchRequested = ({ value }) => {}
+
+  const handleSuggestionsClearRequested = () => {}
+
+  function getSuggestionValue(suggestion) {
+    setValue(suggestion)
+
+    return suggestion
   }
 
   return (
@@ -37,10 +49,14 @@ const PopupSearch: React.FC<PopupSearchProps> = ({
           placeholder: 'Перевести слово или фразу...',
           className: 'PopupSearch-input',
           onChange: handleChange,
-          ...props,
+          ...inputProps,
         }}
         renderSuggestion={renderSuggestion}
+        getSuggestionValue={getSuggestionValue}
+        onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
+        onSuggestionsClearRequested={handleSuggestionsClearRequested}
         className="PopupSearch-suggestions"
+        {...props}
       />
       <SearchIcon className="PopupSearch-icon" />
     </div>
