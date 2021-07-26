@@ -27,11 +27,13 @@ const Popup = () => {
   const translationHistory = useSelector(userSlice.selectors.history)
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
   const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
+  const installDate = useSelector(appSlice.selectors.installDate)
 
   const getStatus = reduxAction(userSlice.getStatus)
   const translate = reduxAction(translationSlice.translate)
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
+  const setInstallDate = reduxAction(appSlice.setInstallDate)
 
   const handleOpenMain = () => window.open('main.html')
 
@@ -126,6 +128,12 @@ const Popup = () => {
   React.useEffect(() => {
     getStatus()
   }, [])
+
+  React.useEffect(() => {
+    if (!installDate) {
+      setInstallDate()
+    }
+  }, [installDate])
 
   const isLoading = translateLoading || getStatusLoading
 
