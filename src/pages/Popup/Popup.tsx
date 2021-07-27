@@ -17,17 +17,23 @@ import * as appSlice from '../../redux/slices/app'
 const Popup = () => {
   const reduxAction = useReduxAction()
 
+  const queryRef = React.useRef('')
+
   const translationData = useSelector(translationSlice.selectors.popupSearchResults)
   const { translateLoading } = useSelector(translationSlice.selectors.translationFlags)
-  const autoCompleteData = useSelector(autocompleteSlice.selectors.autoCompleteData)
+  const autoCompleteData = useSelector(
+    autocompleteSlice.selectors.autocompleteByQuery(queryRef.current),
+  )
   const translationHistory = useSelector(userSlice.selectors.history)
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
   const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
+  const installDate = useSelector(appSlice.selectors.installDate)
 
   const getStatus = reduxAction(userSlice.getStatus)
   const translate = reduxAction(translationSlice.translate)
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
+  const setInstallDate = reduxAction(appSlice.setInstallDate)
 
   const handleOpenMain = () => window.open('main.html')
 
@@ -98,19 +104,37 @@ const Popup = () => {
     [translationHistory],
   )
 
-  const handleSearch = useDebouncedCallback(({ target }) => {
+  const debouncedTranslate = useDebouncedCallback((query) => {
     translate({
-      query: target.value,
+      query,
       remember: true,
     })
-    autocomplete({
-      query: target.value,
-    })
   }, 1000)
+
+  const debouncedAutocomplete = useDebouncedCallback((query) => {
+    autocomplete({
+      query,
+    })
+  }, 300)
+
+  const handleSearch = (newValue) => {
+    if (queryRef.current.length < 2 && newValue.length < 2) return
+
+    queryRef.current = newValue
+
+    debouncedTranslate(newValue)
+    debouncedAutocomplete(newValue)
+  }
 
   React.useEffect(() => {
     getStatus()
   }, [])
+
+  React.useEffect(() => {
+    if (!installDate) {
+      setInstallDate()
+    }
+  }, [installDate])
 
   const isLoading = translateLoading || getStatusLoading
 
@@ -123,8 +147,8 @@ const Popup = () => {
       <div className="Popup-container">
         <PopupSearch
           className="Popup-search"
-          onChange={handleSearch}
           suggestions={autoCompleteData}
+          onChange={handleSearch}
         />
 
         {showTrainingSlider && (

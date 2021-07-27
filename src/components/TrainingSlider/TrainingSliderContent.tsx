@@ -17,9 +17,9 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
       <Slide index={1} key={1}>
         <div className="TrainingSlider-slide">
           <div className="TrainingSlider-selected-text">
-            a lot of money
+            new equipment
             <Cursor className="TrainingSlider-cursor-1" />
-            <Tooltip className="TrainingSlider-tooltip-1">много денег</Tooltip>
+            <Tooltip className="TrainingSlider-tooltip-1">новое оборудование</Tooltip>
           </div>
 
           <div className="TrainingSlider-text">
@@ -65,11 +65,9 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
       <Slide index={3} key={3}>
         <div className="TrainingSlider-slide">
           <div className="TrainingSlider-selected-text TrainingSlider-selected-text-small">
-            Turn off your devices
+            Attach a file
             <Tooltip className="TrainingSlider-tooltip-3" isBookmark>
-              Выключите свои
-              <br />
-              устройства
+              прикрепить файл
               <Cursor className="TrainingSlider-cursor-3" />
             </Tooltip>
           </div>
