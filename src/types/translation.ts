@@ -1,5 +1,6 @@
 export interface TranslationRequest {
   q: string // поисковая фраза
+  remember?: boolean // запомнить результат перевода в истории запросов пользователя (по умолчанию false)
   sourceLang?: string // не указывается, если нужно автоопределения
   targetLang?: string // если не указан, то по умолчанию - альтернативный sourceLang из пары ru/en
   filters?: {
@@ -25,8 +26,7 @@ export interface PhraseTranslation {
   targetLang: string // язык перевода
   text: string // исходная фраз
   translation: string // перевод
-  glossaryId?: number // идентификатор глоссария, из которого взята переведенная фраза (если null, то перевод общей лексики)
-  vocabId?: number // идентификатор словаря, в который помещена эта карточка (если null, то карточка не находится в закладках)
+  glossaries?: number[] // идентификатор глоссария, из которого взята переведенная фраза (если null, или пустой массив то перевод общей лексики)
   phrase: boolean // признак фразы (если нет, то слово)
 }
 
@@ -42,6 +42,7 @@ export interface TranslationResultItem {
   matchingTokens?: string[] // показывает, по каким словам в исходной фразе карточки произошло совпадение с поисковой фразой - для подсветки матчинга
   matchState: PhrasesMatchStatus // вариант сопоставления карточки
   relevance: number // степень соответствия исходной поисковой фразы тексту карточки
+  vocabId?: number // идентификатор словаря, в который помещена эта карточка (если null, то карточка не находится в закладках)
   translation: PhraseTranslation // содержание карточки с переводом
 }
 
@@ -50,5 +51,5 @@ export interface TranslationResult {
   searchPhrase: string // исходная поисковая фраза
   orthographicCorrections: OrthographicCorrection[] // корректировка поисковой фразы из запроса
   request: TranslationRequest // исходный запрос на перевод
-  results: TranslationResultItem[]
+  results: TranslationResultItem[][]
 }

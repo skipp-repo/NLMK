@@ -101,6 +101,7 @@ const Popup = () => {
   const handleSearch = useDebouncedCallback(({ target }) => {
     translate({
       query: target.value,
+      remember: true,
     })
     autocomplete({
       query: target.value,

@@ -20,7 +20,7 @@ export type Space = 'Popup' | 'Documents'
 
 const defaultSpace: Space = 'Popup'
 
-export type Translate = {
+export type Translate = Omit<TranslationRequest, 'q'> & {
   query: string
   filters: TranslationRequest['filters']
   space: Space
@@ -28,7 +28,10 @@ export type Translate = {
 
 export const translate = createAsyncThunk(
   `${name}/translate`,
-  async ({ query, filters, space }: Translate, { getState }): Promise<TranslationResult> => {
+  async (
+    { query, filters, space, remember }: Translate,
+    { getState },
+  ): Promise<TranslationResult> => {
     try {
       const state = getState() as RootState
       const { user } = state
@@ -39,6 +42,7 @@ export const translate = createAsyncThunk(
         token,
         q: query,
         filters,
+        remember,
       })
     } catch (error) {
       throw error
