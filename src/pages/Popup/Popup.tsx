@@ -109,9 +109,10 @@ const Popup = () => {
     getStatus()
   }, [])
 
+  const isEmpty = !translationData?.results?.length && !translationHistory?.length
+
   const isLoading = translateLoading || getStatusLoading
 
-  const isEmpty = !translationData?.results?.length && !translationHistory?.length
 
   return (
     <div className="Popup">
@@ -136,15 +137,17 @@ const Popup = () => {
 
         {!isLoading && (
           <div className="Popup-cards">
-            {!!translationData?.results?.length && (
-              <div className="Popup-cards-item">
-                <div className="Popup-cards-title">Результат поиска</div>
+            <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
+              {!!translationData?.results?.length && (
+                <div className="Popup-cards-item">
+                  <div className="Popup-cards-title">Результат поиска</div>
 
-                <div className="Popup-cards-list">
-                  {translationData?.results?.map(renderTranslationCard)}
+                  <div className="Popup-cards-list">
+                    {translationData?.results?.map(renderTranslationCard)}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </ErrorBoundary>
 
             <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
               {!!translationHistory?.length && (
