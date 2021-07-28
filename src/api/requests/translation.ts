@@ -5,10 +5,14 @@ export type Translation = TranslationRequest & {
   token: string
 }
 
-export const translation = async ({ token, q, filters }: Translation, init?: RequestInit) => {
+export const translation = async (
+  { token, q, remember, filters }: Translation,
+  init?: RequestInit,
+) => {
   const params: TranslationRequest = {
     q,
     filters,
+    remember,
   }
 
   return await createRequest(`/translation`, {
