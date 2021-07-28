@@ -111,8 +111,7 @@ const Popup = () => {
 
   const isEmpty = !translationData?.results?.length && !translationHistory?.length
 
-  const isLoading = translateLoading || getStatusLoading
-
+  const isLoading = (!translationHistory?.length && getStatusLoading) || translateLoading
 
   return (
     <div className="Popup">
