@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit'
 import find from 'lodash.find'
+import flatten from 'arr-flatten'
 import { glossaries } from '../user/selectors'
 
 export const translation = (state) => state.translation

@@ -53,3 +53,28 @@ export interface TranslationResult {
   request: TranslationRequest // исходный запрос на перевод
   results: TranslationResultItem[][]
 }
+
+export type Glossary = {
+  _id: string
+  name: string
+}
+
+export interface PhraseTranslationLocal {
+  _id: number // идентификатор карточки перевода
+  sourceLang: string // исходный язык
+  targetLang: string // язык перевода
+  text: string // исходная фраз
+  translation: string // перевод
+  glossaries: Glossary[]
+  phrase: boolean // признак фразы (если нет, то слово)
+}
+
+export interface TranslationResultItemLocal {
+  common: boolean // указывает, взять карточка из общей лексики или из глоссариев
+  orthographicCorrectionApplied: boolean // указывает, была ли применена корректировка орфографии для данного результата
+  matchingTokens?: string[] // показывает, по каким словам в исходной фразе карточки произошло совпадение с поисковой фразой - для подсветки матчинга
+  matchState: PhrasesMatchStatus // вариант сопоставления карточки
+  relevance: number // степень соответствия исходной поисковой фразы тексту карточки
+  vocabId?: number // идентификатор словаря, в который помещена эта карточка (если null, то карточка не находится в закладках)
+  translation: PhraseTranslationLocal // содержание карточки с переводом
+}

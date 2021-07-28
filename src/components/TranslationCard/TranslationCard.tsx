@@ -2,13 +2,12 @@ import React from 'react'
 import clsx from 'clsx'
 import useCollapse from 'react-collapsed'
 import './TranslationCard.scss'
+import { TranslationResultItemLocal } from '../../types'
 import BookmarkButton from '../BookmarkButton/BookmarkButton'
 import TranslationCardWord from './TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from './TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from './TranslationCardMeaning/TranslationCardMeaning'
-import TranslationCardGlossaries, {
-  Glossary,
-} from './TranslationCardGlossaries/TranslationCardGlossaries'
+import TranslationCardGlossaries from './TranslationCardGlossaries/TranslationCardGlossaries'
 import { ReactComponent as ArrowIcon } from '../../assets/icons/arrow.svg'
 
 type TranslationItem = {
@@ -19,10 +18,7 @@ type TranslationItem = {
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
-  word: string
-  translation: string | TranslationItem[]
-  image?: string
-  glossaries: Glossary[]
+  items: TranslationResultItemLocal[]
   action?: React.ReactElement
   speech?: boolean
   inBookmarks?: boolean
@@ -30,12 +26,8 @@ export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
 }
 
 const TranslationCard: React.FC<TranslationCardProps> = ({
-  children,
   input,
-  word,
-  translation,
-  image,
-  glossaries,
+  items,
   className,
   action,
   speech = false,
@@ -45,65 +37,62 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
 }) => {
   const { getCollapseProps, getToggleProps } = useCollapse()
 
-  const translationIsArray = translation instanceof Array
+  const renderTranslationsString = items
+    ?.map(({ translation }) => translation?.translation || '')
+    .join(', ')
 
-  const renderTranslationsString =
-    translationIsArray &&
-    // @ts-ignore
-    translation?.map(({ translation }: TranslationItem) => translation).join(', ')
-
-  const renderTranslationItem = ({ translation, inBookmarks }, index) => (
+  const renderTranslationItem = ({ translation }, index) => (
     <div className="TranslationCard-item" key={`${index}-${translation}`}>
-      <TranslationCardImage src={image} />
+      <TranslationCardImage src="" />
 
       <div className="TranslationCard-content">
         <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
-          {word}
+          {translation.text}
         </TranslationCardWord>
-        <TranslationCardMeaning>{translation}</TranslationCardMeaning>
+        <TranslationCardMeaning>{translation.translation}</TranslationCardMeaning>
       </div>
 
       <div className="TranslationCard-action">
-        <BookmarkButton active={inBookmarks} />
+        <BookmarkButton active={false} />
       </div>
     </div>
   )
 
-  const renderTranslationItems = () => {
-    return typeof translation !== 'string' ? translation?.map(renderTranslationItem) : null
-  }
+  const firstItem = items[0]
+
+  // console.log(items, firstItem)
 
   return (
     <div {...props} className={clsx('TranslationCard', className)}>
       <div className="TranslationCard-wrapper">
-        <TranslationCardImage src={image} />
+        <TranslationCardImage src="" />
 
         <div className="TranslationCard-content">
           <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
-            {word}
+            {firstItem.translation.text}
           </TranslationCardWord>
-          <TranslationCardMeaning>
-            {typeof translation === 'string' ? translation : renderTranslationsString}
-          </TranslationCardMeaning>
-          <TranslationCardGlossaries glossaries={glossaries} />
+          <TranslationCardMeaning>{renderTranslationsString}</TranslationCardMeaning>
+          <TranslationCardGlossaries glossaries={firstItem.translation.glossaries} />
         </div>
 
-        {inBookmarks && !translationIsArray && (
-          <div className="TranslationCard-action">
-            <BookmarkButton active={inBookmarks} />
-          </div>
-        )}
+        {/*{inBookmarks && !translationIsArray && (*/}
+        {/*  <div className="TranslationCard-action">*/}
+        {/*    <BookmarkButton active={inBookmarks} />*/}
+        {/*  </div>*/}
+        {/*)}*/}
 
-        {translationIsArray && (
+        {items.length > 1 && (
           <div className="TranslationCard-arrow-button" {...getToggleProps()}>
             <ArrowIcon />
           </div>
         )}
       </div>
 
-      <div className="TranslationCard-items" {...getCollapseProps()}>
-        {renderTranslationItems()}
-      </div>
+      {items.length > 1 && (
+        <div className="TranslationCard-items" {...getCollapseProps()}>
+          {items?.map(renderTranslationItem)}
+        </div>
+      )}
     </div>
   )
 }

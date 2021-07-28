@@ -45,26 +45,14 @@ const Popup = () => {
 
   const handleSpeech = () => {}
 
-  const renderTranslationCard = ({
-    translation: {
-      translation,
-      image,
-      glossaries,
-      // inBookmarks,
-      text,
-      _id,
-    },
-  }) => {
+  const renderTranslationCard = (data) => {
+    console.log(data)
     return (
       <TranslationCard
-        key={_id}
+        // key={_id}
         className="Popup-cards-list-item"
         input={translationData?.searchPhrase}
-        word={text}
-        translation={translation}
-        image={image}
-        glossaries={glossaries}
-        // inBookmarks={inBookmarks}
+        items={data}
         onSpeech={handleSpeech}
         speech
       />
@@ -73,33 +61,18 @@ const Popup = () => {
 
   const renderHistoryCard = React.useCallback(
     ({ results, request: { q } }) => {
-      return results?.map(
-        ({
-          translation: {
-            translation,
-            image,
-            glossaries,
-            // inBookmarks,
-            text,
-            _id,
-          },
-        }) => {
-          return (
-            <TranslationCard
-              key={_id}
-              className="Popup-cards-list-item"
-              input={q}
-              word={text}
-              translation={translation}
-              image={image}
-              glossaries={glossaries}
-              // inBookmarks={inBookmarks}
-              onSpeech={handleSpeech}
-              speech
-            />
-          )
-        },
-      )
+      return results?.map((data) => {
+        return (
+          <TranslationCard
+            key={data?.translation?._id}
+            className="Popup-cards-list-item"
+            input={q}
+            items={data}
+            onSpeech={handleSpeech}
+            speech
+          />
+        )
+      })
     },
     [translationHistory],
   )

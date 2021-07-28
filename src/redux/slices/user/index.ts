@@ -84,6 +84,8 @@ const usersSlice = createSlice({
     updateTranslationHistory: (state, { payload }) => {
       if (!payload) return
 
+      const createdAt = new Date().toISOString()
+
       const { results, searchPhrase, orthographicCorrections } = payload
 
       const fixedItem = {
@@ -93,7 +95,7 @@ const usersSlice = createSlice({
         request: {
           q: searchPhrase,
         },
-        createdAt: undefined,
+        createdAt,
       }
 
       state.translationHistory = [fixedItem, ...state.translationHistory]
