@@ -100,6 +100,12 @@ const usersSlice = createSlice({
 
       state.translationHistory = [fixedItem, ...state.translationHistory]
     },
+    clearUserState: (state) => {
+      state.translationHistory = undefined
+      state.vocabs = undefined
+      state.documents = undefined
+      state.glossaries = undefined
+    },
   },
   extraReducers: {
     ...getStatusSlice,
@@ -108,6 +114,6 @@ const usersSlice = createSlice({
 
 export default usersSlice.reducer
 
-export const { updateTranslationHistory } = usersSlice.actions
+export const { updateTranslationHistory, clearUserState } = usersSlice.actions
 
 export * as selectors from '../user/selectors'
