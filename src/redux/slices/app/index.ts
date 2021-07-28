@@ -18,16 +18,20 @@ const initialState: InitialState = {
   showTrainingSlider: true,
 }
 
+export type ClearState = {
+  force?: boolean
+}
+
 export const clearState = createAsyncThunk(
   `${name}/clearState`,
-  async (_: void, { getState, dispatch }): Promise<void> => {
+  async ({ force = false }: ClearState = {}, { getState, dispatch }): Promise<void> => {
     try {
       const state = getState() as RootState
       const {
         app: { version },
       } = state
 
-      if (version !== packageJson.version) {
+      if (version !== packageJson.version || force) {
         dispatch(clearUserState())
       }
     } catch (error) {

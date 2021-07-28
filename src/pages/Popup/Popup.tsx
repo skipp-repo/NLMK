@@ -1,4 +1,5 @@
 import React from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { useSelector } from 'react-redux'
 import useCollapse from 'react-collapsed'
 import { useDebouncedCallback } from 'use-debounce'
@@ -8,6 +9,7 @@ import PopupSearch from '../../components/PopupSearch/PopupSearch'
 import TranslationCard from '../../components/TranslationCard/TranslationCard'
 import Loader from '../../components/Loader/Loader'
 import TrainingSlider from '../../components/TrainingSlider/TrainingSlider'
+import ErrorFallback from '../../components/ErrorFallback/ErrorFallback'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as userSlice from '../../redux/slices/user'
 import * as translationSlice from '../../redux/slices/translation'
@@ -97,6 +99,10 @@ const Popup = () => {
     debouncedAutocomplete(newValue)
   }
 
+  const handleResetError = () => {
+    clearState({ force: true })
+  }
+
   React.useEffect(() => {
     clearState()
 
@@ -140,17 +146,19 @@ const Popup = () => {
               </div>
             )}
 
-            {!!translationHistory?.length && (
-              <div className="Popup-cards-item">
-                <div className="Popup-cards-title">Недавно просмотренные</div>
+            <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
+              {!!translationHistory?.length && (
+                <div className="Popup-cards-item">
+                  <div className="Popup-cards-title">Недавно просмотренные</div>
 
-                <div className="Popup-cards-list">
                   <div className="Popup-cards-list">
-                    {translationHistory?.map(renderHistoryCard)}
-                  </div>{' '}
+                    <div className="Popup-cards-list">
+                      {translationHistory?.map(renderHistoryCard)}
+                    </div>{' '}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </ErrorBoundary>
           </div>
         )}
       </div>
