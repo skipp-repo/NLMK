@@ -14,19 +14,21 @@ export const history = createSelector(
     if (historyState) {
       return historyState.map((item) => {
         const updatedResults = item.results?.map((item) => {
-          if (!item?.translation?.glossaries) return item
+          return item.map((item) => {
+            if (!item?.translation?.glossaries) return item
 
-          const newGlossaries = item?.translation?.glossaries.map((glossaryId) => {
-            return find(glossariesState, { _id: glossaryId })
+            const newGlossaries = item?.translation?.glossaries.map((glossaryId) => {
+              return find(glossariesState, { _id: glossaryId })
+            })
+
+            return {
+              ...item,
+              translation: {
+                ...item.translation,
+                glossaries: newGlossaries,
+              },
+            }
           })
-
-          return {
-            ...item,
-            translation: {
-              ...item.translation,
-              glossaries: newGlossaries,
-            },
-          }
         })
 
         return { ...item, results: updatedResults }
