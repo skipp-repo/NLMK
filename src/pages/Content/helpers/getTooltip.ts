@@ -24,7 +24,7 @@ export const getTooltip = (text, active = true) => {
     const textEl = tooltip.getElementsByClassName(textClass)[0]
     textEl.textContent = text
 
-    tooltip.style.display = text.length ? '' : 'none'
+    tooltip.style.display = text?.length ? '' : 'none'
 
     return tooltip
   }

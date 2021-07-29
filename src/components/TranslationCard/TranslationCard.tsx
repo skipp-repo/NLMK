@@ -10,6 +10,7 @@ import TranslationCardImage from './TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from './TranslationCardMeaning/TranslationCardMeaning'
 import TranslationCardGlossaries from './TranslationCardGlossaries/TranslationCardGlossaries'
 import { ReactComponent as ArrowIcon } from '../../assets/icons/arrow.svg'
+import createTranslationString from '../../utils/createTranslationString'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -32,9 +33,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
 }) => {
   const { getCollapseProps, getToggleProps } = useCollapse()
 
-  const renderTranslationsString = items
-    ?.map(({ translation }) => translation?.translation || '')
-    .join(', ')
+  const renderTranslationsString = createTranslationString(items)
 
   const renderTranslationItem = ({ translation }, index) => (
     <div className="TranslationCard-item" key={`${index}-${translation}`}>

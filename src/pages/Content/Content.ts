@@ -1,9 +1,11 @@
 import { createPopper } from '@popperjs/core/lib/popper-lite.js'
 import RangeRef from '../../utils/RangeRef'
+import flatten from 'arr-flatten'
 import { translation as translationRequest } from '../../api/requests/translation'
 import { store } from '../../redux/store'
 import './content.styles.css'
 import { getTooltip, clearTooltip } from './helpers/getTooltip'
+import createTranslationString from '../../utils/createTranslationString'
 
 var fa = document.createElement('style')
 
@@ -51,7 +53,9 @@ const handleSelectionChange = async (): Promise<void> => {
 
   if (status !== 200 || error || !data?.results?.length) return
 
-  const { translation } = data?.results[0]
+  const results = flatten(data?.results)
+
+  const translation = createTranslationString(results)
 
   const tooltip = getTooltip(translation)
 
