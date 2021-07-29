@@ -1,8 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import packageJson from '../../../../package.json'
-import makeExtraReducers from '../../helpers/makeExtraReducers'
-import { RootState } from '../../types'
-import { clearUserState } from '../user'
+import { createSlice } from '@reduxjs/toolkit'
 
 const name = 'app'
 
@@ -18,40 +14,6 @@ const initialState: InitialState = {
   showTrainingSlider: true,
 }
 
-export type ClearState = {
-  force?: boolean
-}
-
-export const clearState = createAsyncThunk(
-  `${name}/clearState`,
-  async ({ force = false }: ClearState = {}, { getState, dispatch }): Promise<void> => {
-    try {
-      const state = getState() as RootState
-      const {
-        app: { version },
-      } = state
-
-      if (version !== packageJson.version || force) {
-        dispatch(clearUserState())
-      }
-    } catch (error) {
-      throw error
-    }
-  },
-)
-
-const clearStateSlice = makeExtraReducers({
-  action: clearState,
-  apiRequest: false,
-  extraReducers: {
-    fulfilled: (state) => {
-      if (state.version !== packageJson.version) {
-        state.version = packageJson.version
-      }
-    },
-  },
-})
-
 const appSlice = createSlice({
   name,
   initialState,
@@ -66,9 +28,7 @@ const appSlice = createSlice({
       state.showTrainingSlider = true
     },
   },
-  extraReducers: {
-    ...clearStateSlice,
-  },
+  extraReducers: {},
 })
 
 export default appSlice.reducer

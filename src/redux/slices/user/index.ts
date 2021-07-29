@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { REHYDRATE } from 'redux-persist'
 import createRequest from '../../../utils/createRequest'
 import { UserStatus } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
@@ -109,6 +110,16 @@ const usersSlice = createSlice({
   },
   extraReducers: {
     ...getStatusSlice,
+    [REHYDRATE]: (state, { payload, key }) => {
+      if (key === 'user') {
+        const { translationHistory } = payload
+
+        // В предыдущей версии расширения translationHistory был Object, надо отчистить эту запись
+        if (!(translationHistory instanceof Array)) {
+          state.translationHistory = []
+        }
+      }
+    },
   },
 })
 

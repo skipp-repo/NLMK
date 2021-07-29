@@ -34,7 +34,7 @@ const Popup = () => {
   const translate = reduxAction(translationSlice.translate)
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
-  const clearState = reduxAction(appSlice.clearState)
+  const clearState = reduxAction(userSlice.clearUserState)
 
   const handleOpenMain = () => window.open('main.html')
 
@@ -100,12 +100,10 @@ const Popup = () => {
   }
 
   const handleResetError = () => {
-    clearState({ force: true })
+    clearState()
   }
 
   React.useEffect(() => {
-    clearState()
-
     getStatus()
   }, [])
 
