@@ -31,7 +31,7 @@ export const getTooltip = (text, active = true) => {
 
   document.body.insertAdjacentHTML('afterend', createTooltipHTML(text, active))
 
-  return tooltip
+  return document.getElementById(popperId)
 }
 
 export const clearTooltip = () => {

@@ -1,4 +1,5 @@
 import { createPopper } from '@popperjs/core/lib/popper-lite.js'
+import { getStatus } from '../../redux/slices/user'
 import RangeRef from '../../utils/RangeRef'
 import flatten from 'arr-flatten'
 import { translation as translationRequest } from '../../api/requests/translation'
@@ -35,11 +36,7 @@ const handleSelectionChange = async (): Promise<void> => {
 
   const state = store.getState()
 
-  if (!state?.user?.token) return
-
-  const {
-    user: { token },
-  } = state
+  let token = state?.user?.token || (await initUser())
 
   const rangeRef = new RangeRef()
 
@@ -59,6 +56,8 @@ const handleSelectionChange = async (): Promise<void> => {
 
   const tooltip = getTooltip(translation)
 
+  console.log(rangeRef, tooltip)
+
   const popper = createPopper(rangeRef, tooltip, {
     placement: 'top',
   })
@@ -71,4 +70,24 @@ const handleSelectionChange = async (): Promise<void> => {
   }
 }
 
+const initUser = async (): Promise<string> => {
+  const state = store.getState()
+
+  let token = state?.user?.token
+
+  if (!token) {
+    const { payload } = await store.dispatch(getStatus())
+
+    const { status, data } = payload
+
+    if (status === 200) {
+      return data.token
+    }
+  }
+
+  return token
+}
+
 document.addEventListener('selectionchange', handleSelectionChange)
+
+initUser()

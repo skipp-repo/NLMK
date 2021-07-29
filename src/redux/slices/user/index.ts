@@ -6,6 +6,7 @@ import { UserStatus } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
+import { status } from '../../../api/requests/status'
 
 const name = 'user'
 
@@ -35,27 +36,18 @@ const initialState: InitialState = {
   newUser: undefined,
 }
 
-export type GetStatus = {}
+export const getStatus = createAsyncThunk(`${name}/getStatus`, async (_: void, { getState }) => {
+  try {
+    const state = getState() as RootState
+    const { user } = state
 
-export const getStatus = createAsyncThunk(
-  `${name}/getStatus`,
-  async ({}: GetStatus, { getState }) => {
-    try {
-      const state = getState() as RootState
-      const { user } = state
+    const token = user.token || (await getUserToken())
 
-      const token = user.token || (await getUserToken())
-
-      return await createRequest(`/user/status`, {
-        headers: {
-          'X-USER-ID': token,
-        },
-      })
-    } catch (error) {
-      throw error
-    }
-  },
-)
+    return await status({ token })
+  } catch (error) {
+    throw error
+  }
+})
 
 const getStatusSlice = makeExtraReducers({
   action: getStatus,
