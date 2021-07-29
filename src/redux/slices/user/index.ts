@@ -111,7 +111,7 @@ const usersSlice = createSlice({
   extraReducers: {
     ...getStatusSlice,
     [REHYDRATE]: (state, { payload, key }) => {
-      if (key === 'user') {
+      if (key === 'user' && payload) {
         const { translationHistory } = payload
 
         // В предыдущей версии расширения translationHistory был Object, надо отчистить эту запись
