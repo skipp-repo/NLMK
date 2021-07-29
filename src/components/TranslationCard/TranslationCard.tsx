@@ -1,6 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import useCollapse from 'react-collapsed'
+import flatten from 'arr-flatten'
 import './TranslationCard.scss'
 import { TranslationResultItemLocal } from '../../types'
 import BookmarkButton from '../BookmarkButton/BookmarkButton'
@@ -9,12 +10,6 @@ import TranslationCardImage from './TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from './TranslationCardMeaning/TranslationCardMeaning'
 import TranslationCardGlossaries from './TranslationCardGlossaries/TranslationCardGlossaries'
 import { ReactComponent as ArrowIcon } from '../../assets/icons/arrow.svg'
-
-type TranslationItem = {
-  translation: string
-  image: string
-  inBookmarks: boolean
-}
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -60,7 +55,9 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
 
   const firstItem = items[0]
 
-  // console.log(items, firstItem)
+  const glossaries = flatten(
+    items.map(({ translation }) => translation.glossaries).filter((glossary) => glossary !== null),
+  )
 
   return (
     <div {...props} className={clsx('TranslationCard', className)}>
@@ -72,7 +69,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
             {firstItem.translation.text}
           </TranslationCardWord>
           <TranslationCardMeaning>{renderTranslationsString}</TranslationCardMeaning>
-          <TranslationCardGlossaries glossaries={firstItem.translation.glossaries} />
+          <TranslationCardGlossaries glossaries={glossaries} />
         </div>
 
         {/*{inBookmarks && !translationIsArray && (*/}
