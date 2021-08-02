@@ -3,6 +3,7 @@ import appSlice from './slices/app'
 import userSlice from './slices/user'
 import translationSlice from './slices/translation'
 import autocompleteSlice from './slices/autocomplete'
+import vocabsSlice from './slices/vocabs'
 import storage from './storage'
 import { persistReducer } from 'redux-persist'
 
@@ -23,6 +24,7 @@ const reducer = combineReducers({
   user: persistReducer(userPersistConfig, userSlice),
   autocomplete: autocompleteSlice,
   translation: translationSlice,
+  vocabs: vocabsSlice,
 })
 
 export default reducer

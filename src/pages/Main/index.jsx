@@ -1,9 +1,16 @@
 import React from 'react'
 import { render } from 'react-dom'
 
-import Main from './Main.scss'
+import Main from './Main'
 import './index.css'
+import Provider from '../../containers/Provider/Provider'
 
-render(<Main />, window.document.querySelector('#app-container'))
+const index = (
+  <Provider>
+    <Main />
+  </Provider>
+)
+
+render(index, window.document.querySelector('#app-container'))
 
 if (module.hot) module.hot.accept()
