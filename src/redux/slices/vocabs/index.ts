@@ -1,9 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getVocabById } from '../../../api/requests/getVocabById'
+import { getVocabs as getVocabsRequest } from '../../../api/requests/getVocabs'
+import adapter from './adapter'
 
 const name = 'vocabs'
 
@@ -13,6 +14,7 @@ export type InitialState = {
 
 const initialState: InitialState = {
   flags: {},
+  ...adapter.getInitialState(),
 }
 
 export const getVocabs = createAsyncThunk(`${name}/getVocabs`, async (_: void, { getState }) => {
@@ -24,35 +26,49 @@ export const getVocabs = createAsyncThunk(`${name}/getVocabs`, async (_: void, {
 
     const token = user.token || (await getUserToken())
 
-    const loadVocab = async ({ _id, name }) => {
-      let id = _id
-
-      if (name === 'default') {
-        id = name
-      }
-
-      return await getVocabById({ token, id })
-    }
-
-    const data = await Promise.all(vocabs.map(loadVocab))
-
-    return data
+    return await getVocabsRequest({ token })
   } catch (error) {
     throw error
   }
 })
 
+export type GetVocab = {
+  id: number
+}
+
+export const getVocab = createAsyncThunk(
+  `${name}/getVocab`,
+  async ({ id }: GetVocab, { getState }) => {
+    try {
+      const state = getState() as RootState
+      const { user } = state
+
+      const { vocabs } = user
+
+      const token = user.token || (await getUserToken())
+
+      return await getVocabById({ token, id })
+    } catch (error) {
+      throw error
+    }
+  },
+)
+
 const getVocabsSlice = makeExtraReducers({
   action: getVocabs,
   extraReducers: {
-    fulfilled: (
-      state,
-      {
-        payload: {
-          data: { token, translationHistory, vocabs, documents, glossaries, newUser },
-        },
-      },
-    ) => {},
+    fulfilled: (state, { payload: { data } }) => {
+      adapter.setAll(state, data)
+    },
+  },
+})
+
+const getVocabSlice = makeExtraReducers({
+  action: getVocab,
+  extraReducers: {
+    fulfilled: (state, { payload: { data } }) => {
+      adapter.addOne(state, data)
+    },
   },
 })
 
@@ -62,6 +78,7 @@ const vocabsSlice = createSlice({
   reducers: {},
   extraReducers: {
     ...getVocabsSlice,
+    ...getVocabSlice,
   },
 })
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'wouter'
-import Provider from '../../containers/Provider/Provider'
 import MainRouter from '../../containers/MainRouter/MainRouter'
 import './Main.scss'
 import useReduxAction from '../../hooks/useReduxAction'
@@ -10,9 +9,12 @@ const Main = () => {
   const reduxAction = useReduxAction()
 
   const getVocabs = reduxAction(vocabsSlices.getVocabs)
+  const getVocab = reduxAction(vocabsSlices.getVocab)
 
   React.useEffect(() => {
     getVocabs()
+
+    getVocab({ id: 'default' })
   }, [])
 
   return (

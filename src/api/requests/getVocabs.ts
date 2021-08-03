@@ -1,12 +1,11 @@
 import createRequest from '../../utils/createRequest'
 
-export type GetVocabById = {
+export type GetVocabs = {
   token: string
-  id: number
 }
 
-export const getVocabById = async ({ token, id }: GetVocabById, init?: RequestInit) => {
-  return await createRequest(`/vocab/${id}`, {
+export const getVocabs = async ({ token }: GetVocabs, init?: RequestInit) => {
+  return await createRequest(`/vocab`, {
     method: 'GET',
     headers: {
       'X-USER-ID': token,
