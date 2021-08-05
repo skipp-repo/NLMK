@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import getUserToken from '../../../utils/getUserToken'
-import { RootState } from '../../types'
+import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getVocabById } from '../../../api/requests/getVocabById'
 import { getVocabs as getVocabsRequest } from '../../../api/requests/getVocabs'
@@ -17,43 +16,30 @@ const initialState: InitialState = {
   ...adapter.getInitialState(),
 }
 
-export const getVocabs = createAsyncThunk(`${name}/getVocabs`, async (_: void, { getState }) => {
-  try {
-    const state = getState() as RootState
-    const { user } = state
-
-    const { vocabs } = user
-
-    const token = user.token || (await getUserToken())
-
+export const getVocabs = createAsyncThunkExtended(
+  `${name}/getVocabs`,
+  async (_: void, { token }) => {
     return await getVocabsRequest({ token })
-  } catch (error) {
-    throw error
-  }
-})
+  },
+)
 
 export type GetVocab = {
   id: number
 }
 
-export const getVocab = createAsyncThunk(
+export const getVocab = createAsyncThunkExtended(
   `${name}/getVocab`,
-  async ({ id }: GetVocab, { getState }) => {
-    try {
-      const state = getState() as RootState
-      const { user } = state
+  async ({ id }: GetVocab, { state, token }) => {
+    const { user } = state
 
-      const { vocabs } = user
-
-      const token = user.token || (await getUserToken())
-
-      return await getVocabById({ token, id })
-    } catch (error) {
-      throw error
-    }
+    return await getVocabById({ token, id })
   },
 )
 
+export const createFolder = createAsyncThunkExtended(
+  `${name}/createFolder`,
+  (params, { token }) => {},
+)
 const getVocabsSlice = makeExtraReducers({
   action: getVocabs,
   extraReducers: {
