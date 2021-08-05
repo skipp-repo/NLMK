@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createVocabFolder } from '../../../api/requests/createVocabFolder'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getVocabById } from '../../../api/requests/getVocabById'
@@ -36,9 +37,13 @@ export const getVocab = createAsyncThunkExtended(
   },
 )
 
+export type CreateFolder = { name: string; cardsToAdd: number[] }
+
 export const createFolder = createAsyncThunkExtended(
   `${name}/createFolder`,
-  (params, { token }) => {},
+  async ({ name, cardsToAdd }: CreateFolder, { token }) => {
+    return await createVocabFolder({ token, name, cardsToAdd })
+  },
 )
 const getVocabsSlice = makeExtraReducers({
   action: getVocabs,

@@ -10,11 +10,14 @@ const Main = () => {
 
   const getVocabs = reduxAction(vocabsSlices.getVocabs)
   const getVocab = reduxAction(vocabsSlices.getVocab)
+  const createFolder = reduxAction(vocabsSlices.createFolder)
 
   React.useEffect(() => {
     getVocabs()
 
     getVocab({ id: 'default' })
+
+    createFolder({ name: 'test2' })
   }, [])
 
   return (
