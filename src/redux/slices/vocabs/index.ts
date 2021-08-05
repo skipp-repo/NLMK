@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { createVocabFolder } from '../../../api/requests/createVocabFolder'
+import { editVocabFolder } from '../../../api/requests/editVocabFolder'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getVocabById } from '../../../api/requests/getVocabById'
 import { getVocabs as getVocabsRequest } from '../../../api/requests/getVocabs'
+import { removeVocabFolder } from '../../../api/requests/deleteVocabFolder'
 import adapter from './adapter'
 
 const name = 'vocabs'
@@ -45,6 +47,27 @@ export const createFolder = createAsyncThunkExtended(
     return await createVocabFolder({ token, name, cardsToAdd })
   },
 )
+
+export type EditFolder = { id: number; name: string; cardsToAdd: number[]; cardsToRemove: number[] }
+
+export const editFolder = createAsyncThunkExtended(
+  `${name}/editFolder`,
+  async ({ id, name, cardsToAdd, cardsToRemove }: EditFolder, { token }) => {
+    return await editVocabFolder({ token, id, name, cardsToAdd, cardsToRemove })
+  },
+)
+
+export type RemoveFolder = {
+  id: number
+}
+
+export const removeFolder = createAsyncThunkExtended(
+  `${name}/removeFolder`,
+  async ({ id }: RemoveFolder, { token }) => {
+    return await removeVocabFolder({ token, id })
+  },
+)
+
 const getVocabsSlice = makeExtraReducers({
   action: getVocabs,
   extraReducers: {
@@ -63,6 +86,27 @@ const getVocabSlice = makeExtraReducers({
   },
 })
 
+const createFolderSlice = makeExtraReducers({
+  action: createFolder,
+  extraReducers: {
+    fulfilled: (state, { payload: { data } }) => {},
+  },
+})
+
+const editFolderSlice = makeExtraReducers({
+  action: editFolder,
+  extraReducers: {
+    fulfilled: (state, { payload: { data } }) => {},
+  },
+})
+
+const removeFolderSlice = makeExtraReducers({
+  action: removeFolder,
+  extraReducers: {
+    fulfilled: (state, { payload: { data } }) => {},
+  },
+})
+
 const vocabsSlice = createSlice({
   name,
   initialState,
@@ -70,6 +114,9 @@ const vocabsSlice = createSlice({
   extraReducers: {
     ...getVocabsSlice,
     ...getVocabSlice,
+    ...createFolderSlice,
+    ...editFolderSlice,
+    ...removeFolderSlice,
   },
 })
 
