@@ -1,0 +1,34 @@
+@import "../../styles/general.css";
+
+.DownloadLink {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+
+  &:hover &-text {
+    color: var(--blue)
+  }
+
+  &[disabled] &-text {
+    color: var(--light-gray-3)
+  }
+
+  &[disabled] &-icon {
+    color: var(--light-gray-3)
+  }
+}
+
+.DownloadLink-icon {
+  margin-right: 14px;
+  color: var(--blue)
+}
+
+.DownloadLink-text {
+  color: var(--blue-gray);
+  font-size: 18px;
+  top: 2px;
+  position: relative;
+  transition-duration: .2s;
+}

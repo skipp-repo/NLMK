@@ -25,6 +25,8 @@
 	color: var(--black);
 	text-decoration: none;
 	margin-right: 40px;
+	transition-duration: .2s;
+
 
   &_active {
 	color: var(--blue);
