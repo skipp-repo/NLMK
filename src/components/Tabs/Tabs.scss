@@ -9,12 +9,11 @@
   position: relative;
   background: transparent;
   border: none;
-  padding: 10px 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 30px;
+  margin-left: 30px;
   cursor: pointer;
-
-  &:first-child {
-    padding-left: 0
-  }
 
   &_active {
 
