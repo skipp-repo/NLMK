@@ -124,4 +124,4 @@ export default vocabsSlice.reducer
 
 export const {} = vocabsSlice.actions
 
-export * as selectors from '../user/selectors'
+export * as selectors from '../vocabs/selectors'

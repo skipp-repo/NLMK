@@ -1,0 +1,45 @@
+@import "../../styles/general.css";
+
+.Tabs {
+  display: flex;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.Tabs-item {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 10px 30px;
+  cursor: pointer;
+
+  &:first-child {
+    padding-left: 0
+  }
+
+  &_active {
+
+    .Tabs-text {
+      color: var(--blue);
+      font-family: var(--font-Circle-Bold);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--blue);
+
+    }
+  }
+}
+
+.Tabs-text {
+  display: block;
+  color: var(--blue-gray);
+  font-size: 18px;
+  transition-duration: .2s;
+}
+
