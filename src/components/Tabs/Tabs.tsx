@@ -11,7 +11,7 @@ export type TabType = {
 export type TabsProps = JSX.IntrinsicElements['nav'] & {
   tabs: TabType[]
   onChange(id: number): void
-  onRename(id: number, newName: string): void
+  onRename(id: number): void
   onDelete(id): void
 }
 
@@ -32,8 +32,8 @@ const Tabs: React.FC<TabsProps> = ({
     setActiveTab(id)
   }
 
-  const handleTabRename = (id, newName) => {
-    onRename(id, newName)
+  const handleTabRename = (id) => {
+    onRename(id)
   }
 
   const handleTabDelete = (id) => {
@@ -45,7 +45,7 @@ const Tabs: React.FC<TabsProps> = ({
       name={name}
       id={id}
       active={activeTab === id}
-      editable={index === 0}
+      editable={index !== 0}
       onClick={handleTabChange}
       onRename={handleTabRename}
       onDelete={handleTabDelete}
@@ -57,8 +57,6 @@ const Tabs: React.FC<TabsProps> = ({
       setActiveTab(tabs[0].id)
     }
   }, [tabs])
-
-  console.log('change', activeTab)
 
   return (
     <nav {...props} className={clsx('Tabs', className)}>

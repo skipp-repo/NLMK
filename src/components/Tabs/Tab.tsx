@@ -1,5 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
+import { ReactComponent as PencilIcon } from '../../assets/icons/pencil.svg'
+import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
 
 export type TabProps = Omit<JSX.IntrinsicElements['div'], 'id'> & {
   name: string
@@ -7,7 +9,7 @@ export type TabProps = Omit<JSX.IntrinsicElements['div'], 'id'> & {
   active: boolean
   editable: boolean
   onClick(id: number): void
-  onRename(id: number, newName: string): void
+  onRename(id: number): void
   onDelete(id): void
 }
 
@@ -26,14 +28,33 @@ const Tab: React.FC<TabProps> = ({
     onClick(id)
   }
 
+  const handleRename = () => {
+    onRename(id)
+  }
+
+  const handleDelete = () => {
+    onDelete(id)
+  }
+
   return (
     <div
-      className={clsx('Tabs-item', active && 'Tabs-item_active')}
+      className={clsx('Tabs-item', active && 'Tabs-item_active', editable && 'Tabs-item_editable')}
       key={id}
       // @ts-ignore
       onClick={handleTabChange}
     >
-      <span className="Tab-text">{name}</span>
+      <span className="Tabs-text">{name}</span>
+
+      {editable && (
+        <div className={clsx('Tabs-actions', active && 'Tabs-actions_active')}>
+          <button className="Tabs-action" onClick={handleRename}>
+            <PencilIcon className="Tabs-icon" />
+          </button>
+          <div className="Tabs-action" onClick={handleDelete}>
+            <DeleteIcon className="Tabs-icon" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

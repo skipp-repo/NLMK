@@ -9,13 +9,21 @@
   position: relative;
   background: transparent;
   border: none;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-right: 30px;
-  margin-left: 30px;
+  padding: 10px 0 10px 0;
+  margin-right: 15px;
+  margin-left: 15px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:first-child {
+    padding-right: 30px;
+    margin-left:  0;
+  }
 
   &_active {
+    padding-right: 0;
 
     .Tabs-text {
       color: var(--blue);
@@ -42,3 +50,27 @@
   transition-duration: .2s;
 }
 
+.Tabs-actions {
+  display: flex;
+  margin-left: 26px;
+  opacity: 0;
+
+  &_active {
+    opacity: 1;
+  }
+
+}
+
+.Tabs-action {
+  margin-right: 18px;
+  background: transparent;
+  border: none;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.Tabs-icon {
+  color: var(--light-gray-3)
+}

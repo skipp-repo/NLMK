@@ -30,9 +30,13 @@ const MyVocabulary: React.FC<MyVocabularyProps> = ({ children }) => {
 
   const handleTabChange = (id) => {}
 
-  const handleTabRename = (id, newName) => {}
+  const handleTabRename = (id) => {
+    console.log('rename')
+  }
 
-  const handleTabDelete = (id) => {}
+  const handleTabDelete = (id) => {
+    console.log('delete')
+  }
 
   useTitle(title)
 
