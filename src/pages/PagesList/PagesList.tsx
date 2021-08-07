@@ -9,7 +9,7 @@ const PagesList = () => {
           <a href="./popup.html">Поп-ап</a>
         </li>
         <li>
-          <a href="./main.html">Словари / Глоссарии / Документы </a>
+          <a href="./main.html#/vocabulary/">Словари / Глоссарии / Документы </a>
         </li>
       </ul>
     </div>
