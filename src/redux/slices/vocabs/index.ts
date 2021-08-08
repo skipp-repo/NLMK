@@ -57,6 +57,27 @@ export const editFolder = createAsyncThunkExtended(
   },
 )
 
+export const addToDefaultFolder = createAsyncThunkExtended(
+  `${name}/addToDefaultFolder`,
+  async ({ cardsToAdd }: EditFolder, { token, state }) => {
+    const {
+      user: { vocabs },
+    } = state
+
+    const defaultVocab = vocabs[0]
+
+    console.log(defaultVocab)
+
+    return await editVocabFolder({
+      token,
+      id: defaultVocab._id,
+      cardsToAdd,
+      cardsToRemove: [],
+      name: 'default',
+    })
+  },
+)
+
 export type RemoveFolder = {
   id: number
 }

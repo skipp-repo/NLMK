@@ -15,6 +15,7 @@ import * as userSlice from '../../redux/slices/user'
 import * as translationSlice from '../../redux/slices/translation'
 import * as autocompleteSlice from '../../redux/slices/autocomplete'
 import * as appSlice from '../../redux/slices/app'
+import * as vocabsSlice from '../../redux/slices/vocabs'
 
 const Popup = () => {
   const reduxAction = useReduxAction()
@@ -35,8 +36,13 @@ const Popup = () => {
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
   const clearState = reduxAction(userSlice.clearUserState)
+  const addToBookmarks = reduxAction(vocabsSlice.addToDefaultFolder)
 
   const handleOpenMain = () => window.open('main.html')
+
+  const handleAddToBookmarks = (id: number) => {
+    addToBookmarks({ cardsToAdd: [id] })
+  }
 
   const { getCollapseProps, getToggleProps } = useCollapse({
     defaultExpanded: true,
@@ -54,6 +60,7 @@ const Popup = () => {
         input={translationData?.searchPhrase}
         items={data}
         onSpeech={handleSpeech}
+        onAddToBookmarks={handleAddToBookmarks}
         speech
       />
     )
@@ -69,6 +76,7 @@ const Popup = () => {
             input={q}
             items={data}
             onSpeech={handleSpeech}
+            onAddToBookmarks={handleAddToBookmarks}
             speech
           />
         )

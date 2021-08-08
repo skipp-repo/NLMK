@@ -19,6 +19,7 @@ export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   speech?: boolean
   inBookmarks?: boolean
   onSpeech(): void
+  onAddToBookmarks(id: number): void
 }
 
 const TranslationCard: React.FC<TranslationCardProps> = ({
@@ -29,14 +30,19 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
   speech = false,
   inBookmarks = false,
   onSpeech = () => {},
+  onAddToBookmarks = () => {},
   ...props
 }) => {
   const { getCollapseProps, getToggleProps } = useCollapse()
 
   const renderTranslationsString = createTranslationString(items)
 
+  const handleOnAddToBookmarks = (id: number) => () => {
+    onAddToBookmarks(id)
+  }
+
   const renderTranslationItem = ({ translation }, index) => (
-    <div className="TranslationCard-item" key={`${index}-${translation}`}>
+    <div className="TranslationCard-item" key={translation._id}>
       <TranslationCardImage src="" />
 
       <div className="TranslationCard-content">
@@ -46,9 +52,9 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
         <TranslationCardMeaning>{translation.translation}</TranslationCardMeaning>
       </div>
 
-      <div className="TranslationCard-action">
+      <button className="TranslationCard-action" onClick={handleOnAddToBookmarks(translation._id)}>
         <BookmarkButton active={false} />
-      </div>
+      </button>
     </div>
   )
 
@@ -71,11 +77,14 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
           <TranslationCardGlossaries glossaries={glossaries} />
         </div>
 
-        {/*{inBookmarks && !translationIsArray && (*/}
-        {/*  <div className="TranslationCard-action">*/}
-        {/*    <BookmarkButton active={inBookmarks} />*/}
-        {/*  </div>*/}
-        {/*)}*/}
+        {items.length === 1 && (
+          <button
+            className="TranslationCard-action"
+            onClick={handleOnAddToBookmarks(items[0].translation._id)}
+          >
+            <BookmarkButton />
+          </button>
+        )}
 
         {items.length > 1 && (
           <div className="TranslationCard-arrow-button" {...getToggleProps()}>

@@ -13,6 +13,7 @@ export const editVocabFolder = async (
   init?: RequestInit,
 ) => {
   const params = {
+    id,
     name,
     cardsToAdd: cardsToAdd || [],
     cardsToRemove: cardsToRemove || [],
