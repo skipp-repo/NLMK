@@ -62,9 +62,11 @@
 }
 
 .Tabs-action {
+  padding: 0;
   margin-right: 18px;
   background: transparent;
   border: none;
+  cursor: pointer;
 
   &:last-child {
     margin-right: 0;
@@ -72,5 +74,13 @@
 }
 
 .Tabs-icon {
-  color: var(--light-gray-3)
+  color: var(--light-gray-3);
+
+  &:hover {
+    color: var(--blue);
+  }
+
+  [disabled] & {
+    color: var(--light-gray);
+  }
 }

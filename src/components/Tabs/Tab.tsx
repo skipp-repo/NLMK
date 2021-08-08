@@ -50,9 +50,9 @@ const Tab: React.FC<TabProps> = ({
           <button className="Tabs-action" onClick={handleRename}>
             <PencilIcon className="Tabs-icon" />
           </button>
-          <div className="Tabs-action" onClick={handleDelete}>
+          <button className="Tabs-action" onClick={handleDelete}>
             <DeleteIcon className="Tabs-icon" />
-          </div>
+          </button>
         </div>
       )}
     </div>
