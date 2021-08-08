@@ -42,6 +42,7 @@ const Tabs: React.FC<TabsProps> = ({
 
   const renderTab = ({ name, id }, index) => (
     <Tab
+      key={id}
       name={name}
       id={id}
       active={activeTab === id}

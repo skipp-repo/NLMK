@@ -6,3 +6,5 @@ const { selectIds, selectEntities, selectAll, selectTotal, selectById } = adapte
 export const vocabs = (state) => state.vocabs
 
 export const vocabsList = createSelector(vocabs, selectAll)
+
+export const vocabById = (id) => createSelector(vocabs, (state) => selectById(state, id))
