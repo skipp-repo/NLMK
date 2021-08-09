@@ -8,6 +8,8 @@ import DownloadLink from '../../components/DownloadLink/DownloadLink'
 import Button from '../../components/Button/Button'
 import Tabs from '../../components/Tabs/Tabs'
 import ItemsCount from '../../components/ItemsCount/ItemsCount'
+import TranslationCard from '../../components/TranslationCard/TranslationCard/TranslationCard'
+import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
 import './MyVocabulary.scss'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as vocabsSlices from '../../redux/slices/vocabs'
@@ -25,6 +27,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
 
   const getVocabs = reduxAction(vocabsSlices.getVocabs)
+  const createFolder = reduxAction(vocabsSlices.createFolder)
 
   const tabs = vocabs.map(({ _id, name }) => ({
     name: name || 'default',
@@ -34,6 +37,12 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const [activeTab, setActiveTab] = React.useState()
 
   const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
+
+  const renderCard = (data) => {
+    return <TranslationCardSelectable item={data} speech onSpeech={handleSpeech} />
+  }
+
+  const handleSpeech = () => {}
 
   const handleTabChange = (id) => setActiveTab(id)
 
@@ -57,6 +66,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     }
   }, [vocabs])
 
+  console.log(vocabsByID?.cards)
+
   return (
     <div className="MyVocabulary">
       <Container className="MyVocabulary-header">
@@ -74,9 +85,17 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
           onRename={handleTabRename}
         />
       </Container>
-      <Container className="MyVocabulary-actions">
-        <ItemsCount>{`${vocabsByID?.cards.length} ${words(vocabsByID?.cards.length)}`}</ItemsCount>
-      </Container>
+      {vocabsByID?.cards.length !== undefined && (
+        <Container className="MyVocabulary-actions">
+          <ItemsCount>{`${vocabsByID?.cards.length} ${words(
+            vocabsByID?.cards.length,
+          )}`}</ItemsCount>
+        </Container>
+      )}
+
+      {!!vocabsByID?.cards.length && (
+        <Container className="MyVocabulary-cards">{vocabsByID.cards.map(renderCard)}</Container>
+      )}
     </div>
   )
 }
