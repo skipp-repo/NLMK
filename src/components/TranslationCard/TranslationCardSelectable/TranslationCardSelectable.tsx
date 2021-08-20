@@ -24,10 +24,6 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
   onSpeech = () => {},
   ...props
 }) => {
-  // const glossaries = flatten(
-  //   items.map(({ translation }) => translation.glossaries).filter((glossary) => glossary !== null),
-  // )
-
   return (
     <div {...props} className={clsx('TranslationCardSelectable', className)}>
       <div className="TranslationCardSelectable-wrapper">
@@ -38,7 +34,7 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
             {item.text}
           </TranslationCardWord>
           <TranslationCardMeaning>{item.translation}</TranslationCardMeaning>
-          {/*<TranslationCardGlossaries glossaries={glossaries} />*/}
+          {!!item.glossaries && <TranslationCardGlossaries glossaries={item.glossaries} />}
         </div>
       </div>
     </div>

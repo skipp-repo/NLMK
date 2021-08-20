@@ -25,3 +25,17 @@
     display: flex;
     align-items: center;
 }
+
+.MyVocabulary-cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.MyVocabulary-card {
+    width: calc(50% - 11px);
+    margin-bottom: 14px;
+
+    &:nth-child(odd) {
+        margin-right: 22px;
+    }
+}
