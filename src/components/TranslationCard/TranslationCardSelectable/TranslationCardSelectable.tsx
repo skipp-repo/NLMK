@@ -6,6 +6,7 @@ import TranslationCardWord from '../TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from '../TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from '../TranslationCardMeaning/TranslationCardMeaning'
 import TranslationCardGlossaries from '../TranslationCardGlossaries/TranslationCardGlossaries'
+import Checkbox from '../../Checkbox/Checkbox'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -36,6 +37,8 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
           <TranslationCardMeaning>{item.translation}</TranslationCardMeaning>
           {!!item.glossaries && <TranslationCardGlossaries glossaries={item.glossaries} />}
         </div>
+
+        <Checkbox />
       </div>
     </div>
   )
