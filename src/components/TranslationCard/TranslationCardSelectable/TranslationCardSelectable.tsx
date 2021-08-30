@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import './TranslationCardSelectable.scss'
-import { PhraseTranslationLocal, TranslationResultItemLocal } from '../../../types'
+import { PhraseTranslationLocal } from '../../../types'
 import TranslationCardWord from '../TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from '../TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from '../TranslationCardMeaning/TranslationCardMeaning'
@@ -31,14 +31,19 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
         <TranslationCardImage src="" />
 
         <div className="TranslationCardSelectable-content">
-          <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
+          <TranslationCardWord
+            className="TranslationCardSelectable-word"
+            onSpeech={onSpeech}
+            speech={speech}
+            input={input}
+          >
             {item.text}
           </TranslationCardWord>
           <TranslationCardMeaning>{item.translation}</TranslationCardMeaning>
           {!!item.glossaries && <TranslationCardGlossaries glossaries={item.glossaries} />}
         </div>
 
-        <Checkbox />
+        <Checkbox className="TranslationCardSelectable-checkbox" />
       </div>
     </div>
   )

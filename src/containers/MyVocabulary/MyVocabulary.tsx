@@ -68,6 +68,11 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   React.useEffect(() => {
     getVocabs()
     getStatus()
+
+    // createFolder({
+    //   name: 'Тестовый список 2',
+    //   cardsToAdd: [8069, 8072, 1596, 1987, 1595, 1723, 8074, 8076, 8078, 2076],
+    // })
   }, [])
 
   React.useEffect(() => {
