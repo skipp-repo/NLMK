@@ -1,3 +1,39 @@
 @import "../../styles/general.css";
 
-.Checkbox {}
+.Checkbox {
+  position: relative;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+.Checkbox-input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.Checkbox-icon {
+  border: 1px solid var(--blue);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.Checkbox_disabled .Checkbox-icon {
+  border-color: var(--light-gray-3)
+}
+
+.Checkbox-input:checked + .Checkbox-icon {
+  background: var(--blue);
+}

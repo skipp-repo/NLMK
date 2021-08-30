@@ -4,7 +4,7 @@
 	background: var(--white);
 	box-shadow: 0px 6px 34px -20px rgba(117, 130, 147, 0.5);
 	border-radius: r(5px);
-	padding: r(10px) r(12px) r(6px) r(10px);
+	padding: 24px 72px 18px 24px;
 	display: flex;
 	flex-direction: column;
 }
@@ -12,7 +12,6 @@
 .TranslationCardSelectable-wrapper {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: r(5px);
 }
 
 .TranslationCardSelectable-action {
@@ -47,6 +46,12 @@
 
 }
 
+.TranslationCardSelectable-checkbox {
+  margin-left: auto;
+}
 
-
-
+.TranslationCardSelectable-word.TranslationCardWord {
+  margin-right: 50px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
