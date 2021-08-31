@@ -2,6 +2,7 @@ import React from 'react'
 import useTitle from 'react-use/lib/useTitle'
 import proschet from 'proschet'
 import { useSelector } from 'react-redux'
+import Checkbox from '../../components/Checkbox/Checkbox'
 import Container from '../../components/Container/Container'
 import PageTitle from '../../components/PageTitle/PageTitle'
 import DownloadLink from '../../components/DownloadLink/DownloadLink'
@@ -81,8 +82,6 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     }
   }, [vocabs])
 
-  console.log(vocabsByID?.cards)
-
   return (
     <div className="MyVocabulary">
       <Container className="MyVocabulary-header">
@@ -105,6 +104,9 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
           <ItemsCount>{`${vocabsByID?.cards.length} ${words(
             vocabsByID?.cards.length,
           )}`}</ItemsCount>
+
+          <Checkbox text="Отметить все" secondary />
+          <Checkbox text="Снять все" secondary />
         </Container>
       )}
 
