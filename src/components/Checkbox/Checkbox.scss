@@ -2,7 +2,6 @@
 
 .Checkbox {
   position: relative;
-  cursor: pointer;
   width: 16px;
   height: 16px;
 }
@@ -17,6 +16,8 @@
   margin: 0;
   width: 100%;
   height: 100%;
+  z-index: 1000;
+  cursor: pointer;
 }
 
 .Checkbox-icon {
@@ -27,11 +28,14 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  cursor: pointer;
 }
 
 .Checkbox_disabled .Checkbox-icon {
   border-color: var(--light-gray-3)
+}
+
+.Checkbox_disabled .Checkbox-input {
+  cursor: default;
 }
 
 .Checkbox-input:checked + .Checkbox-icon {
