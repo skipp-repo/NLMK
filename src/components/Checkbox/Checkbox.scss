@@ -40,6 +40,10 @@
   border-color: var(--light-gray-3)
 }
 
+.Checkbox_secondary .Checkbox-input:checked + .Checkbox-icon {
+  border-color: var(--blue);
+}
+
 .Checkbox_disabled .Checkbox-icon {
   border-color: var(--light-gray-3)
 }
@@ -52,16 +56,26 @@
   background: var(--blue);
 }
 
+.Checkbox-input:checked + .Checkbox-icon .Checkbox-tick {
+  color: var(--white);
+}
+
 .Checkbox-text {
   font-size: 16px;
   line-height: 1;
   padding-left: 14px;
   top: 1px;
   position: relative;
+  color: var(--blue-gray);
 }
 
 .Checkbox-wrapper {
   position: relative;
   width: 16px;
   height: 16px;
+}
+
+.Checkbox-tick {
+  color: transparent;
+
 }

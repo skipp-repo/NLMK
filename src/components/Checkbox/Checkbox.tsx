@@ -4,15 +4,16 @@ import './Checkbox.scss'
 import { ReactComponent as Icon } from '../../assets/icons/checkbox-tick.svg'
 
 export type CheckboxProps = JSX.IntrinsicElements['input'] & {
-  disabled?: boolean
   text?: string
   secondary?: boolean
+  textClassName?: string
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({
   children,
   disabled,
   className,
+  textClassName,
   text,
   secondary,
   ...props
@@ -33,7 +34,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
         </div>
       </div>
 
-      {!!text && <span className="Checkbox-text">{text}</span>}
+      {!!text && <span className={clsx('Checkbox-text', textClassName)}>{text}</span>}
     </label>
   )
 }
