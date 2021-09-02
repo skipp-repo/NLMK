@@ -70,10 +70,9 @@ export const addToDefaultFolder = createAsyncThunkExtended(
 
     return await editVocabFolder({
       token,
-      id: defaultVocab._id,
+      id: 'default',
       cardsToAdd,
       cardsToRemove: [],
-      name: 'default',
     })
   },
 )
