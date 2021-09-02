@@ -2,8 +2,8 @@ import createRequest from '../../utils/createRequest'
 
 export type EditVocabFolder = {
   token: string
-  id: number
-  name: string
+  id: number | 'default'
+  name?: string
   cardsToAdd?: number[]
   cardsToRemove?: number[]
 }
