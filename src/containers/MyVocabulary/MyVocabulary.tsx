@@ -9,13 +9,13 @@ import DownloadLink from '../../components/DownloadLink/DownloadLink'
 import Button from '../../components/Button/Button'
 import Tabs from '../../components/Tabs/Tabs'
 import ItemsCount from '../../components/ItemsCount/ItemsCount'
-import TranslationCard from '../../components/TranslationCard/TranslationCard/TranslationCard'
 import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
 import './MyVocabulary.scss'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as userSlice from '../../redux/slices/user'
 import * as vocabsSlices from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
+import MyVocabularyActions from './MyVocabularyActions'
 
 export type MyVocabularyProps = {}
 
@@ -110,9 +110,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         </Container>
       )}
 
-      {!!vocabsByID?.cards?.length && (
-        <Container className="MyVocabulary-cards">{vocabsByID.cards.map(renderCard)}</Container>
-      )}
+      {!!vocabsByID?.cards?.length && <MyVocabularyActions />}
     </div>
   )
 }
