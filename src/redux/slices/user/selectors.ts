@@ -4,6 +4,7 @@ import find from 'lodash.find'
 export const user = (state) => state.user
 export const token = (state) => state.user.token
 export const glossaries = (state) => state.user.glossaries
+export const vocabs = (state) => state.user.vocabs
 export const flags = (state) => state.user.flags
 export const translationHistory = (state) => state.user.translationHistory
 
