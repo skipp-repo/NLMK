@@ -24,7 +24,7 @@ const VocabsDropdown: React.FC<VocabsDropdownProps> = ({
   onSelect,
   ...props
 }) => {
-  const [opened, setOpened] = React.useState(true)
+  const [opened, setOpened] = React.useState(false)
   const ref = React.useRef()
 
   const handleClick = () => {
