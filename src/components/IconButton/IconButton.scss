@@ -1,0 +1,24 @@
+@import "../../styles/general.css";
+
+.IconButton {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--blue-gray);
+
+  &:hover {
+    color: var(--blue-2)
+  }
+
+}
+
+.IconButton-text {
+  font-size: 16px;
+  line-height: 1;
+  padding-left: 14px;
+  top: 1px;
+  position: relative;
+}
+
+.IconButton-icon {
+}
