@@ -6,7 +6,7 @@ import { ReactComponent as CloseIcon } from '../../assets/icons/popup-close.svg'
 
 export type ModalProps = JSX.IntrinsicElements['div'] & {
   onClose(): void
-  visible: boolean
+  visible?: boolean
 }
 
 const modalRoot = document.getElementById('modal-container')

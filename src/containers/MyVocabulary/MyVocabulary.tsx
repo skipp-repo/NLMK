@@ -16,10 +16,7 @@ import * as vocabsSlice from '../../redux/slices/vocabs'
 import MyVocabularyActions from './MyVocabularyActions'
 import Search from '../../components/Search/Search'
 import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
-import Modal from '../../components/Modal/Modal'
-import ModalTitle from '../../components/Modal/ModalTitle/ModalTitle'
-import ModalInput from '../../components/Modal/ModalInput/ModalInput'
-import ModalButton from '../../components/Modal/ModalButton/ModalButton'
+import ModalNewVocabGroup from '../../components/ModalNewVocabGroup/ModalNewVocabGroup'
 
 export type MyVocabularyProps = {}
 
@@ -157,14 +154,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         <Container className="MyVocabulary-cards">{vocabsByID.cards.map(renderCard)}</Container>
       )}
 
-      <Modal visible onClose={handleClose}>
-        <ModalTitle>Добавить новую группу</ModalTitle>
-
-        <ModalInput placeholder="Название группы" />
-
-        <ModalButton text="Отмена" secondary />
-        <ModalButton text="Удалить" />
-      </Modal>
+      <ModalNewVocabGroup onClose={handleClose} />
     </div>
   )
 }
