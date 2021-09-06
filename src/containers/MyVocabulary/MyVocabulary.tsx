@@ -9,10 +9,12 @@ import Tabs from '../../components/Tabs/Tabs'
 import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
 import './MyVocabulary.scss'
 import useReduxAction from '../../hooks/useReduxAction'
+import * as autocompleteSlice from '../../redux/slices/autocomplete'
 import * as userSlice from '../../redux/slices/user'
 import * as vocabsSlices from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import MyVocabularyActions from './MyVocabularyActions'
+import Search from '../../components/Search/Search'
 
 export type MyVocabularyProps = {}
 
@@ -21,7 +23,12 @@ const title = 'Мой словарь'
 const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const reduxAction = useReduxAction()
 
+  const queryRef = React.useRef('')
+
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
+  const autoCompleteData = useSelector(
+    autocompleteSlice.selectors.autocompleteByQuery(queryRef.current),
+  )
 
   const getVocabs = reduxAction(vocabsSlices.getVocabs)
   const getStatus = reduxAction(userSlice.getStatus)
@@ -59,6 +66,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     console.log('delete')
   }
 
+  const handleSearch = (text) => {}
+
   useTitle(title)
 
   React.useEffect(() => {
@@ -94,7 +103,18 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
           onRename={handleTabRename}
         />
       </Container>
+
       {vocabsByID?.cards?.length !== undefined && <MyVocabularyActions activeTab={activeTab} />}
+
+      <Container className="MyVocabulary-search">
+        <Search
+          className="MyVocabulary-search-input"
+          onChange={handleSearch}
+          suggestions={autoCompleteData}
+        />
+
+        <div className="MyVocabulary-search-filter"></div>
+      </Container>
 
       {!!vocabsByID?.cards?.length && (
         <Container className="MyVocabulary-cards">{vocabsByID.cards.map(renderCard)}</Container>
