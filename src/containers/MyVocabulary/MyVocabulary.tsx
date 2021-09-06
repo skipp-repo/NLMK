@@ -15,6 +15,7 @@ import * as vocabsSlices from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import MyVocabularyActions from './MyVocabularyActions'
 import Search from '../../components/Search/Search'
+import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
 
 export type MyVocabularyProps = {}
 
@@ -33,6 +34,36 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const getVocabs = reduxAction(vocabsSlices.getVocabs)
   const getStatus = reduxAction(userSlice.getStatus)
   const createFolder = reduxAction(vocabsSlices.createFolder)
+
+  const vocabFilterList = React.useMemo(
+    () =>
+      vocabs.map(({ _id, name, ...item }) => ({ key: _id, name: item.default ? 'Default' : name })),
+    [vocabs],
+  )
+
+  const filters = [
+    {
+      name: 'Тип поиска',
+      items: [
+        {
+          key: 'WordsAndPhrases',
+          name: 'Слова и фразы',
+        },
+        {
+          key: 'Words',
+          name: 'Только слова',
+        },
+        {
+          key: 'Phrases',
+          name: 'Только фразы',
+        },
+      ],
+    },
+    {
+      name: 'Глоссарий',
+      items: vocabFilterList,
+    },
+  ]
 
   const tabs = vocabs.map(({ _id, name }) => ({
     name: name || 'default',
@@ -113,7 +144,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
           suggestions={autoCompleteData}
         />
 
-        <div className="MyVocabulary-search-filter"></div>
+        <VocabsFilters className="MyVocabulary-search-filter" items={filters} />
       </Container>
 
       {!!vocabsByID?.cards?.length && (
