@@ -1,0 +1,16 @@
+@import "../../../styles/general.css";
+
+.ModalButton {
+  background-color: #4FBFD8;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: pointer;
+
+  &_secondary {
+    background-color: #F3F3F3;
+    color: var(--dark-gray);
+  }
+}
