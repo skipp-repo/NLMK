@@ -17,6 +17,7 @@ import MyVocabularyActions from './MyVocabularyActions'
 import Search from '../../components/Search/Search'
 import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
 import ModalNewVocabGroup from '../../components/ModalNewVocabGroup/ModalNewVocabGroup'
+import ModalRemoveVocabGroup from '../../components/ModalRemoveVocabGroup/ModalRemoveVocabGroup'
 
 export type MyVocabularyProps = {}
 
@@ -155,6 +156,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       )}
 
       <ModalNewVocabGroup onClose={handleClose} />
+
+      <ModalRemoveVocabGroup visible onClose={handleClose} />
     </div>
   )
 }
