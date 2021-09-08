@@ -8,6 +8,7 @@ import Button from '../../components/Button/Button'
 import Tabs from '../../components/Tabs/Tabs'
 import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
 import './MyVocabulary.scss'
+import useModal from '../../hooks/useModal'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as autocompleteSlice from '../../redux/slices/autocomplete'
 import * as userSlice from '../../redux/slices/user'
@@ -33,6 +34,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const autoCompleteData = useSelector(
     autocompleteSlice.selectors.autocompleteByQuery(queryRef.current),
   )
+
+  const [newGroupPopupVisible, showNewGroupPopup, hideNewGroupPopup] = useModal()
 
   const getVocabs = reduxAction(vocabsSlices.getVocabs)
   const getStatus = reduxAction(userSlice.getStatus)
@@ -104,16 +107,18 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const handleClose = () => {}
 
+  const handleCreateNewGroup = (name) => {
+    console.log(name)
+
+    createFolder({ name })
+    hideNewGroupPopup()
+  }
+
   useTitle(title)
 
   React.useEffect(() => {
     getVocabs()
     getStatus()
-
-    // createFolder({
-    //   name: 'Тестовый список',
-    //   cardsToAdd: [8069, 8072, 1596, 1987, 1595, 1723, 8074, 8076, 8078, 2076],
-    // })
   }, [])
 
   React.useEffect(() => {
@@ -129,7 +134,9 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
         <DownloadLink>Скачать все слова</DownloadLink>
 
-        <Button className="MyVocabulary-button">СОЗДАТЬ ГРУППУ</Button>
+        <Button className="MyVocabulary-button" onClick={showNewGroupPopup}>
+          СОЗДАТЬ ГРУППУ
+        </Button>
       </Container>
       <Container className="MyVocabulary-tabs">
         <Tabs
@@ -156,7 +163,11 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         <Container className="MyVocabulary-cards">{vocabsByID.cards.map(renderCard)}</Container>
       )}
 
-      <ModalNewVocabGroup onClose={handleClose} />
+      <ModalNewVocabGroup
+        visible={newGroupPopupVisible}
+        onCreate={handleCreateNewGroup}
+        onClose={hideNewGroupPopup}
+      />
 
       <ModalRemoveVocabGroup onClose={handleClose} />
 

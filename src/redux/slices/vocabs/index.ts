@@ -39,7 +39,7 @@ export const getVocab = createAsyncThunkExtended(
   },
 )
 
-export type CreateFolder = { name: string; cardsToAdd: number[] }
+export type CreateFolder = { name: string; cardsToAdd?: number[] }
 
 export const createFolder = createAsyncThunkExtended(
   `${name}/createFolder`,
@@ -101,7 +101,9 @@ const getVocabSlice = makeExtraReducers({
 const createFolderSlice = makeExtraReducers({
   action: createFolder,
   extraReducers: {
-    fulfilled: (state, { payload: { data } }) => {},
+    fulfilled: (state, { payload: { data } }) => {
+      adapter.addOne(state, data)
+    },
   },
 })
 
