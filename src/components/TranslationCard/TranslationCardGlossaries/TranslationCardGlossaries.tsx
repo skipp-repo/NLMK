@@ -18,11 +18,15 @@ const TranslationCardGlossaries: React.FC<TranslationCardGlossariesProps> = ({
   className,
   ...props
 }) => {
-  const renderGlossary = (glossary: Glossary) => (
-    <div className="TranslationCardGlossaries-list-text" key={glossary._id}>
-      {glossary.name}
-    </div>
-  )
+  const renderGlossary = (glossary: Glossary) => {
+    if (glossary) {
+      return (
+        <div className="TranslationCardGlossaries-list-text" key={glossary._id}>
+          {glossary.name}
+        </div>
+      )
+    }
+  }
 
   if (glossaries?.length) {
     return (
