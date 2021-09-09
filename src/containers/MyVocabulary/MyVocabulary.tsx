@@ -83,6 +83,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const renderCard = (data) => {
     return (
       <TranslationCardSelectable
+        key={data._id}
         className={'MyVocabulary-card'}
         item={data}
         speech

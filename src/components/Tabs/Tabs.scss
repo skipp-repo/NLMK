@@ -1,8 +1,12 @@
 @import "../../styles/general.css";
 
 .Tabs {
-  display: flex;
   border-bottom: 1px solid var(--light-gray);
+}
+
+.Tabs-wrapper {
+  display: flex;
+
 }
 
 .Tabs-item {
@@ -43,11 +47,14 @@
   }
 }
 
+
+
 .Tabs-text {
   display: block;
   color: var(--blue-gray);
   font-size: 18px;
   transition-duration: .2s;
+  white-space: pre;
 }
 
 .Tabs-actions {
@@ -83,4 +90,38 @@
   [disabled] & {
     color: var(--light-gray);
   }
+}
+
+
+.Tabs-arrows {
+  width: 50px;
+  flex-shrink: 0;
+}
+
+.Tabs-back-arrow {
+  transform: rotate(180deg);
+}
+
+.Tabs-back, .Tabs-next {
+  all: unset;
+  height: r(12px);
+  line-height: 0;
+  color: #7D8BA0;
+}
+
+.Tabs-back {
+  margin-right: r(6px);
+}
+
+.Tabs-back[disabled], .Tabs-next[disabled] {
+  color: var(--light-gray-2);
+}
+
+.Tabs-carousel {
+  display: flex;
+  align-items: center;
+}
+
+.carousel__slide-focus-ring {
+  display: none;
 }

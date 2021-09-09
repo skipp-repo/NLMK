@@ -1,7 +1,9 @@
 import React from 'react'
 import clsx from 'clsx'
 import './Tabs.scss'
-import Tab from './Tab'
+import { CarouselProvider } from 'pure-react-carousel'
+import TabsContent from './TabsContent'
+import 'pure-react-carousel/dist/react-carousel.es.css'
 
 export type TabType = {
   name: string
@@ -24,44 +26,22 @@ const Tabs: React.FC<TabsProps> = ({
   onDelete,
   ...props
 }) => {
-  const [activeTab, setActiveTab] = React.useState<number | undefined>()
-
-  const handleTabChange = (id) => {
-    onChange(id)
-
-    setActiveTab(id)
-  }
-
-  const handleTabRename = (id) => {
-    onRename(id)
-  }
-
-  const handleTabDelete = (id) => {
-    onDelete(id)
-  }
-
-  const renderTab = ({ name, id }, index) => (
-    <Tab
-      key={id}
-      name={name}
-      id={id}
-      active={activeTab === id}
-      editable={index !== 0}
-      onClick={handleTabChange}
-      onRename={handleTabRename}
-      onDelete={handleTabDelete}
-    />
-  )
-
-  React.useEffect(() => {
-    if (!activeTab && tabs?.length) {
-      setActiveTab(tabs[0].id)
-    }
-  }, [tabs])
-
   return (
     <nav {...props} className={clsx('Tabs', className)}>
-      {tabs?.map(renderTab)}
+      {!!tabs?.length && (
+        <CarouselProvider
+          naturalSlideWidth={1000}
+          totalSlides={tabs.length}
+          naturalSlideHeight={300}
+          visibleSlides={4}
+          isIntrinsicHeight={true}
+          className="Tabs-carousel"
+          dragEnabled={false}
+          step={4}
+        >
+          <TabsContent tabs={tabs} onChange={onChange} onDelete={onDelete} onRename={onRename} />
+        </CarouselProvider>
+      )}
     </nav>
   )
 }
