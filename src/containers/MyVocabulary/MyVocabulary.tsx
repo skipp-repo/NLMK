@@ -43,11 +43,19 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     removeId,
     setIdForRemoveGroupModal,
   ] = useModal()
+  const [
+    renameGroupModalVisible,
+    showRenameGroupModal,
+    hideRenameGroupModal,
+    renameData,
+    setDataRenameGroupModal,
+  ] = useModal()
 
   const getVocabs = reduxAction(vocabsSlices.getVocabs)
   const getStatus = reduxAction(userSlice.getStatus)
   const createFolder = reduxAction(vocabsSlices.createFolder)
   const removeFolder = reduxAction(vocabsSlices.removeFolder)
+  const editFolder = reduxAction(vocabsSlices.editFolder)
 
   const vocabFilterList = React.useMemo(
     () =>
@@ -104,8 +112,10 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const handleTabChange = (id) => setActiveTab(id)
 
-  const handleTabRename = (id) => {
-    console.log('rename')
+  const handleTabRename = ({ id, name }) => {
+    setDataRenameGroupModal({ id, name })
+
+    showRenameGroupModal()
   }
 
   const handleTabRemove = (id) => {
@@ -120,13 +130,17 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const handleSearch = (text) => {}
 
-  const handleClose = () => {}
-
   const handleCreateNewGroup = (name) => {
-    console.log(name)
-
     createFolder({ name })
     hideNewGroupPopup()
+  }
+
+  const handleRenameGroup = (name) => {
+    editFolder({
+      id: renameData?.id,
+      name: name,
+    })
+    hideRenameGroupModal()
   }
 
   useTitle(title)
@@ -190,7 +204,12 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         onClose={hideRemoveGroupModal}
       />
 
-      <ModalRenameVocabGroup name="Группа 1" onClose={handleClose} onChange={() => {}} />
+      <ModalRenameVocabGroup
+        visible={renameGroupModalVisible}
+        name={renameData?.name}
+        onClose={hideRenameGroupModal}
+        onChange={handleRenameGroup}
+      />
     </div>
   )
 }

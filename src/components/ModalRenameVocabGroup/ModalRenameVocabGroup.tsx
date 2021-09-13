@@ -15,11 +15,19 @@ const ModalRenameVocabGroup: React.FC<ModalRenameVocabGroupProps> = ({
   onChange,
   ...props
 }) => {
-  const [value, setValue] = React.useState(name)
+  const [value, setValue] = React.useState('')
 
   const handleChange = ({ target }) => {
     setValue(target.value)
   }
+
+  const handleSave = () => {
+    onChange(value)
+  }
+
+  React.useEffect(() => {
+    setValue(name)
+  }, [name])
 
   return (
     <Modal {...props}>
@@ -32,7 +40,11 @@ const ModalRenameVocabGroup: React.FC<ModalRenameVocabGroupProps> = ({
           value={value}
           onChange={handleChange}
         />
-        <ModalButton text="ИЗМЕНИТЬ" className="ModalRenameVocabGroup-button" />
+        <ModalButton
+          text="ИЗМЕНИТЬ"
+          className="ModalRenameVocabGroup-button"
+          onClick={handleSave}
+        />
       </div>
     </Modal>
   )

@@ -111,7 +111,29 @@ const createFolderSlice = makeExtraReducers({
 const editFolderSlice = makeExtraReducers({
   action: editFolder,
   extraReducers: {
-    fulfilled: (state, { payload: { data } }) => {},
+    pending: (
+      state,
+      {
+        meta: {
+          arg: { id, name, cardsToAdd, cardsToRemove },
+        },
+      },
+    ) => {
+      if (name) {
+        adapter.updateOne(state, { id, changes: { name } })
+      }
+    },
+    fulfilled: (
+      state,
+      {
+        payload: { data },
+        meta: {
+          arg: { id },
+        },
+      },
+    ) => {
+      adapter.updateOne(state, { id, changes: data })
+    },
   },
 })
 

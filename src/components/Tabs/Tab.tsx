@@ -9,7 +9,7 @@ export type TabProps = Omit<JSX.IntrinsicElements['div'], 'id'> & {
   active: boolean
   editable: boolean
   onClick(id: number): void
-  onRename(id: number): void
+  onRename({ id: number, name: string }): void
   onDelete(id): void
 }
 
@@ -29,7 +29,7 @@ const Tab: React.FC<TabProps> = ({
   }
 
   const handleRename = () => {
-    onRename(id)
+    onRename({ id, name })
   }
 
   const handleDelete = () => {

@@ -7,7 +7,7 @@ import { TabType } from './Tabs'
 export type TabsContentProps = {
   tabs: TabType[]
   onChange(id: number): void
-  onRename(id: number): void
+  onRename({ id: number, name: string }): void
   onDelete(id): void
 }
 
