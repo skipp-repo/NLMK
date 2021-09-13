@@ -36,10 +36,18 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   )
 
   const [newGroupPopupVisible, showNewGroupPopup, hideNewGroupPopup] = useModal()
+  const [
+    removeGroupModalVisible,
+    showRemoveGroupModal,
+    hideRemoveGroupModal,
+    removeId,
+    setIdForRemoveGroupModal,
+  ] = useModal()
 
   const getVocabs = reduxAction(vocabsSlices.getVocabs)
   const getStatus = reduxAction(userSlice.getStatus)
   const createFolder = reduxAction(vocabsSlices.createFolder)
+  const removeFolder = reduxAction(vocabsSlices.removeFolder)
 
   const vocabFilterList = React.useMemo(
     () =>
@@ -100,8 +108,14 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     console.log('rename')
   }
 
-  const handleTabDelete = (id) => {
-    console.log('delete')
+  const handleTabRemove = (id) => {
+    setIdForRemoveGroupModal(id)
+    showRemoveGroupModal()
+  }
+
+  const handleGroupRemove = () => {
+    removeFolder({ id: removeId })
+    hideRemoveGroupModal()
   }
 
   const handleSearch = (text) => {}
@@ -143,7 +157,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         <Tabs
           tabs={tabs}
           onChange={handleTabChange}
-          onDelete={handleTabDelete}
+          onDelete={handleTabRemove}
           onRename={handleTabRename}
         />
       </Container>
@@ -170,7 +184,11 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         onClose={hideNewGroupPopup}
       />
 
-      <ModalRemoveVocabGroup onClose={handleClose} />
+      <ModalRemoveVocabGroup
+        visible={removeGroupModalVisible}
+        onRemove={handleGroupRemove}
+        onClose={hideRemoveGroupModal}
+      />
 
       <ModalRenameVocabGroup name="Группа 1" onClose={handleClose} onChange={() => {}} />
     </div>

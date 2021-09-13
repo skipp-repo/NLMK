@@ -3,7 +3,8 @@ import find from 'lodash.find'
 import { glossaries } from '../user/selectors'
 import adapter from './adapter'
 
-const { selectIds, selectEntities, selectAll, selectTotal, selectById } = adapter.getSelectors()
+export const { selectIds, selectEntities, selectAll, selectTotal, selectById } =
+  adapter.getSelectors()
 
 export const vocabs = (state) => state.vocabs
 
@@ -31,3 +32,8 @@ export const vocabById = (id) =>
       }
     },
   )
+
+export const defaultVocabId = createSelector(
+  vocabsList,
+  (vocabs) => vocabs.find((item) => item.default)._id,
+)

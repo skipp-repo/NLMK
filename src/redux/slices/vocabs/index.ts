@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, current } from '@reduxjs/toolkit'
 import { createVocabFolder } from '../../../api/requests/createVocabFolder'
 import { editVocabFolder } from '../../../api/requests/editVocabFolder'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
@@ -7,6 +7,7 @@ import { getVocabById } from '../../../api/requests/getVocabById'
 import { getVocabs as getVocabsRequest } from '../../../api/requests/getVocabs'
 import { removeVocabFolder } from '../../../api/requests/deleteVocabFolder'
 import adapter from './adapter'
+import * as selectors from '../vocabs/selectors'
 
 const name = 'vocabs'
 
@@ -117,7 +118,18 @@ const editFolderSlice = makeExtraReducers({
 const removeFolderSlice = makeExtraReducers({
   action: removeFolder,
   extraReducers: {
-    fulfilled: (state, { payload: { data } }) => {},
+    fulfilled: (
+      state,
+      {
+        payload: { data },
+        meta: {
+          arg: { id },
+        },
+      },
+    ) => {
+      adapter.removeOne(state, id)
+      adapter.updateOne(state, data) // TODO проверить
+    },
   },
 })
 
