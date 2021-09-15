@@ -25,10 +25,12 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
   onSpeech = () => {},
   ...props
 }) => {
+  const imgSrc = item.images?.length ? item.images[0] : undefined
+
   return (
     <div {...props} className={clsx('TranslationCardSelectable', className)}>
       <div className="TranslationCardSelectable-wrapper">
-        <TranslationCardImage src="" />
+        <TranslationCardImage src={imgSrc} />
 
         <div className="TranslationCardSelectable-content">
           <TranslationCardWord

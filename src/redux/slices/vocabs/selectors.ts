@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit'
 import find from 'lodash.find'
 import { glossaries } from '../user/selectors'
 import adapter from './adapter'
+import { getImagePathFromBuffer } from '../../../utils/getImagePathFromBuffer'
 
 export const { selectIds, selectEntities, selectAll, selectTotal, selectById } =
   adapter.getSelectors()
@@ -22,11 +23,22 @@ export const vocabById = (id) =>
         cards: vocab.cards.map((item) => {
           if (!item?.glossaries) return item
 
+          const vocabsGlossaries = item?.glossaries.map((glossaryId) => {
+            return find(glossaries, { _id: glossaryId })
+          })
+
+          const glossaryPicts = vocabsGlossaries.length ? vocabsGlossaries[0].glossaryPicts : {}
+
+          const sizes = [glossaryPicts.size1, glossaryPicts.size2, glossaryPicts.size3].filter(
+            (item) => !!item,
+          )
+
+          const images = sizes.map((item) => getImagePathFromBuffer(item.data))
+
           return {
             ...item,
-            glossaries: item?.glossaries.map((glossaryId) => {
-              return find(glossaries, { _id: glossaryId })
-            }),
+            glossaries: vocabsGlossaries,
+            images,
           }
         }),
       }
