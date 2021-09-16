@@ -12,7 +12,7 @@ import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
 import VocabsDropdown from '../../components/VocabsDropdown/VocabsDropdown'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import useReduxAction from '../../hooks/useReduxAction'
-import { act } from 'react-dom/test-utils'
+import { vocabs, vocabsList } from '../../redux/slices/vocabs/selectors'
 
 export type MyVocabularyActionsProps = JSX.IntrinsicElements['div'] & { activeTab: string }
 
@@ -27,7 +27,8 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
   const reduxAction = useReduxAction()
   const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
 
-  const vocabs = useSelector(userSlices.selectors.vocabs)
+  const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
+
   const selectedIds = useSelector(vocabsSlice.selectors.selectedCardsIdsByVocabId(activeTab))
 
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
