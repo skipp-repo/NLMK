@@ -4,10 +4,16 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: var(--blue-gray);
+  color: var(--black);
 
-  &:hover {
-    color: var(--blue-2)
+  &:not(&_disabled) {
+    &:hover {
+      color: var(--blue-2);
+    }
+  }
+
+  &_disabled {
+    color: var(--blue-gray);
   }
 
 }
@@ -21,4 +27,5 @@
 }
 
 .IconButton-icon {
+  color: var(--blue-gray);
 }

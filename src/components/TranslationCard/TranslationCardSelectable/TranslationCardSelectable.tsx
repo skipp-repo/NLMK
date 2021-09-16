@@ -8,12 +8,13 @@ import TranslationCardMeaning from '../TranslationCardMeaning/TranslationCardMea
 import TranslationCardGlossaries from '../TranslationCardGlossaries/TranslationCardGlossaries'
 import Checkbox from '../../Checkbox/Checkbox'
 
-export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
+export type TranslationCardProps = Omit<JSX.IntrinsicElements['div'], 'onSelect'> & {
   input?: string
   item: PhraseTranslationLocal
   action?: React.ReactElement
   speech?: boolean
   onSpeech(): void
+  onSelect(id: number, checked: boolean): void
 }
 
 const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
@@ -23,9 +24,14 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
   action,
   speech = false,
   onSpeech = () => {},
+  onSelect = () => {},
   ...props
 }) => {
   const imgSrc = item.images?.length ? item.images[0] : undefined
+
+  const handleSelect = ({ target }) => {
+    onSelect(item._id, target.checked)
+  }
 
   return (
     <div {...props} className={clsx('TranslationCardSelectable', className)}>
@@ -45,7 +51,11 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
           {!!item.glossaries && <TranslationCardGlossaries glossaries={item.glossaries} />}
         </div>
 
-        <Checkbox className="TranslationCardSelectable-checkbox" />
+        <Checkbox
+          className="TranslationCardSelectable-checkbox"
+          onChange={handleSelect}
+          checked={item.selected}
+        />
       </div>
     </div>
   )

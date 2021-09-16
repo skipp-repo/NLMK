@@ -9,13 +9,20 @@ export const { selectIds, selectEntities, selectAll, selectTotal, selectById } =
 
 export const vocabs = (state) => state.vocabs
 
+export const selectedItems = (state) => state.vocabs.selectedItems
+
+export const selectedItemsById = (id) => createSelector(selectedItems, (items) => items[id])
+
 export const vocabsList = createSelector(vocabs, selectAll)
+
+const vocabsById = (id) => createSelector(vocabs, (state) => selectById(state, id))
 
 export const vocabById = (id) =>
   createSelector(
-    createSelector(vocabs, (state) => selectById(state, id)),
+    vocabsById(id),
     glossaries,
-    (vocab, glossaries) => {
+    selectedItemsById(id),
+    (vocab, glossaries, selectedIds) => {
       if (!vocab) return {}
 
       return {
@@ -35,10 +42,16 @@ export const vocabById = (id) =>
 
           const images = sizes.map((item) => getImagePathFromBuffer(item.data))
 
+          const selected =
+            selectedIds === 'all' ||
+            (selectedIds?.length && selectedIds.includes(item._id)) ||
+            false
+
           return {
             ...item,
             glossaries: vocabsGlossaries,
             images,
+            selected,
           }
         }),
       }
@@ -49,3 +62,15 @@ export const defaultVocabId = createSelector(
   vocabsList,
   (vocabs) => vocabs.find((item) => item.default)._id,
 )
+
+export const selectedCardsIdsByVocabId = (id) =>
+  createSelector(selectedItemsById(id), vocabsById(id), (ids, vocab) => {
+    if (!ids) return []
+
+    return vocab.cards.map(({ _id }) => _id).filter((itemId) => ids.includes(itemId))
+  })
+
+export const cardsIdsByVocabId = (id) =>
+  createSelector(vocabsById(id), (vocab) => {
+    return vocab.cards.map(({ _id }) => _id)
+  })

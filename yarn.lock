@@ -1247,6 +1247,11 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
+"@stdlib/utils-noop@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@stdlib/utils-noop/-/utils-noop-0.0.8.tgz#859e3cc87e0076a07a19b40d57a65fe3be136b2a"
+  integrity sha512-rDCM7W7T9J5H/98n01v+mk/cnbw6mErVg0gK2Rwgora0o1/roJjlRRM0lcvz2Csc+jh5dyO+A26L0y4yyBs/yg==
+
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-5.4.0.tgz#81ef61947bb268eb9d50523446f9c638fb355906"

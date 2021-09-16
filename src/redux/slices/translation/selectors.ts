@@ -1,6 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit'
 import find from 'lodash.find'
-import flatten from 'arr-flatten'
 import { glossaries } from '../user/selectors'
 import { getImagePathFromBuffer } from '../../../utils/getImagePathFromBuffer'
 import sortTranslationByCommon from '../../../utils/sortTranslationByCommon'

@@ -31,6 +31,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const queryRef = React.useRef('')
 
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
+
   const autoCompleteData = useSelector(
     autocompleteSlice.selectors.autocompleteByQuery(queryRef.current),
   )
@@ -56,6 +57,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const createFolder = reduxAction(vocabsSlices.createFolder)
   const removeFolder = reduxAction(vocabsSlices.removeFolder)
   const editFolder = reduxAction(vocabsSlices.editFolder)
+  const selectCard = reduxAction(vocabsSlice.selectCard)
 
   const vocabFilterList = React.useMemo(
     () =>
@@ -96,6 +98,10 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
 
+  const handleCardSelect = (cardId: number, selected: boolean) => {
+    selectCard({ vocabId: activeTab, cardId, selected })
+  }
+
   const renderCard = (data) => {
     return (
       <TranslationCardSelectable
@@ -104,6 +110,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         item={data}
         speech
         onSpeech={handleSpeech}
+        onSelect={handleCardSelect}
       />
     )
   }

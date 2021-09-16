@@ -66,6 +66,10 @@
   padding-left: 14px;
   top: 2px;
   position: relative;
+  color: var(--black);
+}
+
+.Checkbox_disabled .Checkbox-text {
   color: var(--blue-gray);
 }
 

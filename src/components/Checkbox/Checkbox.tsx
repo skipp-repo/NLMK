@@ -1,4 +1,5 @@
 import React from 'react'
+import noop from '@stdlib/utils-noop'
 import clsx from 'clsx'
 import './Checkbox.scss'
 import { ReactComponent as Icon } from '../../assets/icons/checkbox-tick.svg'
@@ -7,6 +8,7 @@ export type CheckboxProps = JSX.IntrinsicElements['input'] & {
   text?: string
   secondary?: boolean
   textClassName?: string
+  checked?: boolean | undefined
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({
@@ -16,6 +18,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
   textClassName,
   text,
   secondary,
+
+  checked,
   ...props
 }) => {
   return (
@@ -28,7 +32,13 @@ const Checkbox: React.FC<CheckboxProps> = ({
       )}
     >
       <div className="Checkbox-wrapper">
-        <input type="checkbox" className="Checkbox-input" disabled={disabled} {...props} />
+        <input
+          type="checkbox"
+          className="Checkbox-input"
+          disabled={disabled}
+          checked={!!checked}
+          {...props}
+        />
         <div className="Checkbox-icon">
           <Icon className="Checkbox-tick" />
         </div>

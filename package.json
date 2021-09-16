@@ -16,6 +16,7 @@
     "@hot-loader/react-dom": "^17.0.1",
     "@popperjs/core": "^2.9.2",
     "@reduxjs/toolkit": "^1.6.0",
+    "@stdlib/utils-noop": "^0.0.8",
     "@svgr/webpack": "^5.5.0",
     "@types/chrome": "0.0.132",
     "@types/react": "^17.0.2",

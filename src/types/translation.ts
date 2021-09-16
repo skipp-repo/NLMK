@@ -68,6 +68,7 @@ export interface PhraseTranslationLocal {
   glossaries: Glossary[]
   phrase: boolean // признак фразы (если нет, то слово)
   images: string[]
+  selected?: boolean
 }
 
 export interface TranslationResultItemLocal {

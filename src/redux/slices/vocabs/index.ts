@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { createVocabFolder } from '../../../api/requests/createVocabFolder'
 import { editVocabFolder } from '../../../api/requests/editVocabFolder'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
@@ -7,17 +7,21 @@ import { getVocabById } from '../../../api/requests/getVocabById'
 import { getVocabs as getVocabsRequest } from '../../../api/requests/getVocabs'
 import { removeVocabFolder } from '../../../api/requests/deleteVocabFolder'
 import adapter from './adapter'
-import * as selectors from '../vocabs/selectors'
+import { cardsIdsByVocabId } from './selectors'
 
 const name = 'vocabs'
 
 export type InitialState = {
   flags: {}
+  selectedItems: {
+    [key: number]: number[]
+  }
 }
 
 const initialState: InitialState = {
   flags: {},
   ...adapter.getInitialState(),
+  selectedItems: {},
 }
 
 export const getVocabs = createAsyncThunkExtended(
@@ -158,7 +162,24 @@ const removeFolderSlice = makeExtraReducers({
 const vocabsSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    selectCard: (state, { payload: { vocabId, cardId, selected } }) => {
+      if (!state.selectedItems[vocabId]) {
+        state.selectedItems[vocabId] = []
+      }
+
+      if (selected) {
+        state.selectedItems[vocabId].push(cardId)
+      } else {
+        state.selectedItems[vocabId] = state.selectedItems[vocabId].filter((id) => id !== cardId)
+      }
+    },
+    selectAll: (state, { payload: { vocabId, select } }) => {
+      const cardIds = cardsIdsByVocabId(vocabId)({ vocabs: state })
+
+      state.selectedItems[vocabId] = select ? cardIds : []
+    },
+  },
   extraReducers: {
     ...getVocabsSlice,
     ...getVocabSlice,
@@ -170,6 +191,6 @@ const vocabsSlice = createSlice({
 
 export default vocabsSlice.reducer
 
-export const {} = vocabsSlice.actions
+export const { selectCard, selectAll } = vocabsSlice.actions
 
 export * as selectors from '../vocabs/selectors'

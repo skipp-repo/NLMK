@@ -10,10 +10,12 @@ type Item = {
   id: number
   name: string
 }
-export type VocabsDropdownProps = JSX.IntrinsicElements['div'] & {
+
+export type VocabsDropdownProps = Omit<JSX.IntrinsicElements['div'], 'onSelect' | 'disabled'> & {
   text: string
   items?: Item[]
-  onSelect?(id: number): void
+  onSelect?(id: number, checked: boolean): void
+  disabled: boolean
 }
 
 const VocabsDropdown: React.FC<VocabsDropdownProps> = ({
@@ -21,6 +23,7 @@ const VocabsDropdown: React.FC<VocabsDropdownProps> = ({
   className,
   text,
   items,
+  disabled,
   onSelect,
   ...props
 }) => {
@@ -31,14 +34,20 @@ const VocabsDropdown: React.FC<VocabsDropdownProps> = ({
     setOpened(!opened)
   }
 
-  const handleSelect = (id) => () => {
-    onSelect(id)
-  }
+  const handleSelect =
+    (id) =>
+    ({ target: { checked } }) => {
+      onSelect(id, checked)
+    }
 
-  const renderItem = ({ id, name }) => (
-    <div key={id} onClick={handleSelect(id)} className="VocabsDropdown-item">
-      <Checkbox text={name} />
-    </div>
+  const renderItem = ({ id, name, checked }) => (
+    <Checkbox
+      key={id}
+      className="VocabsDropdown-item"
+      text={name}
+      onChange={handleSelect(id)}
+      checked={checked}
+    />
   )
 
   useClickOutside([ref], () => setOpened(false))
@@ -51,7 +60,7 @@ const VocabsDropdown: React.FC<VocabsDropdownProps> = ({
       })}
       ref={ref}
     >
-      <IconButton text={text} Icon={ArrowIcon} onClick={handleClick} />
+      <IconButton text={text} Icon={ArrowIcon} onClick={handleClick} disabled={disabled} />
 
       {opened && (
         <div className="VocabsDropdown-dropdown">
