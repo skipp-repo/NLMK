@@ -29,10 +29,11 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
   const vocabs = useSelector(userSlices.selectors.vocabs)
   const selectedIds = useSelector(vocabsSlice.selectors.selectedCardsIdsByVocabId(activeTab))
 
-  const selectAll = reduxAction(vocabsSlice.selectAll)
-
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
   const [vocabIdsForMoving, setVocabsIdsForMoving] = React.useState([])
+
+  const editFolder = reduxAction(vocabsSlices.editFolder)
+  const selectAll = reduxAction(vocabsSlice.selectAll)
 
   const fixedVocabs = React.useMemo(
     () =>
@@ -61,10 +62,15 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
   }
 
   const handleSelectGroupForMoving = (id, checked) => {
-    console.log('debug123 handleSelectGroupForMoving', id)
-
     if (checked) {
       setVocabsIdsForMoving((state) => [...state, id])
+
+      editFolder({ id: activeTab, cardsToRemove: selectedIds })
+      editFolder({ id, cardsToAdd: selectedIds })
+
+      setTimeout(() => {
+        setVocabsIdsForMoving([])
+      }, 500)
     } else {
       setVocabsIdsForMoving((state) => {
         return state.filter((stateId) => stateId !== id)
@@ -72,7 +78,9 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
     }
   }
 
-  console.log(selectedIds)
+  const handleRemoveCards = () => {
+    editFolder({ id: activeTab, cardsToRemove: selectedIds })
+  }
 
   return (
     <Container className="MyVocabulary-actions">
@@ -106,6 +114,7 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
         text="Удалить"
         Icon={DeleteIcon}
         disabled={!selectedIds.length}
+        onClick={handleRemoveCards}
       />
       <IconButton
         className="MyVocabulary-actions-button"

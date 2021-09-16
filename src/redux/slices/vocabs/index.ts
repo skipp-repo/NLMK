@@ -7,7 +7,7 @@ import { getVocabById } from '../../../api/requests/getVocabById'
 import { getVocabs as getVocabsRequest } from '../../../api/requests/getVocabs'
 import { removeVocabFolder } from '../../../api/requests/deleteVocabFolder'
 import adapter from './adapter'
-import { cardsIdsByVocabId } from './selectors'
+import { cardsIdsByVocabId, defaultVocabId } from './selectors'
 
 const name = 'vocabs'
 
@@ -57,8 +57,16 @@ export type EditFolder = { id: number; name: string; cardsToAdd: number[]; cards
 
 export const editFolder = createAsyncThunkExtended(
   `${name}/editFolder`,
-  async ({ id, name, cardsToAdd, cardsToRemove }: EditFolder, { token }) => {
-    return await editVocabFolder({ token, id, name, cardsToAdd, cardsToRemove })
+  async ({ id, name, cardsToAdd, cardsToRemove }: EditFolder, { token, state }) => {
+    const defaultId = defaultVocabId(state)
+
+    return await editVocabFolder({
+      token,
+      id: id === defaultId ? 'default' : id,
+      name,
+      cardsToAdd,
+      cardsToRemove,
+    })
   },
 )
 

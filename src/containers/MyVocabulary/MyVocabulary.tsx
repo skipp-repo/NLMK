@@ -158,7 +158,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   }, [])
 
   React.useEffect(() => {
-    if (vocabs?.length) {
+    if (vocabs?.length && !activeTab) {
       setActiveTab(vocabs[0]._id)
     }
   }, [vocabs])
