@@ -12,6 +12,7 @@ import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
 import VocabsDropdown from '../../components/VocabsDropdown/VocabsDropdown'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import useReduxAction from '../../hooks/useReduxAction'
+import { act } from 'react-dom/test-utils'
 
 export type MyVocabularyActionsProps = JSX.IntrinsicElements['div'] & { activeTab: string }
 
@@ -81,6 +82,10 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
   const handleRemoveCards = () => {
     editFolder({ id: activeTab, cardsToRemove: selectedIds })
   }
+
+  React.useEffect(() => {
+    setCheckAll(undefined)
+  }, [activeTab])
 
   return (
     <Container className="MyVocabulary-actions">
