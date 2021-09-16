@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
 import find from 'lodash.find'
 import { getImagePathFromBuffer } from '../../../utils/getImagePathFromBuffer'
+import sortTranslationByCommon from '../../../utils/sortTranslationByCommon'
 
 export const user = (state) => state.user
 export const token = (state) => state.user.token
@@ -15,15 +16,23 @@ export const history = createSelector(
   (glossariesState, historyState) => {
     if (historyState) {
       return historyState.map((item) => {
-        const updatedResults = item.results?.map((item) => {
-          return item.map((item) => {
+        let updatedResults = item.results?.map((item) => {
+          const sortedItems = [...item].sort(sortTranslationByCommon)
+
+          return sortedItems?.map((item) => {
             if (!item?.translation?.glossaries) return item
 
             const vocabsGlossaries = item?.translation?.glossaries.map((glossaryId) => {
-              return find(glossariesState, { _id: glossaryId })
+              const { _id, name } = find(glossariesState, { _id: glossaryId })
+
+              return { _id, name }
             })
 
-            const glossaryPicts = vocabsGlossaries.length ? vocabsGlossaries[0].glossaryPicts : {}
+            const glossaryId = item?.translation?.glossaries?.length
+              ? item?.translation?.glossaries[0]
+              : undefined
+
+            const { glossaryPicts } = find(glossariesState, { _id: glossaryId })
 
             const sizes = [glossaryPicts.size1, glossaryPicts.size2, glossaryPicts.size3].filter(
               (item) => !!item,
@@ -41,6 +50,8 @@ export const history = createSelector(
             }
           })
         })
+
+        // console.log('до', updatedResults)
 
         return { ...item, results: updatedResults }
       })

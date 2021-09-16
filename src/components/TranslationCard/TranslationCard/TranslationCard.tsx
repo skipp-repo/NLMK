@@ -41,33 +41,42 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
     onAddToBookmarks(id)
   }
 
-  const renderTranslationItem = ({ translation }, index) => (
-    <div className="TranslationCard-item" key={translation._id}>
-      <TranslationCardImage src="" />
+  const renderTranslationItem = ({ translation, images }, index) => {
+    const imgSrc = images?.length && images[0]
 
-      <div className="TranslationCard-content">
-        <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
-          {translation.text}
-        </TranslationCardWord>
-        <TranslationCardMeaning>{translation.translation}</TranslationCardMeaning>
+    return (
+      <div className="TranslationCard-item" key={translation._id}>
+        <TranslationCardImage src={imgSrc} />
+
+        <div className="TranslationCard-content">
+          <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
+            {translation.text}
+          </TranslationCardWord>
+          <TranslationCardMeaning>{translation.translation}</TranslationCardMeaning>
+        </div>
+
+        <button
+          className="TranslationCard-action"
+          onClick={handleOnAddToBookmarks(translation._id)}
+        >
+          <BookmarkButton active={false} />
+        </button>
       </div>
+    )
+  }
 
-      <button className="TranslationCard-action" onClick={handleOnAddToBookmarks(translation._id)}>
-        <BookmarkButton active={false} />
-      </button>
-    </div>
-  )
-
-  const firstItem = items[0]
+  const firstItem = items.find(({ images }) => !!images) || items[0]
 
   const glossaries = flatten(
     items.map(({ translation }) => translation.glossaries).filter((glossary) => glossary !== null),
   )
 
+  const imgSrc = firstItem?.images?.length && firstItem.images[0]
+
   return (
     <div {...props} className={clsx('TranslationCard', className)}>
       <div className="TranslationCard-wrapper">
-        <TranslationCardImage src="" />
+        <TranslationCardImage src={imgSrc} />
 
         <div className="TranslationCard-content">
           <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
