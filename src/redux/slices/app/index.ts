@@ -1,4 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
+import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
+import { removeVocabFolder } from '../../../api/requests/deleteVocabFolder'
+import { getVocabs, RemoveFolder } from '../vocabs'
+import { getStatus } from '../user'
 
 const name = 'app'
 
@@ -13,6 +17,12 @@ const initialState: InitialState = {
   version: undefined,
   showTrainingSlider: true,
 }
+
+export const getData = createAsyncThunkExtended(`${name}/getData`, async (_, { dispatch }) => {
+  // @ts-ignore
+  dispatch(getVocabs())
+  dispatch(getStatus())
+})
 
 const appSlice = createSlice({
   name,

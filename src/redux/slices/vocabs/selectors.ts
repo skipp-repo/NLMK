@@ -1,5 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
 import find from 'lodash.find'
+import flatten from 'arr-flatten'
+import uniq from 'array-uniq'
 import { glossaries } from '../user/selectors'
 import adapter from './adapter'
 import { getImagePathFromBuffer } from '../../../utils/getImagePathFromBuffer'
@@ -74,3 +76,13 @@ export const cardsIdsByVocabId = (id) =>
   createSelector(vocabsById(id), (vocab) => {
     return vocab.cards.map(({ _id }) => _id)
   })
+
+const allVocabs = createSelector(vocabs, selectAll)
+
+export const allCardsIds = createSelector(allVocabs, (items) => {
+  const arraysCardIds = items.map(({ cards }) => {
+    return cards.map(({ _id }) => _id)
+  })
+
+  return uniq(flatten(arraysCardIds))
+})

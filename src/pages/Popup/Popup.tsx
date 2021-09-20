@@ -31,7 +31,7 @@ const Popup = () => {
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
   const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
 
-  const getStatus = reduxAction(userSlice.getStatus)
+  const getData = reduxAction(appSlice.getData)
   const translate = reduxAction(translationSlice.translate)
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
@@ -112,7 +112,7 @@ const Popup = () => {
   }
 
   React.useEffect(() => {
-    getStatus()
+    getData()
   }, [])
 
   const isEmpty = !translationData?.results?.length && !translationHistory?.length

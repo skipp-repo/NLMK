@@ -11,9 +11,9 @@ import './MyVocabulary.scss'
 import useModal from '../../hooks/useModal'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as autocompleteSlice from '../../redux/slices/autocomplete'
-import * as userSlice from '../../redux/slices/user'
 import * as vocabsSlices from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
+import * as appSlice from '../../redux/slices/app'
 import MyVocabularyActions from './MyVocabularyActions'
 import Search from '../../components/Search/Search'
 import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
@@ -52,12 +52,11 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     setDataRenameGroupModal,
   ] = useModal()
 
-  const getVocabs = reduxAction(vocabsSlices.getVocabs)
-  const getStatus = reduxAction(userSlice.getStatus)
   const createFolder = reduxAction(vocabsSlices.createFolder)
   const removeFolder = reduxAction(vocabsSlices.removeFolder)
   const editFolder = reduxAction(vocabsSlices.editFolder)
   const selectCard = reduxAction(vocabsSlice.selectCard)
+  const getData = reduxAction(appSlice.getData)
 
   const vocabFilterList = React.useMemo(
     () =>
@@ -153,8 +152,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   useTitle(title)
 
   React.useEffect(() => {
-    getVocabs()
-    getStatus()
+    getData()
   }, [])
 
   React.useEffect(() => {
