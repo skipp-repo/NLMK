@@ -70,18 +70,6 @@ export const editFolder = createAsyncThunkExtended(
   },
 )
 
-export const addToDefaultFolder = createAsyncThunkExtended(
-  `${name}/addToDefaultFolder`,
-  async ({ cardsToAdd }: EditFolder, { token, state }) => {
-    return await editVocabFolder({
-      token,
-      id: 'default',
-      cardsToAdd,
-      cardsToRemove: [],
-    })
-  },
-)
-
 export type RemoveFolder = {
   id: number
 }
@@ -135,16 +123,8 @@ const editFolderSlice = makeExtraReducers({
         adapter.updateOne(state, { id, changes: { name } })
       }
     },
-    fulfilled: (
-      state,
-      {
-        payload: { data },
-        meta: {
-          arg: { id },
-        },
-      },
-    ) => {
-      adapter.updateOne(state, { id, changes: data })
+    fulfilled: (state, { payload: { data } }) => {
+      adapter.updateOne(state, { id: data._id, changes: data })
     },
   },
 })
@@ -201,4 +181,4 @@ export default vocabsSlice.reducer
 
 export const { selectCard, selectAll } = vocabsSlice.actions
 
-export * as selectors from '../vocabs/selectors'
+export * as selectors from './selectors'

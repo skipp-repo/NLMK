@@ -36,7 +36,9 @@ const Popup = () => {
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
   const clearState = reduxAction(userSlice.clearUserState)
-  const addToBookmarks = reduxAction(vocabsSlice.addToDefaultFolder)
+  const addToBookmarks = reduxAction(({ cardsToAdd }) =>
+    vocabsSlice.editFolder({ id: 'default', cardsToAdd }),
+  )
 
   const handleOpenMain = () => window.open('main.html')
 

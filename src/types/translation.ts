@@ -80,4 +80,5 @@ export interface TranslationResultItemLocal {
   vocabId?: number // идентификатор словаря, в который помещена эта карточка (если null, то карточка не находится в закладках)
   translation: PhraseTranslationLocal // содержание карточки с переводом
   images: string[]
+  inBookmarks: boolean
 }

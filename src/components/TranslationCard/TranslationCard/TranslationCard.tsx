@@ -91,7 +91,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
             className="TranslationCard-action"
             onClick={handleOnAddToBookmarks(items[0].translation._id)}
           >
-            <BookmarkButton />
+            <BookmarkButton active={firstItem.inBookmarks} />
           </button>
         )}
 

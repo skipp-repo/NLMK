@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { REHYDRATE } from 'redux-persist'
-import createRequest from '../../../utils/createRequest'
 import { UserStatus } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
@@ -119,4 +118,4 @@ export default usersSlice.reducer
 
 export const { updateTranslationHistory, clearUserState } = usersSlice.actions
 
-export * as selectors from '../user/selectors'
+export * as selectors from './selectors'
