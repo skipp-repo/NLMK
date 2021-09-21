@@ -17,7 +17,7 @@ const initialState: InitialState = {
   flags: {},
 }
 
-export type Space = 'Popup' | 'Documents'
+export type Space = 'Popup' | 'MainVocabs' | 'Documents'
 
 const defaultSpace: Space = 'Popup'
 

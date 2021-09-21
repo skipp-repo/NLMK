@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit'
 import find from 'lodash.find'
+import flatten from 'arr-flatten'
 import glossaries from '../user/selectors/glossaries'
 import sortTranslationByCommon from '../../../utils/sortTranslationByCommon'
 import allCardsIds from '../vocabs/selectors/allCardsIds'
@@ -53,6 +54,44 @@ export const popupSearchResults = createSelector(
         ...translationArr,
         results: updatedResults,
       }
+    }
+  },
+)
+
+export const mainVocabsSearchResults = createSelector(
+  glossaries,
+  translation,
+  allCardsIds,
+  (glossariesState, translationState, vocabsIds) => {
+    const translationArr = translationState?.MainVocabs
+
+    if (!translationArr) return
+
+    const results = flatten(translationArr?.results)
+
+    const updatedResults = results?.map((item) => {
+      const itemGlossaries = item?.translation?.glossaries
+
+      const vocabsGlossaries = itemGlossaries
+        ? item?.translation?.glossaries.map((glossaryId) => {
+            const { _id, name } = find(glossariesState, { _id: glossaryId })
+
+            return { _id, name }
+          })
+        : []
+
+      const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
+
+      return {
+        ...item.translation,
+        glossaries: vocabsGlossaries,
+        images,
+      }
+    })
+
+    return {
+      ...translationArr,
+      results: updatedResults,
     }
   },
 )

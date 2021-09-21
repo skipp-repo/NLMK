@@ -1,6 +1,7 @@
 import React from 'react'
 import useTitle from 'react-use/lib/useTitle'
 import { useSelector } from 'react-redux'
+import { useDebouncedCallback } from 'use-debounce'
 import Container from '../../components/Container/Container'
 import PageTitle from '../../components/PageTitle/PageTitle'
 import DownloadLink from '../../components/DownloadLink/DownloadLink'
@@ -10,7 +11,6 @@ import TranslationCardSelectable from '../../components/TranslationCard/Translat
 import './MyVocabulary.scss'
 import useModal from '../../hooks/useModal'
 import useReduxAction from '../../hooks/useReduxAction'
-import * as autocompleteSlice from '../../redux/slices/autocomplete'
 import * as vocabsSlices from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import * as appSlice from '../../redux/slices/app'
@@ -20,6 +20,8 @@ import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
 import ModalNewVocabGroup from '../../components/ModalNewVocabGroup/ModalNewVocabGroup'
 import ModalRemoveVocabGroup from '../../components/ModalRemoveVocabGroup/ModalRemoveVocabGroup'
 import ModalRenameVocabGroup from '../../components/ModalRenameVocabGroup/ModalRenameVocabGroup'
+import * as translationSlice from '../../redux/slices/translation'
+import { Translate } from '../../redux/slices/translation'
 
 export type MyVocabularyProps = {}
 
@@ -28,13 +30,11 @@ const title = 'Мой словарь'
 const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const reduxAction = useReduxAction()
 
-  const queryRef = React.useRef('')
+  const [query, setQuery] = React.useState('')
+  const [activeTab, setActiveTab] = React.useState()
 
+  const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
-
-  const autoCompleteData = useSelector(
-    autocompleteSlice.selectors.autocompleteByQuery(queryRef.current),
-  )
 
   const [newGroupPopupVisible, showNewGroupPopup, hideNewGroupPopup] = useModal()
   const [
@@ -57,6 +57,16 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const editFolder = reduxAction(vocabsSlices.editFolder)
   const selectCard = reduxAction(vocabsSlice.selectCard)
   const getData = reduxAction(appSlice.getData)
+  const search = reduxAction((params: Omit<Translate, 'space'>) =>
+    translationSlice.translate({ space: 'MainVocabs', ...params }),
+  )
+  const debouncedSearch = useDebouncedCallback(search, 300)
+
+  const searchData = useSelector(translationSlice.selectors.mainVocabsSearchResults)
+
+  const needShowSearchResults = !!searchData?.results?.length && query.length > 2
+
+  console.log(searchData, vocabsByID.cards)
 
   const vocabFilterList = React.useMemo(
     () =>
@@ -92,10 +102,6 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     name: name || 'default',
     id: _id,
   }))
-
-  const [activeTab, setActiveTab] = React.useState()
-
-  const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
 
   const handleCardSelect = (cardId: number, selected: boolean) => {
     selectCard({ vocabId: activeTab, cardId, selected })
@@ -134,7 +140,19 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     hideRemoveGroupModal()
   }
 
-  const handleSearch = (text) => {}
+  const handleSearch = (text) => {
+    if (query.length < 2 && text.length < 2) return
+
+    setQuery(text)
+
+    debouncedSearch({
+      query: text,
+      filters: {
+        vocabs: true,
+        common: false,
+      },
+    })
+  }
 
   const handleCreateNewGroup = (name) => {
     createFolder({ name })
@@ -184,17 +202,17 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       {vocabsByID?.cards?.length !== undefined && <MyVocabularyActions activeTab={activeTab} />}
 
       <Container className="MyVocabulary-search">
-        <Search
-          className="MyVocabulary-search-input"
-          onChange={handleSearch}
-          suggestions={autoCompleteData}
-        />
+        <Search className="MyVocabulary-search-input" onChange={handleSearch} suggestions={[]} />
 
         <VocabsFilters className="MyVocabulary-search-filter" items={filters} />
       </Container>
 
-      {!!vocabsByID?.cards?.length && (
+      {!!vocabsByID?.cards?.length && !needShowSearchResults && (
         <Container className="MyVocabulary-cards">{vocabsByID.cards.map(renderCard)}</Container>
+      )}
+
+      {needShowSearchResults && (
+        <Container className="MyVocabulary-cards">{searchData.results.map(renderCard)}</Container>
       )}
 
       <ModalNewVocabGroup
