@@ -10,10 +10,10 @@ type Item = {
   items: { key: string | number; name: string }[]
 }
 
-export type VocabsFiltersProps = JSX.IntrinsicElements['div'] & {
+export type VocabsFiltersProps = Omit<JSX.IntrinsicElements['div'], 'onSelect'> & {
   text?: string
   items?: Item[]
-  onSelect?(id: number): void
+  onSelect?({ key, value }): void
 }
 
 const VocabsFilters: React.FC<VocabsFiltersProps> = ({
@@ -31,12 +31,14 @@ const VocabsFilters: React.FC<VocabsFiltersProps> = ({
     setOpened(!opened)
   }
 
-  const handleSelect = (id) => () => {
-    onSelect(id)
-  }
+  const handleSelect =
+    ({ key, value }) =>
+    () => {
+      onSelect({ key, value })
+    }
 
-  const renderCheckbox = ({ key, name }) => (
-    <div key={key} onClick={handleSelect(key)} className="VocabsFilters-item">
+  const renderCheckbox = ({ key, name, value }) => (
+    <div key={key} onClick={handleSelect({ key, value })} className="VocabsFilters-item">
       <Checkbox text={name} />
     </div>
   )

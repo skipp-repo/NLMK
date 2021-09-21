@@ -27,11 +27,34 @@ export type MyVocabularyProps = {}
 
 const title = 'Мой словарь'
 
+const searchFiltersState = {
+  vocabs: true,
+  phrases: false,
+  words: false,
+}
+
+const searchFiltersReducer = (state, action) => {
+  switch (action.key) {
+    case 'WordsAndPhrases':
+      return { ...state, words: true, phrases: true }
+    case 'Words':
+      return { ...state, words: true, phrases: false }
+    case 'Phrases':
+      return { ...state, words: false, phrases: true }
+    default:
+      return state
+  }
+}
+
 const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const reduxAction = useReduxAction()
 
   const [query, setQuery] = React.useState('')
   const [activeTab, setActiveTab] = React.useState()
+  const [searchFilters, searchFiltersDispatch] = React.useReducer(
+    searchFiltersReducer,
+    searchFiltersState,
+  )
 
   const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
@@ -66,11 +89,13 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const needShowSearchResults = !!searchData?.results?.length && query.length > 2
 
-  console.log(searchData, vocabsByID.cards)
-
   const vocabFilterList = React.useMemo(
     () =>
-      vocabs.map(({ _id, name, ...item }) => ({ key: _id, name: item.default ? 'Default' : name })),
+      vocabs.map(({ _id, name, ...item }) => ({
+        key: 'Vocab',
+        value: { id: _id, selected: false },
+        name: item.default ? 'Default' : name,
+      })),
     [vocabs],
   )
 
@@ -81,14 +106,24 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         {
           key: 'WordsAndPhrases',
           name: 'Слова и фразы',
+          value: {
+            phrases: true,
+            words: true,
+          },
         },
         {
           key: 'Words',
           name: 'Только слова',
+          value: {
+            words: true,
+          },
         },
         {
           key: 'Phrases',
           name: 'Только фразы',
+          value: {
+            phrases: true,
+          },
         },
       ],
     },
@@ -148,8 +183,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     debouncedSearch({
       query: text,
       filters: {
-        vocabs: true,
         common: false,
+        ...searchFilters,
       },
     })
   }
@@ -165,6 +200,11 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       name: name,
     })
     hideRenameGroupModal()
+  }
+
+  const handleChangeFilter = ({ key, value }) => {
+    console.log(key, value)
+    searchFiltersDispatch({ key, value })
   }
 
   useTitle(title)
@@ -204,7 +244,11 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       <Container className="MyVocabulary-search">
         <Search className="MyVocabulary-search-input" onChange={handleSearch} suggestions={[]} />
 
-        <VocabsFilters className="MyVocabulary-search-filter" items={filters} />
+        <VocabsFilters
+          className="MyVocabulary-search-filter"
+          items={filters}
+          onSelect={handleChangeFilter}
+        />
       </Container>
 
       {!!vocabsByID?.cards?.length && !needShowSearchResults && (
