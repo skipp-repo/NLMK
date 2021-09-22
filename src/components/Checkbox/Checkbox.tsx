@@ -1,5 +1,4 @@
 import React from 'react'
-import noop from '@stdlib/utils-noop'
 import clsx from 'clsx'
 import './Checkbox.scss'
 import { ReactComponent as Icon } from '../../assets/icons/checkbox-tick.svg'

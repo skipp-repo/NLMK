@@ -7,13 +7,13 @@ import Checkbox from '../Checkbox/Checkbox'
 
 type Item = {
   name: string
-  items: { key: string | number; name: string }[]
+  items: { key: string | number; name: string; selected: boolean; value: any }[]
 }
 
 export type VocabsFiltersProps = Omit<JSX.IntrinsicElements['div'], 'onSelect'> & {
   text?: string
   items?: Item[]
-  onSelect?({ key, value }): void
+  onSelect?({ type, selected }): void
 }
 
 const VocabsFilters: React.FC<VocabsFiltersProps> = ({
@@ -32,15 +32,19 @@ const VocabsFilters: React.FC<VocabsFiltersProps> = ({
   }
 
   const handleSelect =
-    ({ key, value }) =>
-    () => {
-      onSelect({ key, value })
+    ({ type }) =>
+    ({ target }) => {
+      onSelect({ type, selected: target.checked })
     }
 
-  const renderCheckbox = ({ key, name, value }) => (
-    <div key={key} onClick={handleSelect({ key, value })} className="VocabsFilters-item">
-      <Checkbox text={name} />
-    </div>
+  const renderCheckbox = ({ key, type, name, value, selected }) => (
+    <Checkbox
+      key={key}
+      className="VocabsFilters-item"
+      text={name}
+      checked={selected}
+      onChange={handleSelect({ type })}
+    />
   )
 
   const renderItem = ({ name, items }) => (

@@ -27,20 +27,15 @@ export type MyVocabularyProps = {}
 
 const title = 'Мой словарь'
 
-const searchFiltersState = {
-  vocabs: true,
-  phrases: false,
-  words: false,
-}
-
 const searchFiltersReducer = (state, action) => {
-  switch (action.key) {
+  switch (action.type) {
     case 'WordsAndPhrases':
-      return { ...state, words: true, phrases: true }
-    case 'Words':
-      return { ...state, words: true, phrases: false }
+      return { ...state, words: action.selected, phrases: action.selected }
+    case 'Words': {
+      return { ...state, words: action.selected, phrases: false }
+    }
     case 'Phrases':
-      return { ...state, words: false, phrases: true }
+      return { ...state, words: false, phrases: action.selected }
     default:
       return state
   }
@@ -51,10 +46,11 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const [query, setQuery] = React.useState('')
   const [activeTab, setActiveTab] = React.useState()
-  const [searchFilters, searchFiltersDispatch] = React.useReducer(
-    searchFiltersReducer,
-    searchFiltersState,
-  )
+  const [searchFilters, searchFiltersDispatch] = React.useReducer(searchFiltersReducer, {
+    vocabs: true,
+    phrases: false,
+    words: false,
+  })
 
   const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
@@ -92,38 +88,48 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const vocabFilterList = React.useMemo(
     () =>
       vocabs.map(({ _id, name, ...item }) => ({
-        key: 'Vocab',
+        type: 'Vocab',
+        key: `Vocab-${_id}`,
         value: { id: _id, selected: false },
         name: item.default ? 'Default' : name,
+        selected: false,
       })),
     [vocabs],
   )
 
-  const filters = [
+  console.log(searchFilters)
+
+  const filtersData = [
     {
       name: 'Тип поиска',
       items: [
         {
+          type: 'WordsAndPhrases',
           key: 'WordsAndPhrases',
           name: 'Слова и фразы',
           value: {
             phrases: true,
             words: true,
           },
+          selected: searchFilters.phrases && searchFilters.words,
         },
         {
+          type: 'Words',
           key: 'Words',
           name: 'Только слова',
           value: {
             words: true,
           },
+          selected: searchFilters.words && !searchFilters.phrases,
         },
         {
+          type: 'Phrases',
           key: 'Phrases',
           name: 'Только фразы',
           value: {
             phrases: true,
           },
+          selected: searchFilters.phrases && !searchFilters.words,
         },
       ],
     },
@@ -202,9 +208,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     hideRenameGroupModal()
   }
 
-  const handleChangeFilter = ({ key, value }) => {
-    console.log(key, value)
-    searchFiltersDispatch({ key, value })
+  const handleChangeFilter = ({ type, selected }) => {
+    searchFiltersDispatch({ type, selected })
   }
 
   useTitle(title)
@@ -246,7 +251,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
         <VocabsFilters
           className="MyVocabulary-search-filter"
-          items={filters}
+          items={filtersData}
           onSelect={handleChangeFilter}
         />
       </Container>
