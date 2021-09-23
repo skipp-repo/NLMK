@@ -36,6 +36,23 @@ const searchFiltersReducer = (state, action) => {
     }
     case 'Phrases':
       return { ...state, words: false, phrases: action.selected }
+    case 'Vocab': {
+      let vocabs = state.vocabs
+
+      if (Array.isArray(vocabs)) {
+        if (action.selected) {
+          vocabs = [...vocabs, action.data.id]
+        } else {
+          vocabs = vocabs.filter((id) => id !== action.data.id)
+        }
+      } else {
+        if (action.selected) {
+          vocabs = [action.data.id]
+        }
+      }
+
+      return { ...state, vocabs }
+    }
     default:
       return state
   }
@@ -83,21 +100,31 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const searchData = useSelector(translationSlice.selectors.mainVocabsSearchResults)
 
-  const needShowSearchResults = !!searchData?.results?.length && query.length > 2
+  const needShowSearchResults = !!searchData?.results?.length && query.length > 0
 
   const vocabFilterList = React.useMemo(
     () =>
-      vocabs.map(({ _id, name, ...item }) => ({
-        type: 'Vocab',
-        key: `Vocab-${_id}`,
-        value: { id: _id, selected: false },
-        name: item.default ? 'Default' : name,
-        selected: false,
-      })),
-    [vocabs],
-  )
+      vocabs.map(({ _id, name, ...item }) => {
+        let selected
 
-  console.log(searchFilters)
+        if (Array.isArray(searchFilters.vocabs)) {
+          selected = searchFilters.vocabs.includes(_id)
+        } else {
+          selected = false
+        }
+
+        console.log(_id, searchFilters.vocabs)
+
+        return {
+          type: 'Vocab',
+          key: `Vocab-${_id}`,
+          data: { id: _id },
+          name: item.default ? 'Default' : name,
+          selected,
+        }
+      }),
+    [vocabs, searchFilters.vocabs],
+  )
 
   const filtersData = [
     {
@@ -107,28 +134,19 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
           type: 'WordsAndPhrases',
           key: 'WordsAndPhrases',
           name: 'Слова и фразы',
-          value: {
-            phrases: true,
-            words: true,
-          },
           selected: searchFilters.phrases && searchFilters.words,
         },
         {
           type: 'Words',
           key: 'Words',
           name: 'Только слова',
-          value: {
-            words: true,
-          },
+
           selected: searchFilters.words && !searchFilters.phrases,
         },
         {
           type: 'Phrases',
           key: 'Phrases',
           name: 'Только фразы',
-          value: {
-            phrases: true,
-          },
           selected: searchFilters.phrases && !searchFilters.words,
         },
       ],
@@ -182,17 +200,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   }
 
   const handleSearch = (text) => {
-    if (query.length < 2 && text.length < 2) return
-
     setQuery(text)
-
-    debouncedSearch({
-      query: text,
-      filters: {
-        common: false,
-        ...searchFilters,
-      },
-    })
   }
 
   const handleCreateNewGroup = (name) => {
@@ -208,8 +216,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     hideRenameGroupModal()
   }
 
-  const handleChangeFilter = ({ type, selected }) => {
-    searchFiltersDispatch({ type, selected })
+  const handleChangeFilter = ({ type, selected, data }) => {
+    searchFiltersDispatch({ type, selected, data })
   }
 
   useTitle(title)
@@ -223,6 +231,18 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       setActiveTab(vocabs[0]._id)
     }
   }, [vocabs])
+
+  React.useEffect(() => {
+    if (query) {
+      debouncedSearch({
+        query,
+        filters: {
+          common: false,
+          ...searchFilters,
+        },
+      })
+    }
+  }, [searchFilters, query])
 
   return (
     <div className="MyVocabulary">
