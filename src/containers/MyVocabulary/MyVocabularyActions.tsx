@@ -1,10 +1,14 @@
+import fileDownload from 'js-file-download'
 import React from 'react'
 import proschet from 'proschet'
+import { useAsyncCallback } from 'react-async-hook'
+import { downloadVocabById } from '../../api/requests/downloadVocabById'
 import ItemsCount from '../../components/ItemsCount/ItemsCount'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import Container from '../../components/Container/Container'
 import IconButton from '../../components/IconButton/IconButton'
 import { useSelector } from 'react-redux'
+import * as userSlice from '../../redux/slices/user'
 import * as vocabsSlices from '../../redux/slices/vocabs'
 import * as userSlices from '../../redux/slices/user'
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
@@ -36,6 +40,12 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
 
   const editFolder = reduxAction(vocabsSlices.editFolder)
   const selectAll = reduxAction(vocabsSlice.selectAll)
+
+  const token = useSelector(userSlice.selectors.token)
+
+  const downloadCurrentVocab = useAsyncCallback(async (id) => {
+    return await downloadVocabById({ token, id })
+  })
 
   const fixedVocabs = React.useMemo(
     () =>
@@ -84,9 +94,21 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
     editFolder({ id: activeTab, cardsToRemove: selectedIds })
   }
 
+  const handleDownloadVocab = () => {
+    downloadCurrentVocab.execute(activeTab)
+  }
+
   React.useEffect(() => {
     setCheckAll(undefined)
   }, [activeTab])
+
+  React.useEffect(() => {
+    if (!downloadCurrentVocab.result) return
+
+    const { blob, filename } = downloadCurrentVocab.result
+
+    fileDownload(blob, filename)
+  }, [downloadCurrentVocab.result])
 
   return (
     <Container className="MyVocabulary-actions">
@@ -126,6 +148,7 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
         className="MyVocabulary-actions-button"
         text="Скачать группу"
         Icon={DownloadIcon}
+        onClick={handleDownloadVocab}
       />
     </Container>
   )

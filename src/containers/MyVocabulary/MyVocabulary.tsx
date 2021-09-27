@@ -11,7 +11,6 @@ import TranslationCardSelectable from '../../components/TranslationCard/Translat
 import './MyVocabulary.scss'
 import useModal from '../../hooks/useModal'
 import useReduxAction from '../../hooks/useReduxAction'
-import * as vocabsSlices from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import * as appSlice from '../../redux/slices/app'
 import MyVocabularyActions from './MyVocabularyActions'
@@ -63,13 +62,14 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const [query, setQuery] = React.useState('')
   const [activeTab, setActiveTab] = React.useState()
+
   const [searchFilters, searchFiltersDispatch] = React.useReducer(searchFiltersReducer, {
     vocabs: true,
     phrases: false,
     words: false,
   })
 
-  const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
+  const vocabsByID = useSelector(vocabsSlice.selectors.vocabById(activeTab))
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
 
   const [newGroupPopupVisible, showNewGroupPopup, hideNewGroupPopup] = useModal()
@@ -88,9 +88,9 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     setDataRenameGroupModal,
   ] = useModal()
 
-  const createFolder = reduxAction(vocabsSlices.createFolder)
-  const removeFolder = reduxAction(vocabsSlices.removeFolder)
-  const editFolder = reduxAction(vocabsSlices.editFolder)
+  const createFolder = reduxAction(vocabsSlice.createFolder)
+  const removeFolder = reduxAction(vocabsSlice.removeFolder)
+  const editFolder = reduxAction(vocabsSlice.editFolder)
   const selectCard = reduxAction(vocabsSlice.selectCard)
   const getData = reduxAction(appSlice.getData)
   const search = reduxAction((params: Omit<Translate, 'space'>) =>
@@ -112,8 +112,6 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         } else {
           selected = false
         }
-
-        console.log(_id, searchFilters.vocabs)
 
         return {
           type: 'Vocab',
