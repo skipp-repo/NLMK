@@ -1,7 +1,9 @@
 import React from 'react'
+import { useAsyncCallback } from 'react-async-hook'
 import useTitle from 'react-use/lib/useTitle'
 import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
+import { downloadAllVocabs as downloadAllVocabsRequest } from '../../api/requests/downloadAllVocabs'
 import Container from '../../components/Container/Container'
 import PageTitle from '../../components/PageTitle/PageTitle'
 import DownloadLink from '../../components/DownloadLink/DownloadLink'
@@ -11,6 +13,7 @@ import TranslationCardSelectable from '../../components/TranslationCard/Translat
 import './MyVocabulary.scss'
 import useModal from '../../hooks/useModal'
 import useReduxAction from '../../hooks/useReduxAction'
+import * as userSlice from '../../redux/slices/user'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import * as appSlice from '../../redux/slices/app'
 import MyVocabularyActions from './MyVocabularyActions'
@@ -71,6 +74,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const vocabsByID = useSelector(vocabsSlice.selectors.vocabById(activeTab))
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
+  const token = useSelector(userSlice.selectors.token)
 
   const [newGroupPopupVisible, showNewGroupPopup, hideNewGroupPopup] = useModal()
   const [
@@ -97,6 +101,9 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     translationSlice.translate({ space: 'MainVocabs', ...params }),
   )
   const debouncedSearch = useDebouncedCallback(search, 300)
+  const downloadAllVocabs = useAsyncCallback(async () => {
+    return await downloadAllVocabsRequest({ token })
+  })
 
   const searchData = useSelector(translationSlice.selectors.mainVocabsSearchResults)
 
@@ -247,7 +254,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       <Container className="MyVocabulary-header">
         <PageTitle className="MyVocabulary-title">{title}</PageTitle>
 
-        <DownloadLink>Скачать все слова</DownloadLink>
+        <DownloadLink onClick={downloadAllVocabs.execute}>Скачать все слова</DownloadLink>
 
         <Button className="MyVocabulary-button" onClick={showNewGroupPopup}>
           СОЗДАТЬ ГРУППУ

@@ -3,14 +3,13 @@ import secrets from 'secrets'
 
 const { API_URL } = secrets
 
-export type DownloadVocabById = {
+export type DownloadAllVocabs = {
   token: string
-  id: string
 }
 
-export const downloadVocabById = async ({ token, id }: DownloadVocabById, init?: RequestInit) => {
+export const downloadAllVocabs = async ({ token }: DownloadAllVocabs, init?: RequestInit) => {
   try {
-    const result = await fetch(`${API_URL}/download/vocab/${id}`, {
+    const result = await fetch(`${API_URL}/download/vocab/`, {
       method: 'GET',
       headers: {
         'X-USER-ID': token,

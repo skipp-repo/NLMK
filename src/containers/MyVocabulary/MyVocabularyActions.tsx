@@ -10,13 +10,11 @@ import IconButton from '../../components/IconButton/IconButton'
 import { useSelector } from 'react-redux'
 import * as userSlice from '../../redux/slices/user'
 import * as vocabsSlices from '../../redux/slices/vocabs'
-import * as userSlices from '../../redux/slices/user'
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
 import VocabsDropdown from '../../components/VocabsDropdown/VocabsDropdown'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import useReduxAction from '../../hooks/useReduxAction'
-import { vocabs, vocabsList } from '../../redux/slices/vocabs/selectors'
 
 export type MyVocabularyActionsProps = JSX.IntrinsicElements['div'] & { activeTab: string }
 
@@ -101,14 +99,6 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
   React.useEffect(() => {
     setCheckAll(undefined)
   }, [activeTab])
-
-  React.useEffect(() => {
-    if (!downloadCurrentVocab.result) return
-
-    const { blob, filename } = downloadCurrentVocab.result
-
-    fileDownload(blob, filename)
-  }, [downloadCurrentVocab.result])
 
   return (
     <Container className="MyVocabulary-actions">
