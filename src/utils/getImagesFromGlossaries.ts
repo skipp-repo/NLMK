@@ -10,6 +10,10 @@ export default (glossaryId, glossaries): string[] => {
 
   const { glossaryPicts } = glossary
 
+  if (!glossaryPicts) {
+    return []
+  }
+
   const sizes = [glossaryPicts.size1, glossaryPicts.size2, glossaryPicts.size3].filter(
     (item) => !!item,
   )
