@@ -72,7 +72,7 @@ const TrainingSliderContent: React.FC<TrainingSliderContentProps> = () => {
             </Tooltip>
           </div>
           <div className="TrainingSlider-text TrainingSlider-text_slide_3">
-            Переводите в строке слова <br />и целые предложения
+            Переводите слова в строке <br/> и целые предложения
           </div>
         </div>
       </Slide>
