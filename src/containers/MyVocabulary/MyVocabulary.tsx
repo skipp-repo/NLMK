@@ -38,22 +38,22 @@ const searchFiltersReducer = (state, action) => {
     }
     case 'Phrases':
       return { ...state, words: false, phrases: action.selected }
-    case 'Vocab': {
-      let vocabs = state.vocabs
+    case 'Glossary': {
+      let glossaries = state.glossaries
 
-      if (Array.isArray(vocabs)) {
+      if (Array.isArray(glossaries)) {
         if (action.selected) {
-          vocabs = [...vocabs, action.data.id]
+          glossaries = [...glossaries, action.data.id]
         } else {
-          vocabs = vocabs.filter((id) => id !== action.data.id)
+          glossaries = glossaries.filter((id) => id !== action.data.id)
         }
       } else {
         if (action.selected) {
-          vocabs = [action.data.id]
+          glossaries = [action.data.id]
         }
       }
 
-      return { ...state, vocabs }
+      return { ...state, glossaries }
     }
     default:
       return state
@@ -67,7 +67,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const [activeTab, setActiveTab] = React.useState()
 
   const [searchFilters, searchFiltersDispatch] = React.useReducer(searchFiltersReducer, {
-    vocabs: true,
+    glossaries: false,
     phrases: false,
     words: false,
   })
@@ -75,6 +75,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const vocabsByID = useSelector(vocabsSlice.selectors.vocabById(activeTab))
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
   const token = useSelector(userSlice.selectors.token)
+  const glossaries = useSelector(userSlice.selectors.glossaries)
 
   const [newGroupPopupVisible, showNewGroupPopup, hideNewGroupPopup] = useModal()
   const [
@@ -109,26 +110,26 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const needShowSearchResults = !!searchData?.results?.length && query.length > 0
 
-  const vocabFilterList = React.useMemo(
+  const glossariesFilterList = React.useMemo(
     () =>
-      vocabs.map(({ _id, name, ...item }) => {
+      glossaries.map(({ _id, name, ...item }) => {
         let selected
 
-        if (Array.isArray(searchFilters.vocabs)) {
-          selected = searchFilters.vocabs.includes(_id)
+        if (Array.isArray(searchFilters.glossaries)) {
+          selected = searchFilters.glossaries.includes(_id)
         } else {
           selected = false
         }
 
         return {
-          type: 'Vocab',
-          key: `Vocab-${_id}`,
+          type: 'Glossary',
+          key: `Glossary-${_id}`,
           data: { id: _id },
-          name: item.default ? 'Default' : name,
+          name:  name,
           selected,
         }
       }),
-    [vocabs, searchFilters.vocabs],
+    [glossaries, searchFilters.glossaries],
   )
 
   const filtersData = [
@@ -158,7 +159,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     },
     {
       name: 'Глоссарий',
-      items: vocabFilterList,
+      items: glossariesFilterList,
     },
   ]
 

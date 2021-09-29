@@ -56,3 +56,5 @@ export const history = createSelector(
     }
   },
 )
+
+export { glossaries }
