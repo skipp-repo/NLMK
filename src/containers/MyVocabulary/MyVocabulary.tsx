@@ -46,6 +46,11 @@ const searchFiltersReducer = (state, action) => {
           glossaries = [...glossaries, action.data.id]
         } else {
           glossaries = glossaries.filter((id) => id !== action.data.id)
+
+          if (!glossaries.length) {
+            glossaries = true
+          }
+
         }
       } else {
         if (action.selected) {
@@ -67,9 +72,10 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const [activeTab, setActiveTab] = React.useState()
 
   const [searchFilters, searchFiltersDispatch] = React.useReducer(searchFiltersReducer, {
-    glossaries: false,
-    phrases: false,
-    words: false,
+    glossaries: true,
+    phrases: true,
+    words: true,
+    vocabs: true,
   })
 
   const vocabsByID = useSelector(vocabsSlice.selectors.vocabById(activeTab))
