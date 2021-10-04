@@ -1,0 +1,67 @@
+@import "../../styles/general.css";
+
+.Glossaries {}
+
+.Glossaries-header {
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.Glossaries-title {
+    margin-right: 96px;
+}
+
+.Glossaries-button {
+    margin-left: auto;
+}
+
+.Glossaries-tabs {
+    margin-top: 50px;
+}
+
+.Glossaries-actions {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 100000000;
+    position: relative;
+}
+
+.Glossaries-cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.Glossaries-card {
+    width: calc(50% - 11px);
+    margin-bottom: 14px;
+
+    &:nth-child(odd) {
+        margin-right: 22px;
+    }
+}
+
+.Glossaries-actions {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.Glossaries-actions-count {
+    margin-right: auto;
+}
+
+.Glossaries-actions-button {
+    margin-left: 40px;
+}
+
+.Glossaries-search {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.Glossaries-search-input {
+    width: 100%;
+    margin-right: 22px;
+}
