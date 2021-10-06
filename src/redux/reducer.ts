@@ -4,6 +4,7 @@ import userSlice from './slices/user'
 import translationSlice from './slices/translation'
 import autocompleteSlice from './slices/autocomplete'
 import vocabsSlice from './slices/vocabs'
+import glossariesSlice from './slices/glossaries'
 import storage from './storage'
 import { persistReducer } from 'redux-persist'
 
@@ -19,12 +20,25 @@ const appPersistConfig = {
   storage,
 }
 
+const glossariesPeristConfig = {
+  key: 'glossaries',
+  blacklist: ['flags'],
+  storage,
+}
+
+const vocabsPersistConfig = {
+  key: 'vocabs',
+  blacklist: ['flags'],
+  storage,
+}
+
 const reducer = combineReducers({
   app: persistReducer(appPersistConfig, appSlice),
   user: persistReducer(userPersistConfig, userSlice),
   autocomplete: autocompleteSlice,
   translation: translationSlice,
-  vocabs: vocabsSlice,
+  vocabs: persistReducer(vocabsPersistConfig, vocabsSlice),
+  glossaries: persistReducer(glossariesPeristConfig, glossariesSlice),
 })
 
 export default reducer

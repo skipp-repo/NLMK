@@ -11,8 +11,9 @@ import Tabs from '../../components/Tabs/Tabs'
 import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
 import './Glossaries.scss'
 import useReduxAction from '../../hooks/useReduxAction'
+import reducer from '../../redux/reducer'
 import * as userSlice from '../../redux/slices/user'
-import * as vocabsSlice from '../../redux/slices/vocabs'
+import * as glossariesSlice from '../../redux/slices/glossaries'
 import * as appSlice from '../../redux/slices/app'
 import GlossariesActions from './GlossariesActions'
 import Search from '../../components/Search/Search'
@@ -71,17 +72,20 @@ const Glossaries: React.FC<GlossariesProps> = () => {
     words: true,
     vocabs: true,
   })
-
-  const vocabsByID = useSelector(vocabsSlice.selectors.vocabById(activeTab))
-  const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
-  const token = useSelector(userSlice.selectors.token)
   const glossaries = useSelector(userSlice.selectors.glossaries)
 
-  const selectCard = reduxAction(vocabsSlice.selectCard)
+  const glossarysByID = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
+
+  // const glossarys = useSelector(glossariesSlice.selectors.glossarysList)
+  const token = useSelector(userSlice.selectors.token)
+
+  const selectCard = reduxAction(glossariesSlice.selectCard)
   const getData = reduxAction(appSlice.getData)
   const search = reduxAction((params: Omit<Translate, 'space'>) =>
     translationSlice.translate({ space: 'MainVocabs', ...params }),
   )
+  const getGlossary = reduxAction(glossariesSlice.getGlossary)
+
   const debouncedSearch = useDebouncedCallback(search, 300)
   const downloadAllVocabs = useAsyncCallback(async () => {
     return await downloadAllVocabsRequest({ token })
@@ -144,13 +148,13 @@ const Glossaries: React.FC<GlossariesProps> = () => {
     },
   ]
 
-  const tabs = vocabs.map(({ _id, name }) => ({
-    name: name || 'default',
+  const tabs = glossaries.map(({ _id, name }) => ({
+    name: name,
     id: _id,
   }))
 
   const handleCardSelect = (cardId: number, selected: boolean) => {
-    selectCard({ vocabId: activeTab, cardId, selected })
+    selectCard({ glossaryId: activeTab, cardId, selected })
   }
 
   const renderCard = (data) => {
@@ -168,7 +172,10 @@ const Glossaries: React.FC<GlossariesProps> = () => {
 
   const handleSpeech = () => {}
 
-  const handleTabChange = (id) => setActiveTab(id)
+  const handleTabChange = (id) => {
+    setActiveTab(id)
+    getGlossary({ id })
+  }
 
   const handleSearch = (text) => {
     setQuery(text)
@@ -185,10 +192,10 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   }, [])
 
   React.useEffect(() => {
-    if (vocabs?.length && !activeTab) {
-      setActiveTab(vocabs[0]._id)
+    if (glossaries?.length && !activeTab) {
+      setActiveTab(glossaries[0]._id)
     }
-  }, [vocabs])
+  }, [glossaries])
 
   React.useEffect(() => {
     if (query) {
@@ -213,7 +220,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
         <Tabs tabs={tabs} onChange={handleTabChange} />
       </Container>
 
-      {vocabsByID?.cards?.length !== undefined && <GlossariesActions activeTab={activeTab} />}
+      {glossarysByID?.cards?.length !== undefined && <GlossariesActions activeTab={activeTab} />}
 
       <Container className="Glossaries-search">
         <Search className="Glossaries-search-input" onChange={handleSearch} suggestions={[]} />
@@ -225,8 +232,8 @@ const Glossaries: React.FC<GlossariesProps> = () => {
         />
       </Container>
 
-      {!!vocabsByID?.cards?.length && !needShowSearchResults && (
-        <Container className="Glossaries-cards">{vocabsByID.cards.map(renderCard)}</Container>
+      {!!glossarysByID?.cards?.length && !needShowSearchResults && (
+        <Container className="Glossaries-cards">{glossarysByID.cards.map(renderCard)}</Container>
       )}
 
       {needShowSearchResults && (
