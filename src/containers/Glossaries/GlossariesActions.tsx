@@ -18,11 +18,16 @@ export type GlossariesProps = JSX.IntrinsicElements['div'] & { activeTab: string
 
 const words = proschet(['слово', 'слова', 'слов'])
 
-const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab, ...props }) => {
+const GlossariesActions: React.FC<GlossariesProps> = ({
+  children,
+  className,
+  activeTab,
+  ...props
+}) => {
   const reduxAction = useReduxAction()
   const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
 
-  const glossaries = useSelector(glossariesSlice.selectors.glossariesList)
+  const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
 
   const selectedIds = useSelector(glossariesSlice.selectors.selectedCardsIdsByVocabId(activeTab))
 
@@ -40,7 +45,7 @@ const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab,
 
   const fixedVocabs = React.useMemo(
     () =>
-      glossaries
+      vocabs
         .filter(({ _id }) => activeTab !== _id)
         .map(({ _id, name, ...item }) => {
           return {
@@ -49,7 +54,7 @@ const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab,
             checked: vocabIdsForMoving.includes(_id),
           }
         }),
-    [glossaries, activeTab, vocabIdsForMoving],
+    [vocabs, activeTab, vocabIdsForMoving],
   )
 
   const handleSelectAll = ({ target }) => {
@@ -125,4 +130,4 @@ const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab,
   )
 }
 
-export default React.memo(Glossaries)
+export default React.memo(GlossariesActions)

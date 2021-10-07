@@ -69,7 +69,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
     glossaries: true,
     phrases: true,
     words: true,
-    vocabs: true,
+    vocabs: false,
   })
   const glossaries = useSelector(glossariesSlice.selectors.glossariesList)
   const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
@@ -90,7 +90,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
 
   const searchData = useSelector(translationSlice.selectors.mainVocabsSearchResults)
 
-  const needShowSearchResults = !!searchData?.results?.length && query.length > 0
+  const needShowSearchResults = query.length > 0
 
   const glossariesFilterList = React.useMemo(
     () =>
@@ -234,7 +234,9 @@ const Glossaries: React.FC<GlossariesProps> = () => {
       )}
 
       {needShowSearchResults && (
-        <Container className="Glossaries-cards">{searchData.results.map(renderCard)}</Container>
+        <Container className="Glossaries-cards">
+          {searchData?.results?.length ? searchData?.results?.map(renderCard) : 'Ничего не найдено'}
+        </Container>
       )}
     </div>
   )

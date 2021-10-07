@@ -50,7 +50,6 @@ const searchFiltersReducer = (state, action) => {
           if (!glossaries.length) {
             glossaries = true
           }
-
         }
       } else {
         if (action.selected) {
@@ -114,7 +113,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const searchData = useSelector(translationSlice.selectors.mainVocabsSearchResults)
 
-  const needShowSearchResults = !!searchData?.results?.length && query.length > 0
+  const needShowSearchResults = query.length > 0
 
   const glossariesFilterList = React.useMemo(
     () =>
@@ -131,7 +130,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
           type: 'Glossary',
           key: `Glossary-${_id}`,
           data: { id: _id },
-          name:  name,
+          name: name,
           selected,
         }
       }),
@@ -293,7 +292,9 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       )}
 
       {needShowSearchResults && (
-        <Container className="MyVocabulary-cards">{searchData.results.map(renderCard)}</Container>
+        <Container className="MyVocabulary-cards">
+          {searchData?.results?.length ? searchData?.results?.map(renderCard) : 'Ничего не найдено'}
+        </Container>
       )}
 
       <ModalNewVocabGroup
