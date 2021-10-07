@@ -1,7 +1,7 @@
 import React from 'react'
 import proschet from 'proschet'
 import { useAsyncCallback } from 'react-async-hook'
-import { downloadVocabById } from '../../api/requests/downloadVocabById'
+import { downloadGlossaryById } from '../../api/requests/downloadGlossaryById'
 import ItemsCount from '../../components/ItemsCount/ItemsCount'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import Container from '../../components/Container/Container'
@@ -40,7 +40,7 @@ const GlossariesActions: React.FC<GlossariesProps> = ({
   const token = useSelector(userSlice.selectors.token)
 
   const downloadCurrentVocab = useAsyncCallback(async (id) => {
-    return await downloadVocabById({ token, id })
+    return await downloadGlossaryById({ token, id })
   })
 
   const fixedVocabs = React.useMemo(

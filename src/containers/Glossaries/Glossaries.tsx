@@ -3,7 +3,7 @@ import { useAsyncCallback } from 'react-async-hook'
 import useTitle from 'react-use/lib/useTitle'
 import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
-import { downloadAllVocabs as downloadAllVocabsRequest } from '../../api/requests/downloadAllVocabs'
+import { downloadAllGlossarys as downloadAllGlossarysRequest } from '../../api/requests/downloadAllGlossaries'
 import Container from '../../components/Container/Container'
 import PageTitle from '../../components/PageTitle/PageTitle'
 import DownloadLink from '../../components/DownloadLink/DownloadLink'
@@ -84,8 +84,10 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   const getGlossary = reduxAction(glossariesSlice.getGlossary)
 
   const debouncedSearch = useDebouncedCallback(search, 300)
-  const downloadAllVocabs = useAsyncCallback(async () => {
-    return await downloadAllVocabsRequest({ token })
+  const downloadAllGlossarys = useAsyncCallback(async () => {
+    const glossaryIds = glossaries.map(({ _id }) => _id)
+
+    return await downloadAllGlossarysRequest({ token, glossaryIds })
   })
 
   const searchData = useSelector(translationSlice.selectors.mainVocabsSearchResults)
@@ -211,7 +213,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
       <Container className="Glossaries-header">
         <PageTitle className="Glossaries-title">{title}</PageTitle>
 
-        <DownloadLink onClick={downloadAllVocabs.execute}>Скачать все слова</DownloadLink>
+        <DownloadLink onClick={downloadAllGlossarys.execute}>Скачать все слова</DownloadLink>
       </Container>
       <Container className="Glossaries-tabs">
         <Tabs tabs={tabs} onChange={handleTabChange} />
