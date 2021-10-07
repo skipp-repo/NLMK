@@ -11,7 +11,6 @@ import Tabs from '../../components/Tabs/Tabs'
 import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
 import './Glossaries.scss'
 import useReduxAction from '../../hooks/useReduxAction'
-import reducer from '../../redux/reducer'
 import * as userSlice from '../../redux/slices/user'
 import * as glossariesSlice from '../../redux/slices/glossaries'
 import * as appSlice from '../../redux/slices/app'
@@ -72,11 +71,9 @@ const Glossaries: React.FC<GlossariesProps> = () => {
     words: true,
     vocabs: true,
   })
-  const glossaries = useSelector(userSlice.selectors.glossaries)
+  const glossaries = useSelector(glossariesSlice.selectors.glossariesList)
+  const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
 
-  const glossarysByID = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
-
-  // const glossarys = useSelector(glossariesSlice.selectors.glossarysList)
   const token = useSelector(userSlice.selectors.token)
 
   const selectCard = reduxAction(glossariesSlice.selectCard)
@@ -149,7 +146,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   ]
 
   const tabs = glossaries.map(({ _id, name }) => ({
-    name: name,
+    name: name || 'name',
     id: _id,
   }))
 
@@ -220,7 +217,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
         <Tabs tabs={tabs} onChange={handleTabChange} />
       </Container>
 
-      {glossarysByID?.cards?.length !== undefined && <GlossariesActions activeTab={activeTab} />}
+      {glossaryById?.cards?.length !== undefined && <GlossariesActions activeTab={activeTab} />}
 
       <Container className="Glossaries-search">
         <Search className="Glossaries-search-input" onChange={handleSearch} suggestions={[]} />
@@ -232,8 +229,8 @@ const Glossaries: React.FC<GlossariesProps> = () => {
         />
       </Container>
 
-      {!!glossarysByID?.cards?.length && !needShowSearchResults && (
-        <Container className="Glossaries-cards">{glossarysByID.cards.map(renderCard)}</Container>
+      {!!glossaryById?.cards?.length && !needShowSearchResults && (
+        <Container className="Glossaries-cards">{glossaryById.cards.map(renderCard)}</Container>
       )}
 
       {needShowSearchResults && (

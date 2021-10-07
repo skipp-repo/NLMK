@@ -35,7 +35,7 @@ const getGlossarySlice = makeExtraReducers({
   action: getGlossary,
   extraReducers: {
     fulfilled: (state, { payload: { data } }) => {
-      adapter.addOne(state, data)
+      adapter.updateOne(state, { id: data.glossID, changes: { cards: data.cards } })
     },
   },
 })
@@ -62,6 +62,9 @@ const glossariesSlice = createSlice({
 
       state.selectedItems[glossaryId] = select ? cardIds : []
     },
+    addGlossaries: (state, { payload: { glossaries } }) => {
+      adapter.addMany(state, glossaries)
+    },
   },
   extraReducers: {
     ...getGlossarySlice,
@@ -70,6 +73,6 @@ const glossariesSlice = createSlice({
 
 export default glossariesSlice.reducer
 
-export const { selectCard, selectAll } = glossariesSlice.actions
+export const { selectCard, selectAll, addGlossaries } = glossariesSlice.actions
 
 export * as selectors from './selectors'

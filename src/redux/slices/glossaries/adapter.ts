@@ -3,7 +3,7 @@ export { Vocab } from '../../../types'
 
 // @ts-ignore
 const adapter = createEntityAdapter<any>({
-  selectId: (item) => item.glossID,
+  selectId: (item) => item._id,
 })
 
 export default adapter

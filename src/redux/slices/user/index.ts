@@ -6,6 +6,7 @@ import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { status } from '../../../api/requests/status'
+import { addGlossaries } from '../glossaries'
 
 const name = 'user'
 
@@ -35,18 +36,25 @@ const initialState: InitialState = {
   newUser: undefined,
 }
 
-export const getStatus = createAsyncThunk(`${name}/getStatus`, async (_: void, { getState }) => {
-  try {
-    const state = getState() as RootState
-    const { user } = state
+export const getStatus = createAsyncThunk(
+  `${name}/getStatus`,
+  async (_: void, { getState, dispatch }) => {
+    try {
+      const state = getState() as RootState
+      const { user } = state
 
-    const token = user.token || (await getUserToken())
+      const token = user.token || (await getUserToken())
 
-    return await status({ token })
-  } catch (error) {
-    throw error
-  }
-})
+      const result = await status({ token })
+
+      dispatch(addGlossaries({ glossaries: result.data.glossaries }))
+
+      return result
+    } catch (error) {
+      throw error
+    }
+  },
+)
 
 const getStatusSlice = makeExtraReducers({
   action: getStatus,

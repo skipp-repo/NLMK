@@ -7,8 +7,8 @@ import Checkbox from '../../components/Checkbox/Checkbox'
 import Container from '../../components/Container/Container'
 import IconButton from '../../components/IconButton/IconButton'
 import { useSelector } from 'react-redux'
+import * as glossariesSlice from '../../redux/slices/glossaries'
 import * as userSlice from '../../redux/slices/user'
-import * as vocabsSlices from '../../redux/slices/vocabs'
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
 import VocabsDropdown from '../../components/VocabsDropdown/VocabsDropdown'
 import * as vocabsSlice from '../../redux/slices/vocabs'
@@ -20,17 +20,17 @@ const words = proschet(['слово', 'слова', 'слов'])
 
 const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab, ...props }) => {
   const reduxAction = useReduxAction()
-  const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
+  const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
 
-  const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
+  const glossaries = useSelector(glossariesSlice.selectors.glossariesList)
 
-  const selectedIds = useSelector(vocabsSlice.selectors.selectedCardsIdsByVocabId(activeTab))
+  const selectedIds = useSelector(glossariesSlice.selectors.selectedCardsIdsByVocabId(activeTab))
 
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
   const [vocabIdsForMoving, setVocabsIdsForMoving] = React.useState([])
 
-  const editFolder = reduxAction(vocabsSlices.editFolder)
-  const selectAll = reduxAction(vocabsSlice.selectAll)
+  const editFolder = reduxAction(vocabsSlice.editFolder)
+  const selectAll = reduxAction(glossariesSlice.selectAll)
 
   const token = useSelector(userSlice.selectors.token)
 
@@ -40,7 +40,7 @@ const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab,
 
   const fixedVocabs = React.useMemo(
     () =>
-      vocabs
+      glossaries
         .filter(({ _id }) => activeTab !== _id)
         .map(({ _id, name, ...item }) => {
           return {
@@ -49,7 +49,7 @@ const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab,
             checked: vocabIdsForMoving.includes(_id),
           }
         }),
-    [vocabs, activeTab, vocabIdsForMoving],
+    [glossaries, activeTab, vocabIdsForMoving],
   )
 
   const handleSelectAll = ({ target }) => {
@@ -91,8 +91,8 @@ const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab,
 
   return (
     <Container className="Glossaries-actions">
-      <ItemsCount className="Glossaries-actions-count">{`${vocabsByID?.cards.length} ${words(
-        vocabsByID?.cards.length,
+      <ItemsCount className="Glossaries-actions-count">{`${glossaryById?.cards?.length} ${words(
+        glossaryById?.cards?.length,
       )}`}</ItemsCount>
 
       <VocabsDropdown
