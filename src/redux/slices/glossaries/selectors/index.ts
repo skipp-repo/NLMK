@@ -72,7 +72,7 @@ export const selectedCardsIdsByVocabId = (id) =>
     return glossary.cards.map(({ _id }) => _id).filter((itemId) => ids.includes(itemId))
   })
 
-export const cardsIdsByVocabId = (id) =>
-  createSelector(glossariesById(id), (glossary) => {
+export const cardsIdsByGlossId = (id) =>
+  createSelector(glossaryById(id), (glossary) => {
     return glossary.cards.map(({ _id }) => _id)
   })

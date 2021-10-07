@@ -54,13 +54,13 @@ const Glossaries: React.FC<GlossariesProps> = ({ children, className, activeTab,
 
   const handleSelectAll = ({ target }) => {
     setCheckAll(target.checked ? true : undefined)
-    selectAll({ vocabId: activeTab, select: target.checked })
+    selectAll({ glossaryId: activeTab, select: target.checked })
   }
 
   const handleUnselectAll = ({ target: { checked } }) => {
     setCheckAll(checked ? false : undefined)
     if (checked) {
-      selectAll({ vocabId: activeTab, select: false })
+      selectAll({ glossaryId: activeTab, select: false })
     }
   }
 

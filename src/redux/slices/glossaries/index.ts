@@ -3,7 +3,7 @@ import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getGlossaryById } from '../../../api/requests/getGlossaryById'
 import adapter from './adapter'
-import { cardsIdsByVocabId } from './selectors'
+import { cardsIdsByGlossId } from './selectors'
 
 const name = 'glossaries'
 
@@ -58,7 +58,7 @@ const glossariesSlice = createSlice({
       }
     },
     selectAll: (state, { payload: { glossaryId, select } }) => {
-      const cardIds = cardsIdsByVocabId(glossaryId)({ glossaries: state })
+      const cardIds = cardsIdsByGlossId(glossaryId)({ glossaries: state })
 
       state.selectedItems[glossaryId] = select ? cardIds : []
     },
