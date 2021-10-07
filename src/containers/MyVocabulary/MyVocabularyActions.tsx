@@ -3,6 +3,7 @@ import React from 'react'
 import proschet from 'proschet'
 import { useAsyncCallback } from 'react-async-hook'
 import { downloadVocabById } from '../../api/requests/downloadVocabById'
+import { downloadVocabByIds as downloadVocabByIdsRequest } from '../../api/requests/downloadVocabByIds'
 import ItemsCount from '../../components/ItemsCount/ItemsCount'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import Container from '../../components/Container/Container'
@@ -43,6 +44,10 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
 
   const downloadCurrentVocab = useAsyncCallback(async (id) => {
     return await downloadVocabById({ token, id })
+  })
+
+  const downloadVocabByIds = useAsyncCallback(async () => {
+    return await downloadVocabByIdsRequest({ token, cardIds: selectedIds })
   })
 
   const fixedVocabs = React.useMemo(
@@ -93,7 +98,11 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
   }
 
   const handleDownloadVocab = () => {
-    downloadCurrentVocab.execute(activeTab)
+    if (selectedIds.length) {
+      downloadVocabByIds.execute()
+    } else {
+      downloadCurrentVocab.execute(activeTab)
+    }
   }
 
   React.useEffect(() => {
@@ -136,7 +145,7 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
       />
       <IconButton
         className="MyVocabulary-actions-button"
-        text="Скачать группу"
+        text={selectedIds.length ? `Скачать группу (${selectedIds.length})` : 'Скачать группу'}
         Icon={DownloadIcon}
         onClick={handleDownloadVocab}
       />

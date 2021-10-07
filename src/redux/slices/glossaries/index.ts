@@ -63,6 +63,7 @@ const glossariesSlice = createSlice({
       state.selectedItems[glossaryId] = select ? cardIds : []
     },
     addGlossaries: (state, { payload: { glossaries } }) => {
+      // @ts-ignore
       adapter.addMany(state, glossaries)
     },
   },

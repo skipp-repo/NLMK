@@ -7,10 +7,10 @@ export type TabProps = Omit<JSX.IntrinsicElements['div'], 'id'> & {
   name: string
   id: number
   active: boolean
-  editable: boolean
+  editable?: boolean
   onClick(id: number): void
-  onRename({ id: number, name: string }): void
-  onDelete(id): void
+  onRename?({ id: number, name: string }): void
+  onDelete?(id): void
 }
 
 const Tab: React.FC<TabProps> = ({
