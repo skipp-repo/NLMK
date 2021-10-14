@@ -23,6 +23,8 @@ const TabsContent: React.FC<TabsContentProps> = ({
   const [activeTab, setActiveTab] = React.useState<number | undefined>()
 
   const handleTabChange = (id) => {
+    if (id === activeTab) return
+
     onChange(id)
 
     setActiveTab(id)
