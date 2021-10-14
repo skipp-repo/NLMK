@@ -7,6 +7,8 @@ import TranslationCardImage from '../TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from '../TranslationCardMeaning/TranslationCardMeaning'
 import TranslationCardGlossaries from '../TranslationCardGlossaries/TranslationCardGlossaries'
 import Checkbox from '../../Checkbox/Checkbox'
+import speak from '../../../utils/speak'
+import { useDebouncedCallback } from 'use-debounce'
 
 export type TranslationCardProps = Omit<JSX.IntrinsicElements['div'], 'onSelect'> & {
   input?: string
@@ -33,6 +35,10 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
     onSelect(item._id, target.checked)
   }
 
+  const handleSpeech = useDebouncedCallback(() => {
+    speak(item.translation, item.targetLang)
+  }, 500)
+
   return (
     <div {...props} className={clsx('TranslationCardSelectable', className)}>
       <div className="TranslationCardSelectable-wrapper">
@@ -41,7 +47,7 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
         <div className="TranslationCardSelectable-content">
           <TranslationCardWord
             className="TranslationCardSelectable-word"
-            onSpeech={onSpeech}
+            onSpeech={handleSpeech}
             speech={speech}
             input={input}
           >

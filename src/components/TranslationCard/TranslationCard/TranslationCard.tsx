@@ -3,7 +3,9 @@ import clsx from 'clsx'
 import useCollapse from 'react-collapsed'
 import flatten from 'arr-flatten'
 import './TranslationCard.scss'
+import { useDebouncedCallback } from 'use-debounce'
 import { TranslationResultItemLocal } from '../../../types'
+import speak from '../../../utils/speak'
 import BookmarkButton from '../../BookmarkButton/BookmarkButton'
 import TranslationCardWord from '../TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from '../TranslationCardImage/TranslationCardImage'
@@ -11,6 +13,7 @@ import TranslationCardMeaning from '../TranslationCardMeaning/TranslationCardMea
 import TranslationCardGlossaries from '../TranslationCardGlossaries/TranslationCardGlossaries'
 import { ReactComponent as ArrowIcon } from '../../../assets/icons/arrow.svg'
 import createTranslationString from '../../../utils/createTranslationString'
+import TranslationCardItem from './TranslationCardItem'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -41,27 +44,29 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
     onAddToBookmarks(id)
   }
 
+  const handleSpeech = useDebouncedCallback(() => {
+    let word = firstItem.translation.translation
+    let lang = firstItem.translation.targetLang
+
+    if (firstItem.translation.targetLang === 'ru') {
+      word = firstItem.translation.text
+      lang = firstItem.translation.sourceLang
+    }
+
+    speak(word, lang)
+  }, 500)
+
   const renderTranslationItem = ({ translation, images }, index) => {
     const imgSrc = images?.length && images[0]
 
     return (
-      <div className="TranslationCard-item" key={translation._id}>
-        <TranslationCardImage src={imgSrc} />
-
-        <div className="TranslationCard-content">
-          <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
-            {translation.text}
-          </TranslationCardWord>
-          <TranslationCardMeaning>{translation.translation}</TranslationCardMeaning>
-        </div>
-
-        <button
-          className="TranslationCard-action"
-          onClick={handleOnAddToBookmarks(translation._id)}
-        >
-          <BookmarkButton active={false} />
-        </button>
-      </div>
+      <TranslationCardItem
+        translation={translation}
+        imgSrc={imgSrc}
+        speech={speech}
+        input={input}
+        onAddToBookmarks={handleOnAddToBookmarks(translation._id)}
+      />
     )
   }
 
@@ -79,7 +84,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
         <TranslationCardImage src={imgSrc} />
 
         <div className="TranslationCard-content">
-          <TranslationCardWord onSpeech={onSpeech} speech={speech} input={input}>
+          <TranslationCardWord onSpeech={handleSpeech} speech={speech} input={input}>
             {firstItem.translation.text}
           </TranslationCardWord>
           <TranslationCardMeaning>{renderTranslationsString}</TranslationCardMeaning>
