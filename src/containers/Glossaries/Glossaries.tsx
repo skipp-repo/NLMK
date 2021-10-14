@@ -77,6 +77,8 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   const token = useSelector(userSlice.selectors.token)
 
   const selectCard = reduxAction(glossariesSlice.selectCard)
+  const selectAll = reduxAction(glossariesSlice.selectAll)
+
   const getData = reduxAction(appSlice.getData)
   const search = reduxAction((params: Omit<Translate, 'space'>) =>
     translationSlice.translate({ space: 'MainVocabs', ...params }),
@@ -174,6 +176,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   const handleTabChange = (id) => {
     setActiveTab(id)
     getGlossary({ id })
+    selectAll({ glossaryId: activeTab, select: false })
   }
 
   const handleSearch = (text) => {
