@@ -272,6 +272,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
           onChange={handleTabChange}
           onDelete={handleTabRemove}
           onRename={handleTabRename}
+          editable
         />
       </Container>
 

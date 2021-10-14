@@ -12,6 +12,7 @@ export type TabType = {
 
 export type TabsProps = JSX.IntrinsicElements['nav'] & {
   tabs: TabType[]
+  editable?: boolean
   onChange(id: number): void
   onRename?({ id: number, name: string }): void
   onDelete?(id): void
@@ -21,6 +22,7 @@ const Tabs: React.FC<TabsProps> = ({
   children,
   className,
   tabs,
+  editable = false,
   onChange,
   onRename,
   onDelete,
@@ -39,7 +41,13 @@ const Tabs: React.FC<TabsProps> = ({
           dragEnabled={false}
           step={4}
         >
-          <TabsContent tabs={tabs} onChange={onChange} onDelete={onDelete} onRename={onRename} />
+          <TabsContent
+            editable={editable}
+            tabs={tabs}
+            onChange={onChange}
+            onDelete={onDelete}
+            onRename={onRename}
+          />
         </CarouselProvider>
       )}
     </nav>

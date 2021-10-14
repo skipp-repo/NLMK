@@ -6,6 +6,7 @@ import { TabType } from './Tabs'
 
 export type TabsContentProps = {
   tabs: TabType[]
+  editable?: boolean
   onChange(id: number): void
   onRename({ id: number, name: string }): void
   onDelete(id): void
@@ -13,6 +14,7 @@ export type TabsContentProps = {
 
 const TabsContent: React.FC<TabsContentProps> = ({
   tabs,
+  editable,
   onChange,
   onRename,
   onDelete,
@@ -40,7 +42,7 @@ const TabsContent: React.FC<TabsContentProps> = ({
         name={name}
         id={id}
         active={activeTab === id}
-        editable={index !== 0}
+        editable={editable && index !== 0}
         onClick={handleTabChange}
         onRename={handleTabRename}
         onDelete={handleTabDelete}
