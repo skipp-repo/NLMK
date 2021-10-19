@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 // import { getDocumentById } from '../../../api/requests/getDocumentById'
+import { uploadDocument as uploadDocumentRequest } from '../../../api/requests/uploadDocument'
 import adapter from './adapter'
 
 const name = 'documents'
@@ -18,6 +19,19 @@ const initialState: InitialState = {
   flags: {},
   selectedItems: {},
 }
+
+export type UploadDocument = {
+  userDoc: FormData
+}
+
+export const uploadDocument = createAsyncThunkExtended(
+  `${name}/uploadDocument`,
+  async (data: FormData, { token }) => {
+    debugger
+
+    return await uploadDocumentRequest({ token, data })
+  },
+)
 
 export type GetVocab = {
   id: number
