@@ -1,0 +1,40 @@
+@import "../../styles/general.css";
+
+.Documents {}
+
+.Documents-header {
+    margin-top: 70px;
+    margin-bottom: 56px;
+    display: flex;
+    align-items: center;
+}
+
+.Documents-title {
+    margin-right: 96px;
+}
+
+.Documents-button {
+    margin-left: auto;
+}
+
+
+.Documents-actions {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 100000000;
+    position: relative;
+}
+
+.Documents-actions {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.Documents-actions-count {
+    margin-right: auto;
+}
+
+.Documents-actions-button {
+    margin-left: 40px;
+}

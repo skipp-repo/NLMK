@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Router } from 'wouter'
 import Glossaries from '../Glossaries/Glossaries'
-import MyDocuments from '../MyDocuments/MyDocuments'
+import MyDocuments from '../Documents/Documents'
 import MyVocabulary from '../MyVocabulary/MyVocabulary'
 import useHashLocation from './useHashLocation'
 
