@@ -26,6 +26,7 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
   const uploadDocument = reduxAction(documentsSlice.uploadDocument)
   const getDocuments = reduxAction(documentsSlice.getDocuments)
   const selectItem = reduxAction(documentsSlice.selectItem)
+  const deleteDocument = reduxAction(documentsSlice.deleteDocument)
 
   const token = useSelector(userSlice.selectors.token)
 
@@ -55,7 +56,9 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
     downloadDocumentById.execute(id)
   }, 1000)
 
-  const handleDelete = (id) => {}
+  const handleDelete = (id) => {
+    deleteDocument({ id })
+  }
 
   const renderDocument = ({ name, text, _id, selected }) => (
     <Document

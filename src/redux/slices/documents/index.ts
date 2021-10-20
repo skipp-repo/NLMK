@@ -4,6 +4,7 @@ import makeExtraReducers from '../../helpers/makeExtraReducers'
 // import { getDocumentById } from '../../../api/requests/getDocumentById'
 import { uploadDocument as uploadDocumentRequest } from '../../../api/requests/uploadDocument'
 import { getDocuments as getDocumentsRequest } from '../../../api/requests/getDocuments'
+import { deleteDocument as deleteDocumentRequest } from '../../../api/requests/deleteDocument'
 import adapter from './adapter'
 
 const name = 'documents'
@@ -42,13 +43,40 @@ const getDocumentsSlice = makeExtraReducers({
   },
 })
 
-export type GetVocab = {
+export type DeleteDocument = {
+  id: number
+}
+
+export const deleteDocument = createAsyncThunkExtended(
+  `${name}/deleteDocument`,
+  async ({ id }: DeleteDocument, { token }) => {
+    return await deleteDocumentRequest({ token, id })
+  },
+)
+
+const deleteDocumentSlice = makeExtraReducers({
+  action: deleteDocument,
+  extraReducers: {
+    pending: (
+      state,
+      {
+        meta: {
+          arg: { id },
+        },
+      },
+    ) => {
+      adapter.removeOne(state, id)
+    },
+  },
+})
+
+export type GetDocument = {
   id: number
 }
 
 export const getDocument = createAsyncThunkExtended(
   `${name}/getDocument`,
-  async ({ id }: GetVocab, { token }) => {
+  async ({ id }: GetDocument, { token }) => {
     // return await getDocumentById({ token, id })
   },
 )
@@ -84,6 +112,7 @@ const documentsSlice = createSlice({
   extraReducers: {
     ...getDocumentSlice,
     ...getDocumentsSlice,
+    ...deleteDocumentSlice,
   },
 })
 
