@@ -12,6 +12,8 @@ export type DocumentProps = Omit<JSX.IntrinsicElements['div'], 'id' | 'onSelect'
   id: number
   onSelect(id: number, selected: boolean): void
   onClick(id: number): void
+  onDownload(id: number): void
+  onDelete(id: number): void
 }
 
 const Document: React.FC<DocumentProps> = ({
@@ -21,6 +23,8 @@ const Document: React.FC<DocumentProps> = ({
   id,
   onSelect,
   onClick,
+  onDownload,
+  onDelete,
   className,
   ...props
 }) => {
@@ -32,6 +36,14 @@ const Document: React.FC<DocumentProps> = ({
     onClick(id)
   }
 
+  const handleDownload = () => {
+    onDownload(id)
+  }
+
+  const handleDelete = () => {
+    onDelete(id)
+  }
+
   return (
     <div {...props} className={clsx('Document', className)} onClick={handleClick}>
       <div className="Document-name">{name}</div>
@@ -39,10 +51,10 @@ const Document: React.FC<DocumentProps> = ({
         <Checkbox checked={checked} className="Document-checkbox" onChange={handleSelect} />
         <div className="Document-content">{children}</div>
         <div className="Document-actions">
-          <div className="Document-download">
+          <div className="Document-download" onClick={handleDownload}>
             <DownloadIcon />
           </div>
-          <div className="Document-delete">
+          <div className="Document-delete" onClick={handleDelete}>
             <DeleteIcon />
           </div>
         </div>

@@ -1,11 +1,15 @@
 import React from 'react'
+import { useAsyncCallback } from 'react-async-hook'
 import { useSelector } from 'react-redux'
+import { useDebouncedCallback } from 'use-debounce'
+import { downloadDocumentById as downloadDocumentByIdRequest } from '../../api/requests/downloadDocumentById'
 import Button from '../../components/Button/Button'
 import Container from '../../components/Container/Container'
 import PageTitle from '../../components/PageTitle/PageTitle'
 import './Documents.scss'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as documentsSlice from '../../redux/slices/documents'
+import * as userSlice from '../../redux/slices/user'
 import DocumentsActions from './DocumentsActions'
 import Document from '../../components/Document/Document'
 import NewDocument from '../../components/Document/NewDocument'
@@ -22,6 +26,12 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
   const uploadDocument = reduxAction(documentsSlice.uploadDocument)
   const getDocuments = reduxAction(documentsSlice.getDocuments)
   const selectItem = reduxAction(documentsSlice.selectItem)
+
+  const token = useSelector(userSlice.selectors.token)
+
+  const downloadDocumentById = useAsyncCallback(async (id) => {
+    return await downloadDocumentByIdRequest({ token, id })
+  })
 
   const handleFileInputChange = ({ target }) => {
     const file = target.files[0]
@@ -41,6 +51,12 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
     selectItem({ selected, _id })
   }
 
+  const handleDownload = useDebouncedCallback((id) => {
+    downloadDocumentById.execute(id)
+  }, 1000)
+
+  const handleDelete = (id) => {}
+
   const renderDocument = ({ name, text, _id, selected }) => (
     <Document
       key={_id}
@@ -50,6 +66,8 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
       className="Documents-item"
       onClick={handleClickDocument}
       onSelect={handleSelect}
+      onDownload={handleDownload}
+      onDelete={handleDelete}
     >
       {text}
     </Document>
@@ -58,8 +76,6 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
   React.useEffect(() => {
     getDocuments()
   }, [])
-
-  console.log(documents)
 
   return (
     <div className="Documents">
