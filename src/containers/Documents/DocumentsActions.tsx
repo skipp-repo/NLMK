@@ -12,14 +12,14 @@ import useReduxAction from '../../hooks/useReduxAction'
 
 export type DocumentsActionsProps = JSX.IntrinsicElements['div'] & {}
 
-const words = proschet(['документ', 'документов', 'документов'])
+const words = proschet(['документ', 'документа', 'документов'])
 
 const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className, ...props }) => {
   const reduxAction = useReduxAction()
 
   const documents = useSelector(documentsSlice.selectors.documentsList)
 
-  const selectedIds = []
+  const selectedIds = useSelector(documentsSlice.selectors.selectedItems)
 
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
 
