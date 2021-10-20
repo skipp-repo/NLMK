@@ -1,0 +1,25 @@
+@import "../../styles/general.css";
+
+.BackLink {
+  display: inline-flex;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--light-gray-3);
+  align-items: center;
+
+  &:hover {
+    color: var(--blue)
+  }
+}
+
+.BackLink-icon {
+  margin-right: 16px;
+}
+
+
+.BackLink-text {
+  position: relative;
+  top: 1px;
+}
