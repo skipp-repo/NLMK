@@ -5,7 +5,7 @@ export type RemoveDocument = {
   id: number
 }
 
-export const removeDocument = async ({ token, id }: RemoveDocument, init?: RequestInit) => {
+export const deleteDocument = async ({ token, id }: RemoveDocument, init?: RequestInit) => {
   return await createRequest(`/documents/${id}`, {
     method: 'DELETE',
     headers: {

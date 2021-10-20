@@ -27,6 +27,15 @@ export const uploadDocument = createAsyncThunkExtended(
   },
 )
 
+const uploadDocumentSlice = makeExtraReducers({
+  action: uploadDocument,
+  extraReducers: {
+    fulfilled: (state, { payload: { data } }) => {
+      adapter.addOne(state, data)
+    },
+  },
+})
+
 export const getDocuments = createAsyncThunkExtended(
   `${name}/getDocuments`,
   async (_, { token }) => {
@@ -113,6 +122,7 @@ const documentsSlice = createSlice({
     ...getDocumentSlice,
     ...getDocumentsSlice,
     ...deleteDocumentSlice,
+    ...uploadDocumentSlice,
   },
 })
 
