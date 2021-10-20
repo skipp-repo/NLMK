@@ -1,0 +1,80 @@
+@import "../../styles/general.css";
+
+.Document {
+  width: 166px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.Document-container {
+  position: relative;
+  box-shadow: 0px 6px 34px -20px rgba(117, 130, 147, 0.5);
+  border-radius: 5px;
+  background: var(--white);
+
+  &_new {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    height: 183px;
+  }
+}
+
+.Document-delete {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--light-gray-3);
+
+  &:hover {
+	color: var(--blue);
+  }
+}
+
+.Document-download {
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.Document-content {
+  padding: 10px;
+  height: 146px;
+  user-select: none;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--blue-gray);
+}
+
+.Document-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-top: 1px solid var(--light-gray);
+}
+
+.Document-checkbox {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.Document-name {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  -webkit-line-clamp: 1;
+
+}
+
+.Document-new-text {
+  width: 100%;
+  text-align: center;
+  color: var(--light-gray-3);
+  font-size: 14px;
+  margin-top: 11px;
+
+}

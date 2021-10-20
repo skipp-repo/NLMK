@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import Button from '../../components/Button/Button'
 import Container from '../../components/Container/Container'
 import PageTitle from '../../components/PageTitle/PageTitle'
@@ -6,6 +7,8 @@ import './Documents.scss'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as documentsSlice from '../../redux/slices/documents'
 import DocumentsActions from './DocumentsActions'
+import Document from '../../components/Document/Document'
+import NewDocument from '../../components/Document/NewDocument'
 
 export type MyDocumentsProps = {}
 
@@ -14,7 +17,10 @@ const title = 'Документы'
 const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
   const reduxAction = useReduxAction()
 
+  const documents = useSelector(documentsSlice.selectors.documentsList)
+
   const uploadDocument = reduxAction(documentsSlice.uploadDocument)
+  const getDocuments = reduxAction(documentsSlice.getDocuments)
 
   const handleFileInputChange = ({ target }) => {
     const file = target.files[0]
@@ -25,6 +31,28 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
 
     uploadDocument(data)
   }
+
+  const handleNewDocument = () => {}
+
+  const handleClickDocument = (_id) => () => {}
+
+  const renderDocument = ({ name, text, _id }) => (
+    <Document
+      key={_id}
+      name={name}
+      checked
+      className="Documents-item"
+      onClick={handleClickDocument(_id)}
+    >
+      {text}
+    </Document>
+  )
+
+  React.useEffect(() => {
+    getDocuments()
+  }, [])
+
+  console.log(documents)
 
   return (
     <div className="Documents">
@@ -45,6 +73,11 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
       </Container>
 
       <DocumentsActions />
+
+      <Container className="Documents-items">
+        <NewDocument onClick={handleNewDocument} className="Documents-item" />
+        {documents?.map(renderDocument)}
+      </Container>
     </div>
   )
 }

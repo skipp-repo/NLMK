@@ -3,19 +3,23 @@ import proschet from 'proschet'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import Container from '../../components/Container/Container'
 import IconButton from '../../components/IconButton/IconButton'
+import ItemsCount from '../../components/ItemsCount/ItemsCount'
 import { useSelector } from 'react-redux'
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
+import * as documentsSlice from '../../redux/slices/documents'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import useReduxAction from '../../hooks/useReduxAction'
 
 export type DocumentsActionsProps = JSX.IntrinsicElements['div'] & {}
 
-const words = proschet(['слово', 'слова', 'слов'])
+const words = proschet(['документ', 'документов', 'документов'])
 
 const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className, ...props }) => {
   const reduxAction = useReduxAction()
   const vocabsByID = []
+
+  const documents = useSelector(documentsSlice.selectors.documentsList)
 
   const selectedIds = []
 
@@ -33,9 +37,9 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
 
   return (
     <Container className="Documents-actions">
-      {/*<ItemsCount className="Documents-actions-count">{`${vocabsByID?.cards.length} ${words(*/}
-      {/*  vocabsByID?.cards.length,*/}
-      {/*)}`}</ItemsCount>*/}
+      <ItemsCount className="Documents-actions-count">{`${documents.length} ${words(
+        documents.length,
+      )}`}</ItemsCount>
 
       <Checkbox
         className="Documents-actions-button"

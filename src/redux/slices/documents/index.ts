@@ -3,6 +3,7 @@ import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 // import { getDocumentById } from '../../../api/requests/getDocumentById'
 import { uploadDocument as uploadDocumentRequest } from '../../../api/requests/uploadDocument'
+import { getDocuments as getDocumentsRequest } from '../../../api/requests/getDocuments'
 import adapter from './adapter'
 
 const name = 'documents'
@@ -20,18 +21,28 @@ const initialState: InitialState = {
   selectedItems: {},
 }
 
-export type UploadDocument = {
-  userDoc: FormData
-}
-
 export const uploadDocument = createAsyncThunkExtended(
   `${name}/uploadDocument`,
   async (data: FormData, { token }) => {
-    debugger
-
     return await uploadDocumentRequest({ token, data })
   },
 )
+
+export const getDocuments = createAsyncThunkExtended(
+  `${name}/getDocuments`,
+  async (_, { token }) => {
+    return await getDocumentsRequest({ token })
+  },
+)
+
+const getDocumentsSlice = makeExtraReducers({
+  action: getDocuments,
+  extraReducers: {
+    fulfilled: (state, { payload: { data } }) => {
+      adapter.addMany(state, data)
+    },
+  },
+})
 
 export type GetVocab = {
   id: number
@@ -82,6 +93,7 @@ const documentsSlice = createSlice({
   },
   extraReducers: {
     ...getDocumentSlice,
+    ...getDocumentsSlice,
   },
 })
 
