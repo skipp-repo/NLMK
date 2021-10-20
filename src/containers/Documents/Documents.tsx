@@ -21,6 +21,7 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
 
   const uploadDocument = reduxAction(documentsSlice.uploadDocument)
   const getDocuments = reduxAction(documentsSlice.getDocuments)
+  const selectItem = reduxAction(documentsSlice.selectItem)
 
   const handleFileInputChange = ({ target }) => {
     const file = target.files[0]
@@ -34,15 +35,21 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
 
   const handleNewDocument = () => {}
 
-  const handleClickDocument = (_id) => () => {}
+  const handleClickDocument = (_id) => {}
 
-  const renderDocument = ({ name, text, _id }) => (
+  const handleSelect = (_id, selected) => {
+    selectItem({ selected, _id })
+  }
+
+  const renderDocument = ({ name, text, _id, selected }) => (
     <Document
       key={_id}
+      id={_id}
       name={name}
-      checked
+      checked={selected}
       className="Documents-item"
-      onClick={handleClickDocument(_id)}
+      onClick={handleClickDocument}
+      onSelect={handleSelect}
     >
       {text}
     </Document>

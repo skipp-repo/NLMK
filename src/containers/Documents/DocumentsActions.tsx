@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux'
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
 import * as documentsSlice from '../../redux/slices/documents'
-import * as vocabsSlice from '../../redux/slices/vocabs'
 import useReduxAction from '../../hooks/useReduxAction'
 
 export type DocumentsActionsProps = JSX.IntrinsicElements['div'] & {}
@@ -17,7 +16,6 @@ const words = proschet(['документ', 'документов', 'докум�
 
 const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className, ...props }) => {
   const reduxAction = useReduxAction()
-  const vocabsByID = []
 
   const documents = useSelector(documentsSlice.selectors.documentsList)
 
@@ -25,12 +23,19 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
 
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
 
-  const selectAll = reduxAction(vocabsSlice.selectAll)
+  const selectAll = reduxAction(documentsSlice.selectAll)
 
-  const handleSelectAll = ({ target }) => {}
+  const handleSelectAll = ({ target }) => {
+    setCheckAll(target.checked ? true : undefined)
+    selectAll({ select: target.checked })
+  }
 
-  const handleUnselectAll = ({ target: { checked } }) => {}
-
+  const handleUnselectAll = ({ target: { checked } }) => {
+    setCheckAll(checked ? false : undefined)
+    if (checked) {
+      selectAll({ select: false })
+    }
+  }
   const handleRemoveCards = () => {}
 
   const handleDownloadVocab = () => {}

@@ -5,18 +5,38 @@ import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
 import Checkbox from '../Checkbox/Checkbox'
 
-export type DocumentProps = JSX.IntrinsicElements['div'] & {
+export type DocumentProps = Omit<JSX.IntrinsicElements['div'], 'id' | 'onSelect'> & {
   name: string
   children: string
   checked: boolean
+  id: number
+  onSelect(id: number, selected: boolean): void
+  onClick(id: number): void
 }
 
-const Document: React.FC<DocumentProps> = ({ name, children, checked, className, ...props }) => {
+const Document: React.FC<DocumentProps> = ({
+  name,
+  children,
+  checked,
+  id,
+  onSelect,
+  onClick,
+  className,
+  ...props
+}) => {
+  const handleSelect = ({ target }) => {
+    onSelect(id, target.checked)
+  }
+
+  const handleClick = () => {
+    onClick(id)
+  }
+
   return (
-    <div {...props} className={clsx('Document', className)}>
+    <div {...props} className={clsx('Document', className)} onClick={handleClick}>
       <div className="Document-name">{name}</div>
       <div className="Document-container">
-        {checked && <Checkbox checked className="Document-checkbox" />}
+        <Checkbox checked={checked} className="Document-checkbox" onChange={handleSelect} />
         <div className="Document-content">{children}</div>
         <div className="Document-actions">
           <div className="Document-download">

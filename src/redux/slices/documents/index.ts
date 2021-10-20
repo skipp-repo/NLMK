@@ -10,15 +10,13 @@ const name = 'documents'
 
 export type InitialState = {
   flags: {}
-  selectedItems: {
-    [key: number]: number[]
-  }
+  selectedItems: number[]
 }
 
 const initialState: InitialState = {
   ...adapter.getInitialState(),
   flags: {},
-  selectedItems: {},
+  selectedItems: [],
 }
 
 export const uploadDocument = createAsyncThunkExtended(
@@ -68,23 +66,15 @@ const documentsSlice = createSlice({
   name,
   initialState,
   reducers: {
-    selectCard: (state, { payload: { glossaryId, cardId, selected } }) => {
-      if (!state.selectedItems[glossaryId]) {
-        state.selectedItems[glossaryId] = []
-      }
-
+    selectItem: (state, { payload: { _id, selected } }) => {
       if (selected) {
-        state.selectedItems[glossaryId].push(cardId)
+        state.selectedItems.push(_id)
       } else {
-        state.selectedItems[glossaryId] = state.selectedItems[glossaryId].filter(
-          (id) => id !== cardId,
-        )
+        state.selectedItems = state.selectedItems.filter((id) => id !== _id)
       }
     },
-    selectAll: (state, { payload: { glossaryId, select } }) => {
-      const cardIds = [] // TODO
-
-      state.selectedItems[glossaryId] = select ? cardIds : []
+    selectAll: (state, { payload: { select } }) => {
+      state.selectedItems = select ? state['ids'] : []
     },
     addGlossaries: (state, { payload: { documents } }) => {
       // @ts-ignore
@@ -99,6 +89,6 @@ const documentsSlice = createSlice({
 
 export default documentsSlice.reducer
 
-export const { selectCard, selectAll, addGlossaries } = documentsSlice.actions
+export const { selectItem, selectAll, addGlossaries } = documentsSlice.actions
 
 export * as selectors from './selectors'
