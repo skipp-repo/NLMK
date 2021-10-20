@@ -2,6 +2,7 @@ import React from 'react'
 import { useAsyncCallback } from 'react-async-hook'
 import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
+import { useLocation } from 'wouter'
 import { downloadDocumentById as downloadDocumentByIdRequest } from '../../api/requests/downloadDocumentById'
 import Button from '../../components/Button/Button'
 import Container from '../../components/Container/Container'
@@ -20,6 +21,7 @@ const title = 'Документы'
 
 const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
   const reduxAction = useReduxAction()
+  const [location, setLocation] = useLocation()
 
   const documents = useSelector(documentsSlice.selectors.documentsList)
 
@@ -44,7 +46,9 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
     uploadDocument(data)
   }
 
-  const handleNewDocument = () => {}
+  const handleNewDocument = () => {
+    setLocation('/documents/edit/new')
+  }
 
   const handleClickDocument = (_id) => {}
 
