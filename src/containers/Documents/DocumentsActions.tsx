@@ -1,5 +1,7 @@
 import React from 'react'
 import proschet from 'proschet'
+import { useAsyncCallback } from 'react-async-hook'
+import { downloadDocumentsByIds as downloadDocumentsByIdsRequest } from '../../api/requests/downloadDocumentsByIds'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import Container from '../../components/Container/Container'
 import IconButton from '../../components/IconButton/IconButton'
@@ -9,6 +11,7 @@ import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
 import * as documentsSlice from '../../redux/slices/documents'
 import useReduxAction from '../../hooks/useReduxAction'
+import * as userSlice from '../../redux/slices/user'
 
 export type DocumentsActionsProps = JSX.IntrinsicElements['div'] & {}
 
@@ -18,6 +21,11 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
   const reduxAction = useReduxAction()
 
   const documents = useSelector(documentsSlice.selectors.documentsList)
+  const token = useSelector(userSlice.selectors.token)
+
+  const downloadDocumentsByIds = useAsyncCallback(async (id) => {
+    return await downloadDocumentsByIdsRequest({ token, docIds: selectedIds })
+  })
 
   const selectedIds = useSelector(documentsSlice.selectors.selectedItems)
 
@@ -37,8 +45,6 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
     }
   }
   const handleRemoveCards = () => {}
-
-  const handleDownloadVocab = () => {}
 
   return (
     <Container className="Documents-actions">
@@ -72,7 +78,7 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
         className="Documents-actions-button"
         text={selectedIds.length ? `Скачать (${selectedIds.length})` : 'Скачать'}
         Icon={DownloadIcon}
-        onClick={handleDownloadVocab}
+        onClick={downloadDocumentsByIds.execute}
       />
     </Container>
   )
