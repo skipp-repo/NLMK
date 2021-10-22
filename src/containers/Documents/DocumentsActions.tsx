@@ -32,6 +32,7 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
 
   const selectAll = reduxAction(documentsSlice.selectAll)
+  const deleteDocuments = reduxAction(documentsSlice.deleteDocuments)
 
   const handleSelectAll = ({ target }) => {
     setCheckAll(target.checked ? true : undefined)
@@ -44,7 +45,9 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
       selectAll({ select: false })
     }
   }
-  const handleRemoveCards = () => {}
+  const handleRemoveCards = () => {
+    deleteDocuments({ docIds: selectedIds })
+  }
 
   return (
     <Container className="Documents-actions">
