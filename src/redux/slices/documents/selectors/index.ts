@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit'
-import { selectAll } from './adapterSelectors'
+import { selectAll, selectById } from './adapterSelectors'
 
 export const documents = (state) => state.documents
 
@@ -22,3 +22,5 @@ export const documentsList = createSelector(
     }))
   },
 )
+
+export const documentById = (id) => createSelector(documents, (state) => selectById(state, id))

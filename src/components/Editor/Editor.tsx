@@ -1,12 +1,9 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Editor as DraftEditor, EditorState, RichUtils } from 'draft-js'
+import { ContentState, Editor as DraftEditor, EditorState, RichUtils } from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import EditorControls from './EditorControls'
-
 import './Editor.scss'
-
-export type EditorProps = JSX.IntrinsicElements['div'] & {}
 
 function getBlockStyle(block) {
   switch (block.getType()) {
@@ -17,8 +14,12 @@ function getBlockStyle(block) {
   }
 }
 
-const Editor: React.FC<EditorProps> = ({ children, className, ...props }) => {
-  const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty())
+export type EditorProps = Omit<JSX.IntrinsicElements['div'], 'onChange'> & {
+  onChange(content: ContentState): void
+}
+
+const Editor: React.FC<EditorProps> = ({ children, className, onChange, ...props }) => {
+  const [editorState, setEditorState] = React.useState<EditorState>(() => EditorState.createEmpty())
 
   const handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command)
@@ -35,12 +36,20 @@ const Editor: React.FC<EditorProps> = ({ children, className, ...props }) => {
     setEditorState(newState)
   }
 
+  const handleChange = (newState) => {
+    setEditorState(newState)
+
+    const content = newState.getCurrentContent()
+
+    onChange(content)
+  }
+
   return (
     <div className={clsx('Editor', className)} {...props}>
       <DraftEditor
         blockStyleFn={getBlockStyle}
         editorState={editorState}
-        onChange={setEditorState}
+        onChange={handleChange}
         handleKeyCommand={handleKeyCommand}
         placeholder="Введите текст или вставьте текст документа в это поле..."
         spellCheck={true}

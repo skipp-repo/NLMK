@@ -31,6 +31,8 @@
     "chrome-promise": "^3.0.5",
     "clsx": "^1.1.1",
     "draft-js": "^0.11.7",
+    "draft-js-export-html": "^1.4.1",
+    "html-docx-js-typescript": "^0.1.5",
     "js-file-download": "^0.4.12",
     "lodash.find": "^4.6.0",
     "lodash.isequal": "^4.5.0",

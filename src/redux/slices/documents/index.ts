@@ -6,6 +6,7 @@ import { uploadDocument as uploadDocumentRequest } from '../../../api/requests/u
 import { getDocuments as getDocumentsRequest } from '../../../api/requests/getDocuments'
 import { deleteDocument as deleteDocumentRequest } from '../../../api/requests/deleteDocument'
 import { deleteDocumentsByIds as deleteDocumentsRequest } from '../../../api/requests/deleteDocumentsById'
+import { getDocumentById as getDocumentByIdRequest } from '../../../api/requests/getDocumentById'
 import adapter from './adapter'
 
 const name = 'documents'
@@ -114,7 +115,7 @@ export type GetDocument = {
 export const getDocument = createAsyncThunkExtended(
   `${name}/getDocument`,
   async ({ id }: GetDocument, { token }) => {
-    // return await getDocumentById({ token, id })
+    return await getDocumentByIdRequest({ token, id })
   },
 )
 
