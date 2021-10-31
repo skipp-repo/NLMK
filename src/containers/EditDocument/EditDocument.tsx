@@ -15,7 +15,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ children }) => {
       <Container>
         <BackLink href="/documents/">Вернуться назад</BackLink>
 
-        <Editor />
+        <Editor className="EditDocument-editor" />
       </Container>
     </div>
   )

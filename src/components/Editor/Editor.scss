@@ -1,3 +1,24 @@
 @import "../../styles/general.css";
 
 .Editor {}
+
+.EditorControls {
+  display: flex;
+  align-items: center;
+}
+
+.EditorControls-separator {
+  width: 1px;
+  height: 20px;
+  background-color: var(--light-gray-3);
+  margin-right: 6px;
+  margin-left: 6px;
+}
+
+.EditorControl {
+  cursor: pointer;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
