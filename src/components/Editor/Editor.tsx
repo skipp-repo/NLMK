@@ -2,6 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import { ContentState, Editor as DraftEditor, EditorState, RichUtils } from 'draft-js'
 import 'draft-js/dist/Draft.css'
+import htmlToContentState from '../../utils/htmlToContentState'
 import EditorControls from './EditorControls'
 import './Editor.scss'
 
@@ -16,9 +17,10 @@ function getBlockStyle(block) {
 
 export type EditorProps = Omit<JSX.IntrinsicElements['div'], 'onChange'> & {
   onChange(content: ContentState): void
+  html: string
 }
 
-const Editor: React.FC<EditorProps> = ({ children, className, onChange, ...props }) => {
+const Editor: React.FC<EditorProps> = ({ children, className, html, onChange, ...props }) => {
   const [editorState, setEditorState] = React.useState<EditorState>(() => EditorState.createEmpty())
 
   const handleKeyCommand = (command, editorState) => {
@@ -43,6 +45,16 @@ const Editor: React.FC<EditorProps> = ({ children, className, onChange, ...props
 
     onChange(content)
   }
+
+  React.useEffect(() => {
+    if (!html) return
+
+    const contentState = htmlToContentState(html)
+
+    console.log(html, contentState)
+
+    setEditorState(EditorState.createWithContent(contentState))
+  }, [html])
 
   return (
     <div className={clsx('Editor', className)} {...props}>

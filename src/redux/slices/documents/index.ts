@@ -123,7 +123,7 @@ const getDocumentSlice = makeExtraReducers({
   action: getDocument,
   extraReducers: {
     fulfilled: (state, { payload: { data } }) => {
-      adapter.updateOne(state, { id: data.glossID, changes: { cards: data.cards } })
+      adapter.updateOne(state, { id: data._id, changes: data })
     },
   },
 })

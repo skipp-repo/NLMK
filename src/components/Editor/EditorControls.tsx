@@ -64,7 +64,7 @@ const EditorControls: React.FC<EditorControlsProps> = ({
     onToggle(newState)
   }
 
-  const renderControl = ({ type, Icon, style, label }) => {
+  const renderControl = ({ type, Icon, style, label }, index) => {
     switch (type) {
       case ActionType.INLINE: {
         return (
@@ -93,7 +93,7 @@ const EditorControls: React.FC<EditorControlsProps> = ({
       }
 
       case ActionType.SEPARATOR: {
-        return <div className="EditorControls-separator" />
+        return <div key={index} className="EditorControls-separator" />
       }
     }
   }

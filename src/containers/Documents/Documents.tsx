@@ -50,7 +50,9 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
     setLocation('/documents/edit/new')
   }
 
-  const handleClickDocument = (_id) => {}
+  const handleClickDocument = (_id) => {
+    setLocation(`/documents/edit/${_id}`)
+  }
 
   const handleSelect = (_id, selected) => {
     selectItem({ selected, _id })
