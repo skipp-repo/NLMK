@@ -2,33 +2,34 @@ import secrets from 'secrets'
 
 const { API_URL } = secrets
 
-export type UploadDocument = {
+export type UpdateDocument = {
   token: string
-  data?: FormData
-  documentHTML?: string
+  id: number
+  documentHTML: string
   documentName?: string
 }
 
-export const uploadDocument = async (
-  { token, data, documentHTML, documentName }: UploadDocument,
+export const updateDocument = async (
+  { token, id, documentHTML, documentName }: UpdateDocument,
   init?: RequestInit,
 ) => {
   try {
+    const params = {
+      id,
+      documentHTML,
+      documentName,
+    }
+
     const headers = { 'X-USER-ID': token }
 
     if (documentHTML) {
       headers['Content-Type'] = 'application/json'
     }
 
-    const result = await fetch(`${API_URL}/documents/`, {
-      method: 'POST',
+    const result = await fetch(`${API_URL}/documents/${id}`, {
+      method: 'PUT',
       headers,
-      body:
-        data ||
-        JSON.stringify({
-          documentHTML,
-          documentName,
-        }),
+      body: JSON.stringify(params),
       ...init,
     })
 
