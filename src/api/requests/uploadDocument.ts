@@ -4,17 +4,27 @@ const { API_URL } = secrets
 
 export type UploadDocument = {
   token: string
-  data: FormData
+  data?: FormData
+  documentHTML?: string
+  docName?: string
 }
 
-export const uploadDocument = async ({ token, data }: UploadDocument, init?: RequestInit) => {
+export const uploadDocument = async (
+  { token, data, documentHTML, docName }: UploadDocument,
+  init?: RequestInit,
+) => {
   try {
     const result = await fetch(`${API_URL}/documents/`, {
       method: 'POST',
       headers: {
         'X-USER-ID': token,
       },
-      body: data,
+      body:
+        data ||
+        JSON.stringify({
+          documentHTML,
+          docName,
+        }),
       ...init,
     })
 

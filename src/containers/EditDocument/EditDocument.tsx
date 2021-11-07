@@ -2,6 +2,7 @@ import { ContentState, convertToRaw } from 'draft-js'
 import React from 'react'
 import './EditDocument.scss'
 import { useSelector } from 'react-redux'
+import { useDebouncedCallback } from 'use-debounce'
 import Container from '../../components/Container/Container'
 import useReduxAction from '../../hooks/useReduxAction'
 import BackLink from '../../components/BackLink/BackLink'
@@ -19,21 +20,20 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const currentDocument = useSelector(documentsSlice.selectors.documentById(id))
 
   const uploadDocument = reduxAction(documentsSlice.uploadDocument)
+  const updateDocument = reduxAction(documentsSlice.updateDocument)
   const getDocument = reduxAction(documentsSlice.getDocument)
 
-  const handleChange = async (content: ContentState) => {
+  const handleChange = useDebouncedCallback(async (content: ContentState) => {
     if (content.hasText()) {
-      const file = await contentStateToHtml(content)
+      const documentHTML = await contentStateToHtml(content)
 
-      // const formData = new FormData()
-      // // @ts-ignore
-      // formData.append('userDoc', file, file?.name || 'unnamed')
-      //
-      // if (id === 'new') {
-      //   uploadDocument(formData)
-      // }
+      if (id === 'new') {
+        uploadDocument({ documentHTML, docName: 'Новый документ' })
+      } else {
+        updateDocument({ documentHTML, id })
+      }
     }
-  }
+  }, 1000)
 
   React.useEffect(() => {
     if (id === 'new') return

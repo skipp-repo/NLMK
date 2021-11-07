@@ -2,7 +2,14 @@ import { createSlice } from '@reduxjs/toolkit'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 // import { getDocumentById } from '../../../api/requests/getDocumentById'
-import { uploadDocument as uploadDocumentRequest } from '../../../api/requests/uploadDocument'
+import {
+  UploadDocument,
+  uploadDocument as uploadDocumentRequest,
+} from '../../../api/requests/uploadDocument'
+import {
+  UpdateDocument,
+  updateDocument as updateDocumentRequest,
+} from '../../../api/requests/updateDocument'
 import { getDocuments as getDocumentsRequest } from '../../../api/requests/getDocuments'
 import { deleteDocument as deleteDocumentRequest } from '../../../api/requests/deleteDocument'
 import { deleteDocumentsByIds as deleteDocumentsRequest } from '../../../api/requests/deleteDocumentsById'
@@ -24,13 +31,29 @@ const initialState: InitialState = {
 
 export const uploadDocument = createAsyncThunkExtended(
   `${name}/uploadDocument`,
-  async (data: FormData, { token }) => {
-    return await uploadDocumentRequest({ token, data })
+  async ({ data, documentHTML, docName }: Omit<UploadDocument, 'token'>, { token }) => {
+    return await uploadDocumentRequest({ token, data, documentHTML, docName })
   },
 )
 
 const uploadDocumentSlice = makeExtraReducers({
   action: uploadDocument,
+  extraReducers: {
+    fulfilled: (state, { payload: { data } }) => {
+      adapter.addOne(state, data)
+    },
+  },
+})
+
+export const updateDocument = createAsyncThunkExtended(
+  `${name}/updateDocument`,
+  async ({ id, documentHTML, documentName }: Omit<UpdateDocument, 'token'>, { token }) => {
+    return await updateDocumentRequest({ token, id, documentHTML, documentName })
+  },
+)
+
+const updateDocumentSlice = makeExtraReducers({
+  action: updateDocument,
   extraReducers: {
     fulfilled: (state, { payload: { data } }) => {
       adapter.addOne(state, data)
@@ -153,6 +176,7 @@ const documentsSlice = createSlice({
     ...deleteDocumentSlice,
     ...uploadDocumentSlice,
     ...deleteDocumentsSlice,
+    ...updateDocumentSlice,
   },
 })
 
