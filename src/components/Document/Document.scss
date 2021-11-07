@@ -23,7 +23,6 @@
     &:hover {
       color: var(--blue);
     }
-
   }
 }
 
@@ -76,7 +75,11 @@
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  overflow: hidden;
+  white-space: nowrap;
 
 }
 
