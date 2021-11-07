@@ -14,6 +14,10 @@ import { getDocuments as getDocumentsRequest } from '../../../api/requests/getDo
 import { deleteDocument as deleteDocumentRequest } from '../../../api/requests/deleteDocument'
 import { deleteDocumentsByIds as deleteDocumentsRequest } from '../../../api/requests/deleteDocumentsById'
 import { getDocumentById as getDocumentByIdRequest } from '../../../api/requests/getDocumentById'
+import {
+  RenameDocument,
+  renameDocument as renameDocumentRequest,
+} from '../../../api/requests/renameDocument'
 import adapter from './adapter'
 
 const name = 'documents'
@@ -151,6 +155,29 @@ const getDocumentSlice = makeExtraReducers({
   },
 })
 
+export const renameDocument = createAsyncThunkExtended(
+  `${name}/renameDocument`,
+  async ({ id, newName }: Omit<RenameDocument, 'token'>, { token }) => {
+    return await renameDocumentRequest({ token, id, newName })
+  },
+)
+
+const renameDocumentSlice = makeExtraReducers({
+  action: renameDocument,
+  extraReducers: {
+    fulfilled: (
+      state,
+      {
+        meta: {
+          arg: { id, newName },
+        },
+      },
+    ) => {
+      adapter.updateOne(state, { id: id, changes: { name: newName } })
+    },
+  },
+})
+
 const documentsSlice = createSlice({
   name,
   initialState,
@@ -177,6 +204,7 @@ const documentsSlice = createSlice({
     ...uploadDocumentSlice,
     ...deleteDocumentsSlice,
     ...updateDocumentSlice,
+    ...renameDocumentSlice,
   },
 })
 
