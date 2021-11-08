@@ -52,9 +52,13 @@
 
 .Documents-items {
     display: flex;
-
+    flex-wrap: wrap;
 }
 
 .Documents-item {
     margin-right: 22px;
+
+    &:nth-child(6n) {
+        margin-right: -22px;
+    }
 }

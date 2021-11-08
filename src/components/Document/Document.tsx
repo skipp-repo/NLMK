@@ -45,11 +45,13 @@ const Document: React.FC<DocumentProps> = ({
   }
 
   return (
-    <div {...props} className={clsx('Document', className)} onClick={handleClick}>
+    <div {...props} className={clsx('Document', className)}>
       <div className="Document-name">{name}</div>
       <div className="Document-container">
         <Checkbox checked={checked} className="Document-checkbox" onChange={handleSelect} />
-        <div className="Document-content">{children}</div>
+        <div className="Document-content" onClick={handleClick}>
+          {children}
+        </div>
         <div className="Document-actions">
           <div className="Document-download" onClick={handleDownload}>
             <DownloadIcon />

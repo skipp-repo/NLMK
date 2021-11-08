@@ -2,7 +2,6 @@
 
 .Document {
   width: 166px;
-  cursor: pointer;
   margin-bottom: 20px;
 }
 
@@ -11,6 +10,7 @@
   box-shadow: 0px 6px 34px -20px rgba(117, 130, 147, 0.5);
   border-radius: 5px;
   background: var(--white);
+  cursor: pointer;
 
   &_new {
     display: flex;
