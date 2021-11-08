@@ -39,11 +39,7 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
   const handleFileInputChange = ({ target }) => {
     const file = target.files[0]
 
-    const data = new FormData()
-
-    data.append('userDoc', file, file.name)
-
-    uploadDocument(data)
+    uploadDocument({ file })
   }
 
   const handleNewDocument = () => {

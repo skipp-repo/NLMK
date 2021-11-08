@@ -56,8 +56,6 @@ const handleSelectionChange = async (): Promise<void> => {
 
   const tooltip = getTooltip(translation)
 
-  console.log(rangeRef, tooltip)
-
   const popper = createPopper(rangeRef, tooltip, {
     placement: 'top',
   })

@@ -37,8 +37,6 @@ const Tooltip: React.FC<TooltipProps> = React.forwardRef(
           update,
           state,
         }
-
-        console.log('update')
       }
     }, [ref, forceUpdate, update, state])
 

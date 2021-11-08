@@ -3,6 +3,7 @@ import React from 'react'
 import './EditDocument.scss'
 import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
+import { useLocation } from 'wouter'
 import Container from '../../components/Container/Container'
 import EditableTitle from '../../components/EditableTitle/EditableTitle'
 import useReduxAction from '../../hooks/useReduxAction'
@@ -18,7 +19,9 @@ export type MyEditDocumentProps = {
 const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const reduxAction = useReduxAction()
 
-  const [docName, setDocName] = React.useState()
+  const [docName, setDocName] = React.useState('')
+
+  const [, setLocation] = useLocation()
 
   const currentDocument = useSelector(documentsSlice.selectors.documentById(id))
 
@@ -33,6 +36,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
 
       if (id === 'new') {
         uploadDocument({ documentHTML, documentName: docName })
+        setLocation('/documents/')
       } else {
         updateDocument({ documentHTML, id })
       }
@@ -54,12 +58,24 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
     getDocument({ id })
   }, [id])
 
+  React.useEffect(() => {
+    let title = ''
+
+    if (id === 'new') {
+      title = 'Новый документ'
+    } else if (currentDocument?.name) {
+      title = currentDocument?.name
+    }
+
+    setDocName(title)
+  }, [currentDocument?.name, id])
+
   return (
     <div className="EditDocument">
       <Container>
         <BackLink href="/documents/">Вернуться назад</BackLink>
 
-        <EditableTitle title={currentDocument?.name} onChange={handleChangeTitle} />
+        <EditableTitle title={docName} onChange={handleChangeTitle} />
 
         <Editor
           className="EditDocument-editor"

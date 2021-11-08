@@ -19,6 +19,7 @@ import {
   renameDocument as renameDocumentRequest,
 } from '../../../api/requests/renameDocument'
 import adapter from './adapter'
+import { allNames } from './selectors'
 
 const name = 'documents'
 
@@ -33,10 +34,43 @@ const initialState: InitialState = {
   selectedItems: [],
 }
 
+export type UploadDocumentAction = Omit<UploadDocument, 'token' | 'data'> & {
+  file: File
+}
+
+const checkNameIsUnic = (name, names): boolean => !names.includes(name)
+
+const createUnicNameForDocument = (name, names) => {
+  let count = 1
+
+  const createName = (name, count) => `${name.match(/(.+).docx/)[1]} (${++count}).docx`
+
+  while (!checkNameIsUnic(name, names)) {
+    name = createName(name, count)
+  }
+
+  return name
+}
+
 export const uploadDocument = createAsyncThunkExtended(
   `${name}/uploadDocument`,
-  async ({ data, documentHTML, documentName }: Omit<UploadDocument, 'token'>, { token }) => {
-    return await uploadDocumentRequest({ token, data, documentHTML, documentName })
+  async ({ file, documentHTML, documentName }: UploadDocumentAction, { token, state }) => {
+    if (documentHTML) {
+      return await uploadDocumentRequest({ token, documentHTML, documentName })
+    }
+
+    if (file) {
+      const data = new FormData()
+
+      let name = file.name
+      const namesArr = allNames(state)
+
+      name = createUnicNameForDocument(name, namesArr)
+
+      data.append('userDoc', file, name)
+
+      return await uploadDocumentRequest({ token, data })
+    }
   },
 )
 

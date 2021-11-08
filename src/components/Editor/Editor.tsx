@@ -51,8 +51,6 @@ const Editor: React.FC<EditorProps> = ({ children, className, html, onChange, ..
 
     const contentState = htmlToContentState(html)
 
-    console.log(html, contentState)
-
     setEditorState(EditorState.createWithContent(contentState))
   }, [html])
 

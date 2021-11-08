@@ -24,3 +24,7 @@ export const documentsList = createSelector(
 )
 
 export const documentById = (id) => createSelector(documents, (state) => selectById(state, id))
+
+export const allNames = createSelector(createSelector(documents, selectAll), (items) =>
+  items.map((item) => item.name),
+)

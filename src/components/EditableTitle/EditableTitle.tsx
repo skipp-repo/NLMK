@@ -24,8 +24,6 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
 
     setEditing(nextEditing)
 
-    console.log(titleValueRef.current)
-
     if (!nextEditing && titleValueRef.current.length) {
       onChange(titleValueRef.current)
     }
