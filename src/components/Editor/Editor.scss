@@ -21,4 +21,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--dark-gray);
+
+  &_active {
+    color: var(--blue-2);
+  }
 }
