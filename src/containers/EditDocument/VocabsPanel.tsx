@@ -7,45 +7,13 @@ import { Translate } from '../../redux/slices/translation'
 import * as translationSlice from '../../redux/slices/translation'
 import * as userSlice from '../../redux/slices/user'
 import { Filters } from '../../types/filters'
+import { searchFiltersReducer } from './reducers'
 
-export type MyVocabsPanelProps = {}
-
-const searchFiltersReducer = (state, action) => {
-  switch (action.type) {
-    case 'WordsAndPhrases':
-      return { ...state, words: action.selected, phrases: action.selected }
-    case 'Words': {
-      return { ...state, words: action.selected, phrases: false }
-    }
-    case 'Phrases':
-      return { ...state, words: false, phrases: action.selected }
-    case 'Vocabs': {
-      let vocabs = state.vocabs
-
-      if (Array.isArray(vocabs)) {
-        if (action.selected) {
-          vocabs = [...vocabs, action.data.id]
-        } else {
-          vocabs = vocabs.filter((id) => id !== action.data.id)
-
-          if (!vocabs.length) {
-            vocabs = true
-          }
-        }
-      } else {
-        if (action.selected) {
-          vocabs = [action.data.id]
-        }
-      }
-
-      return { ...state, vocabs }
-    }
-    default:
-      return state
-  }
+export type VocabPanelProps = {
+  onAdd(word: string): void
 }
 
-const VocabsPanel: React.FC<MyVocabsPanelProps> = ({ ...props }) => {
+const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
   const reduxAction = useReduxAction()
 
   const [query, setQuery] = React.useState('')
@@ -73,8 +41,8 @@ const VocabsPanel: React.FC<MyVocabsPanelProps> = ({ ...props }) => {
       vocabs.map(({ _id, name, ...item }) => {
         let selected
 
-        if (Array.isArray(searchFilters.glossaries)) {
-          selected = searchFilters.glossaries.includes(_id)
+        if (Array.isArray(searchFilters.vocabs)) {
+          selected = searchFilters.vocabs.includes(_id)
         } else {
           selected = false
         }
@@ -87,7 +55,7 @@ const VocabsPanel: React.FC<MyVocabsPanelProps> = ({ ...props }) => {
           selected,
         }
       }),
-    [vocabs, searchFilters.glossaries],
+    [vocabs, searchFilters.vocabs],
   )
 
   const filters: Filters = [
@@ -122,7 +90,9 @@ const VocabsPanel: React.FC<MyVocabsPanelProps> = ({ ...props }) => {
   ]
   const isLoading = (!translationHistory?.length && getStatusLoading) || translateLoading
 
-  const handleAdd = () => {}
+  const handleAdd = (word) => {
+    onAdd(word)
+  }
 
   const handleChangeFilter = ({ type, selected, data }) => {
     searchFiltersDispatch({ type, selected, data })
