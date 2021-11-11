@@ -43,20 +43,20 @@ const Search: React.FC<SearchProps> = ({
     <div className={clsx('Search', className)}>
       <Autosuggest
         suggestions={suggestions}
-        inputProps={{
-          // @ts-ignore
-          value,
-          placeholder: 'Найти слово или фразу...',
-          className: 'Search-input',
-          onChange: handleChange,
-          ...inputProps,
-        }}
         renderSuggestion={renderSuggestion}
         getSuggestionValue={getSuggestionValue}
         onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
         onSuggestionsClearRequested={handleSuggestionsClearRequested}
         className="Search-suggestions"
         {...props}
+        inputProps={{
+          // @ts-ignore
+          value,
+          placeholder: 'Найти слово или фразу...',
+          onChange: handleChange,
+          ...inputProps,
+          className: clsx('Search-input', inputProps.className),
+        }}
       />
       <SearchIcon className="Search-icon" />
     </div>

@@ -95,3 +95,41 @@ export const mainVocabsSearchResults = createSelector(
     }
   },
 )
+
+export const documentsVocabsSearchResults = createSelector(
+  glossaries,
+  translation,
+  allCardsIds,
+  (glossariesState, translationState, vocabsIds) => {
+    const translationArr = translationState?.DocumentsVocabs
+
+    if (!translationArr) return
+
+    const results = flatten(translationArr?.results)
+
+    const updatedResults = results?.map((item) => {
+      const itemGlossaries = item?.translation?.glossaries
+
+      const vocabsGlossaries = itemGlossaries
+        ? item?.translation?.glossaries.map((glossaryId) => {
+            const { _id, name } = find(glossariesState, { _id: glossaryId })
+
+            return { _id, name }
+          })
+        : []
+
+      const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
+
+      return {
+        ...item.translation,
+        glossaries: vocabsGlossaries,
+        images,
+      }
+    })
+
+    return {
+      ...translationArr,
+      results: updatedResults,
+    }
+  },
+)

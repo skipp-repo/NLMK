@@ -16,6 +16,7 @@ import useReduxAction from '../../hooks/useReduxAction'
 import * as userSlice from '../../redux/slices/user'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import * as appSlice from '../../redux/slices/app'
+import { Filters } from '../../types/filters'
 import MyVocabularyActions from './MyVocabularyActions'
 import Search from '../../components/Search/Search'
 import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
@@ -137,7 +138,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     [glossaries, searchFilters.glossaries],
   )
 
-  const filtersData = [
+  const filtersData: Filters = [
     {
       name: 'Тип поиска',
       items: [

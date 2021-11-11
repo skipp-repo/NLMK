@@ -1,6 +1,15 @@
 @import "../../styles/general.css";
 
 .EditDocument-editor {
-  width: 60%;
   height: 70vh;
+}
+
+.EditDocument-editor-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.EditDocument-panels {
+  width: 354px;
 }

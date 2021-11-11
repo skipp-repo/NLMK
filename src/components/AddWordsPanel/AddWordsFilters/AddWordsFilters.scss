@@ -1,0 +1,50 @@
+@import "../../../styles/general.css";
+
+.AddWordsFilters {
+  position: relative;
+  z-index: 100;
+}
+
+.AddWordsFilters-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--light-gray-3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F9FAFC;
+  cursor: pointer;
+}
+
+.AddWordsFilters-button-icon {
+  color: var(--blue)
+}
+
+.AddWordsFilters-dropdown {
+  position: absolute;
+  bottom: -6px;
+  right: 0;
+  transform: translateY(100%);
+  background-color: #F9FAFC;
+  padding: 20px;
+  box-shadow: 0px 6px 34px -20px rgba(117, 130, 147, 0.5);
+  width: 280px;
+}
+
+.AddWordsFilters-item {
+  margin-bottom: 14px;
+  white-space: pre-wrap;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.AddWordsFilters-name {
+  display: inline-block;
+  color: var(--light-gray-3);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}

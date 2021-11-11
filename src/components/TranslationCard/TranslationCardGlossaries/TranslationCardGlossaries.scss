@@ -5,6 +5,7 @@
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
+	font-size: r(10px);
 }
 
 .TranslationCardGlossaries-list {
@@ -15,6 +16,5 @@
 
 .TranslationCardGlossaries-list-text {
 	color: var(--light-gray-2);
-	font-size: r(10px);
 	line-height: r(15px);
 }

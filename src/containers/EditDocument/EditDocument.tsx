@@ -4,6 +4,7 @@ import './EditDocument.scss'
 import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
 import { useLocation } from 'wouter'
+import AddWordsPanel from '../../components/AddWordsPanel/AddWordsPanel'
 import Container from '../../components/Container/Container'
 import EditableTitle from '../../components/EditableTitle/EditableTitle'
 import useReduxAction from '../../hooks/useReduxAction'
@@ -11,6 +12,7 @@ import BackLink from '../../components/BackLink/BackLink'
 import Editor from '../../components/Editor/Editor'
 import * as documentsSlice from '../../redux/slices/documents'
 import contentStateToHtml from '../../utils/contentStateToHtml'
+import VocabsPanel from './VocabsPanel'
 
 export type MyEditDocumentProps = {
   params: { id: string }
@@ -77,11 +79,17 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
 
         <EditableTitle title={docName} onChange={handleChangeTitle} />
 
-        <Editor
-          className="EditDocument-editor"
-          onChange={handleChange}
-          html={currentDocument?.data}
-        />
+        <div className="EditDocument-editor-wrapper">
+          <Editor
+            className="EditDocument-editor"
+            onChange={handleChange}
+            html={currentDocument?.data}
+          />
+
+          <div className="EditDocument-panels">
+            <VocabsPanel />
+          </div>
+        </div>
       </Container>
     </div>
   )

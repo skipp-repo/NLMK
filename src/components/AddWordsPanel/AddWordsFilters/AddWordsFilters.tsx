@@ -1,21 +1,19 @@
 import React from 'react'
 import clsx from 'clsx'
 import { useClickOutside } from 'use-events'
-import './VocabsFilters.scss'
-import { ReactComponent as ArrowIcon } from '../../assets/icons/arrow-2.svg'
-import { Filters } from '../../types/filters'
-import Checkbox from '../Checkbox/Checkbox'
+import './AddWordsFilters.scss'
+import { Filters } from '../../../types/filters'
+import { ReactComponent as FiltersIcon } from '../../../assets/icons/filters.svg'
+import Checkbox from '../../Checkbox/Checkbox'
 
-export type VocabsFiltersProps = Omit<JSX.IntrinsicElements['div'], 'onSelect'> & {
-  text?: string
+export type AddWordsFiltersProps = Omit<JSX.IntrinsicElements['div'], 'onSelect'> & {
   items?: Filters
   onSelect?({ type, selected, data: any }): void
 }
 
-const VocabsFilters: React.FC<VocabsFiltersProps> = ({
+const AddWordsFilters: React.FC<AddWordsFiltersProps> = ({
   children,
   className,
-  text = 'Фильтр',
   items,
   onSelect,
   ...props
@@ -36,7 +34,7 @@ const VocabsFilters: React.FC<VocabsFiltersProps> = ({
   const renderCheckbox = ({ key, type, name, data, selected }) => (
     <Checkbox
       key={key}
-      className="VocabsFilters-item"
+      className="AddWordsFilters-item"
       text={name}
       checked={selected}
       onChange={handleSelect({ type, data })}
@@ -45,7 +43,7 @@ const VocabsFilters: React.FC<VocabsFiltersProps> = ({
 
   const renderItem = ({ name, items }) => (
     <>
-      <span key={name} className="VocabsFilters-name">
+      <span key={name} className="AddWordsFilters-name">
         {name}
       </span>
       {items.map(renderCheckbox)}
@@ -57,24 +55,22 @@ const VocabsFilters: React.FC<VocabsFiltersProps> = ({
   return (
     <div
       {...props}
-      className={clsx('VocabsFilters', className, {
-        VocabsFilters_opened: opened,
+      className={clsx('AddWordsFilters', className, {
+        AddWordsFilters_opened: opened,
       })}
       ref={ref}
     >
-      <div className="VocabsFilters-button" onClick={handleClick}>
-        <span className="VocabsFilters-button-text">{text}</span>
-
-        <ArrowIcon className="VocabsFilters-button-icon" />
+      <div className="AddWordsFilters-button" onClick={handleClick}>
+        <FiltersIcon className="AddWordsFilters-button-icon" />
       </div>
 
       {opened && !!items?.length && (
-        <div className="VocabsFilters-dropdown">
-          <div className="VocabsFilters-items">{items.map(renderItem)}</div>
+        <div className="AddWordsFilters-dropdown">
+          <div className="AddWordsFilters-items">{items.map(renderItem)}</div>
         </div>
       )}
     </div>
   )
 }
 
-export default React.memo(VocabsFilters)
+export default React.memo(AddWordsFilters)

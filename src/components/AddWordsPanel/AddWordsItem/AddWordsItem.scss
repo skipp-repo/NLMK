@@ -1,0 +1,88 @@
+@import "../../../styles/general.css";
+
+.AddWordsItem {
+  padding: 7px 72px 7px 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.AddWordsItem-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.AddWordsItem-action {
+  width: r(15px);
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.AddWordsItem-arrow-button {
+  position: relative;
+  left: r(2px);
+  margin-left: auto;
+  background-color: #E9EEF5;
+  border-radius: 50%;
+  width: r(20px);
+  height: r(20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.AddWordsItem-item {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: r(10px);
+}
+
+.AddWordsItem-items {
+
+}
+
+.AddWordsItem-word.TranslationCardWord {
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.AddWordsItem-image {
+  width: 32px;
+  height: 32px;
+}
+
+.AddWordsItem-glossaries {
+  margin-top: 4px;
+}
+
+.AddWordsItem-title {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--light-gray-2);
+  margin-bottom: r(4px);
+}
+
+.AddWordsItem-meaning {
+  font-size: 12px;
+}
+
+.AddWordsItem-glossaries {
+  font-size: 12px;
+}
+
+.AddWordsItem-button {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 26px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--light-gray);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
