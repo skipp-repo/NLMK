@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import getUniqNameForDocument from '../../../utils/getUniqNameForDocument'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 // import { getDocumentById } from '../../../api/requests/getDocumentById'
@@ -38,34 +39,21 @@ export type UploadDocumentAction = Omit<UploadDocument, 'token' | 'data'> & {
   file: File
 }
 
-const checkNameIsUnic = (name, names): boolean => !names.includes(name)
-
-const createUnicNameForDocument = (name, names) => {
-  let count = 1
-
-  const createName = (name, count) => `${name.match(/(.+).docx/)[1]} (${++count}).docx`
-
-  while (!checkNameIsUnic(name, names)) {
-    name = createName(name, count)
-  }
-
-  return name
-}
-
 export const uploadDocument = createAsyncThunkExtended(
   `${name}/uploadDocument`,
   async ({ file, documentHTML, documentName }: UploadDocumentAction, { token, state }) => {
+    const namesArr = allNames(state)
+
     if (documentHTML) {
-      return await uploadDocumentRequest({ token, documentHTML, documentName })
+      const name = getUniqNameForDocument(documentName, namesArr)
+
+      return await uploadDocumentRequest({ token, documentHTML, documentName: name })
     }
 
     if (file) {
       const data = new FormData()
 
-      let name = file.name
-      const namesArr = allNames(state)
-
-      name = createUnicNameForDocument(name, namesArr)
+      const name = getUniqNameForDocument(file.name, namesArr)
 
       data.append('userDoc', file, name)
 
