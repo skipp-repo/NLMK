@@ -27,3 +27,12 @@
     color: var(--blue-2);
   }
 }
+
+.Editor-wrapper {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.Editor-controls {
+  margin-top: 20px;
+}

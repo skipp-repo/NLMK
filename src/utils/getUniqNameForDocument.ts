@@ -1,8 +1,8 @@
 const fileNameRegex = /(.+)\.docx|(.+)/
 
-const checkNameIsUnic = (name, names): boolean => !names.includes(name)
+const checkNameIsUnic = (name: string, names: string[]): boolean => !names.includes(name)
 
-const createName = (name, count) => {
+const createName = (name: string, count: number) => {
   const matchResult = name.match(fileNameRegex)
   const resultName = matchResult[1] || matchResult[0]
 

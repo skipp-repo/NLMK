@@ -16,7 +16,7 @@ export type AddWordsPanelProps = JSX.IntrinsicElements['div'] & {
   isLoading: boolean
   translationData: any
   historyData: any
-  onAdd(id: number): void
+  onAdd(word: string): void
   onSearch(newValue: string): void
   onChangeFilter({ type, selected, data }): void
 }
@@ -36,8 +36,8 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
 }) => {
   const { getCollapseProps, getToggleProps } = useCollapse()
 
-  const handleAdd = (id) => {
-    onAdd(id)
+  const handleAdd = (word) => {
+    onAdd(word)
   }
 
   const renderTranslationCard = (data) => {

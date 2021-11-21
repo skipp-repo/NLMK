@@ -4,12 +4,11 @@ import './EditDocument.scss'
 import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
 import { useLocation } from 'wouter'
-import AddWordsPanel from '../../components/AddWordsPanel/AddWordsPanel'
 import Container from '../../components/Container/Container'
 import EditableTitle from '../../components/EditableTitle/EditableTitle'
 import useReduxAction from '../../hooks/useReduxAction'
 import BackLink from '../../components/BackLink/BackLink'
-import Editor from '../../components/Editor/Editor'
+import Editor, { EditorRef } from '../../components/Editor/Editor'
 import * as documentsSlice from '../../redux/slices/documents'
 import contentStateToHtml from '../../utils/contentStateToHtml'
 import VocabsPanel from './VocabsPanel'
@@ -24,6 +23,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const [docName, setDocName] = React.useState('')
 
   const [, setLocation] = useLocation()
+  const editorRef: EditorRef = React.useRef()
 
   const currentDocument = useSelector(documentsSlice.selectors.documentById(id))
 
@@ -43,7 +43,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
         updateDocument({ documentHTML, id })
       }
     }
-  }, 1000)
+  }, 500)
 
   const handleChangeTitle = (newName) => {
     if (id === 'new') {
@@ -52,6 +52,12 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
     }
 
     renameDocument({ newName, id })
+  }
+
+  const handleAddWord = (word) => {
+    if (!editorRef?.current?.insertText) return
+
+    editorRef?.current?.insertText(word)
   }
 
   React.useEffect(() => {
@@ -81,13 +87,14 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
 
         <div className="EditDocument-editor-wrapper">
           <Editor
+            ref={editorRef}
             className="EditDocument-editor"
             onChange={handleChange}
             html={currentDocument?.data}
           />
 
           <div className="EditDocument-panels">
-            <VocabsPanel />
+            <VocabsPanel onAdd={handleAddWord} />
           </div>
         </div>
       </Container>

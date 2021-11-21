@@ -55,7 +55,7 @@ const Search: React.FC<SearchProps> = ({
           placeholder: 'Найти слово или фразу...',
           onChange: handleChange,
           ...inputProps,
-          className: clsx('Search-input', inputProps.className),
+          className: clsx('Search-input', inputProps?.className),
         }}
       />
       <SearchIcon className="Search-icon" />

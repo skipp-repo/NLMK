@@ -15,7 +15,7 @@ export type AddWordsItemProps = Omit<JSX.IntrinsicElements['div'], 'onAdd'> & {
   item: PhraseTranslationLocal
   action?: React.ReactElement
   speech?: boolean
-  onAdd(id: number): void
+  onAdd(word: string): void
 }
 
 const AddWordsItem: React.FC<AddWordsItemProps> = ({
@@ -30,7 +30,7 @@ const AddWordsItem: React.FC<AddWordsItemProps> = ({
   const imgSrc = item.images?.length ? item.images[0] : undefined
 
   const handleAdd = ({ target }) => {
-    onAdd(item._id)
+    onAdd(item.translation)
   }
 
   const handleSpeech = useDebouncedCallback(() => {

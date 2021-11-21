@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { MutableRefObject } from 'react'
 import clsx from 'clsx'
-import { ContentState, Editor as DraftEditor, EditorState, RichUtils } from 'draft-js'
+import {
+  ContentState,
+  Editor as DraftEditor,
+  EditorState,
+  Modifier,
+  RichUtils,
+  SelectionState,
+} from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import htmlToContentState from '../../utils/htmlToContentState'
 import EditorControls from './EditorControls'
@@ -20,58 +27,98 @@ export type EditorProps = Omit<JSX.IntrinsicElements['div'], 'onChange'> & {
   html: string
 }
 
-const Editor: React.FC<EditorProps> = ({ children, className, html, onChange, ...props }) => {
-  const [editorState, setEditorState] = React.useState<EditorState>(() => EditorState.createEmpty())
+export type EditorRef = MutableRefObject<{
+  insertText(text: string): void
+}>
 
-  const handleKeyCommand = (command, editorState) => {
-    const newState = RichUtils.handleKeyCommand(editorState, command)
+const Editor = React.forwardRef(
+  ({ children, className, html, onChange, ...props }: EditorProps, ref: EditorRef) => {
+    const [editorState, setEditorState] = React.useState<EditorState>(() =>
+      EditorState.createEmpty(),
+    )
+    const lastSelectionState = React.useRef<SelectionState>()
+    const editorRef = React.useRef()
 
-    if (newState) {
-      setEditorState(newState)
-      return 'handled'
+    const handleKeyCommand = (command, editorState) => {
+      const newState = RichUtils.handleKeyCommand(editorState, command)
+
+      if (newState) {
+        setEditorState(newState)
+        return 'handled'
+      }
+
+      return 'not-handled'
     }
 
-    return 'not-handled'
-  }
+    const handleToggle = (newState) => {
+      setEditorState(newState)
+    }
 
-  const handleToggle = (newState) => {
-    setEditorState(newState)
-  }
+    const handleChange = (newState) => {
+      lastSelectionState.current = editorState.getSelection()
 
-  const handleChange = (newState) => {
-    setEditorState(newState)
+      setEditorState(newState)
 
-    const content = newState.getCurrentContent()
+      const content = newState.getCurrentContent()
 
-    onChange(content)
-  }
+      onChange(content)
+    }
 
-  React.useEffect(() => {
-    if (!html) return
+    const insertText = React.useCallback(
+      (text: string) => {
+        const contentState = editorState.getCurrentContent()
 
-    const contentState = htmlToContentState(html)
+        const newContentState = Modifier.insertText(
+          contentState,
+          editorState.getSelection(),
+          ` ${text} `,
+          editorState.getCurrentInlineStyle(),
+        )
 
-    setEditorState(EditorState.createWithContent(contentState))
-  }, [html])
+        const newEditorState = EditorState.push(editorState, newContentState, 'insert-characters')
 
-  return (
-    <div className={clsx('Editor', className)} {...props}>
-      <DraftEditor
-        blockStyleFn={getBlockStyle}
-        editorState={editorState}
-        onChange={handleChange}
-        handleKeyCommand={handleKeyCommand}
-        placeholder="Введите текст или вставьте текст документа в это поле..."
-        spellCheck={true}
-      />
+        setEditorState(newEditorState)
+      },
+      [editorState],
+    )
 
-      <EditorControls
-        className="Editor-controls"
-        onToggle={handleToggle}
-        editorState={editorState}
-      />
-    </div>
-  )
-}
+    React.useEffect(() => {
+      if (!html) return
+
+      const contentState = htmlToContentState(html)
+
+      setEditorState(EditorState.createWithContent(contentState))
+    }, [html])
+
+    React.useEffect(() => {
+      if (!ref) return
+
+      ref.current = {
+        insertText,
+      }
+    }, [ref, insertText])
+
+    return (
+      <div className={clsx('Editor', className)} {...props}>
+        <div className="Editor-wrapper">
+          <DraftEditor
+            ref={editorRef}
+            blockStyleFn={getBlockStyle}
+            editorState={editorState}
+            onChange={handleChange}
+            handleKeyCommand={handleKeyCommand}
+            placeholder="Введите текст или вставьте текст документа в это поле..."
+            spellCheck={true}
+          />
+        </div>
+        <EditorControls
+          className="Editor-controls"
+          onToggle={handleToggle}
+          editorState={editorState}
+        />
+      </div>
+    )
+  },
+)
 
 export default React.memo(Editor)
