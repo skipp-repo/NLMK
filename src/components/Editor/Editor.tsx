@@ -8,10 +8,12 @@ import {
   RichUtils,
   SelectionState,
 } from 'draft-js'
+import createStyles from 'draft-js-custom-styles'
 import 'draft-js/dist/Draft.css'
 import htmlToContentState from '../../utils/htmlToContentState'
 import EditorControls from './EditorControls'
 import './Editor.scss'
+import set = chrome.cookies.set
 
 function getBlockStyle(block) {
   switch (block.getType()) {
@@ -30,6 +32,8 @@ export type EditorProps = Omit<JSX.IntrinsicElements['div'], 'onChange'> & {
 export type EditorRef = MutableRefObject<{
   insertText(text: string): void
 }>
+
+const { styles, customStyleFn } = createStyles(['font-size'])
 
 const Editor = React.forwardRef(
   ({ children, className, html, onChange, ...props }: EditorProps, ref: EditorRef) => {
@@ -109,12 +113,15 @@ const Editor = React.forwardRef(
             handleKeyCommand={handleKeyCommand}
             placeholder="Введите текст или вставьте текст документа в это поле..."
             spellCheck={true}
+            customStyleFn={customStyleFn}
           />
         </div>
         <EditorControls
           className="Editor-controls"
           onToggle={handleToggle}
           editorState={editorState}
+          styles={styles}
+          setEditorState={setEditorState}
         />
       </div>
     )
