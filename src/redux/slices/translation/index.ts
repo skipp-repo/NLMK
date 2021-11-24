@@ -17,14 +17,21 @@ const initialState: InitialState = {
   flags: {},
 }
 
-export type Space = 'Popup' | 'MainVocabs' | 'Documents' | 'DocumentsVocabs'
+export enum SpaceEnum {
+  Popup = 'Popup',
+  MainVocabs = 'MainVocabs',
+  Glossaries = 'Glossaries',
+  Documents = 'Documents',
+  DocumentsVocabs = 'DocumentsVocabs',
+  DocumentsGlossaries = 'DocumentsGlossaries',
+}
 
-const defaultSpace: Space = 'Popup'
+const defaultSpace: SpaceEnum = SpaceEnum.Popup
 
 export type Translate = Omit<TranslationRequest, 'q'> & {
   query: string
   filters: TranslationRequest['filters']
-  space: Space
+  space: SpaceEnum
 }
 
 export const translate = createAsyncThunk(

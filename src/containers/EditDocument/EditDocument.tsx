@@ -12,6 +12,7 @@ import Editor, { EditorRef } from '../../components/Editor/Editor'
 import * as documentsSlice from '../../redux/slices/documents'
 import contentStateToHtml from '../../utils/contentStateToHtml'
 import VocabsPanel from './VocabsPanel'
+import GlossariessPanel from './GlossariesPanel'
 
 export type MyEditDocumentProps = {
   params: { id: string }
@@ -83,18 +84,21 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
       <Container>
         <BackLink href="/documents/">Вернуться назад</BackLink>
 
-        <EditableTitle title={docName} onChange={handleChangeTitle} />
+        <div className="EditDocument-wrapper">
+          <div className="EditDocument-editor-wrapper">
+            <EditableTitle title={docName} onChange={handleChangeTitle} />
 
-        <div className="EditDocument-editor-wrapper">
-          <Editor
-            ref={editorRef}
-            className="EditDocument-editor"
-            onChange={handleChange}
-            html={currentDocument?.data}
-          />
+            <Editor
+              ref={editorRef}
+              className="EditDocument-editor"
+              onChange={handleChange}
+              html={currentDocument?.data}
+            />
+          </div>
 
           <div className="EditDocument-panels">
-            <VocabsPanel onAdd={handleAddWord} />
+            <VocabsPanel className="EditDocument-panel" onAdd={handleAddWord} />
+            <GlossariessPanel className="EditDocument-panel" onAdd={handleAddWord} />
           </div>
         </div>
       </Container>

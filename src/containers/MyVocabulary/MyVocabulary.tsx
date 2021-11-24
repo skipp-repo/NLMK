@@ -1,30 +1,30 @@
 import React from 'react'
 import { useAsyncCallback } from 'react-async-hook'
-import useTitle from 'react-use/lib/useTitle'
 import { useSelector } from 'react-redux'
+import useTitle from 'react-use/lib/useTitle'
 import { useDebouncedCallback } from 'use-debounce'
 import { downloadAllVocabs as downloadAllVocabsRequest } from '../../api/requests/downloadAllVocabs'
-import Container from '../../components/Container/Container'
-import PageTitle from '../../components/PageTitle/PageTitle'
-import DownloadLink from '../../components/DownloadLink/DownloadLink'
 import Button from '../../components/Button/Button'
-import Tabs from '../../components/Tabs/Tabs'
-import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
-import './MyVocabulary.scss'
-import useModal from '../../hooks/useModal'
-import useReduxAction from '../../hooks/useReduxAction'
-import * as userSlice from '../../redux/slices/user'
-import * as vocabsSlice from '../../redux/slices/vocabs'
-import * as appSlice from '../../redux/slices/app'
-import { Filters } from '../../types/filters'
-import MyVocabularyActions from './MyVocabularyActions'
-import Search from '../../components/Search/Search'
-import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
+import Container from '../../components/Container/Container'
+import DownloadLink from '../../components/DownloadLink/DownloadLink'
 import ModalNewVocabGroup from '../../components/ModalNewVocabGroup/ModalNewVocabGroup'
 import ModalRemoveVocabGroup from '../../components/ModalRemoveVocabGroup/ModalRemoveVocabGroup'
 import ModalRenameVocabGroup from '../../components/ModalRenameVocabGroup/ModalRenameVocabGroup'
+import PageTitle from '../../components/PageTitle/PageTitle'
+import Search from '../../components/Search/Search'
+import Tabs from '../../components/Tabs/Tabs'
+import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
+import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
+import useModal from '../../hooks/useModal'
+import useReduxAction from '../../hooks/useReduxAction'
+import * as appSlice from '../../redux/slices/app'
 import * as translationSlice from '../../redux/slices/translation'
-import { Translate } from '../../redux/slices/translation'
+import { SpaceEnum, Translate } from '../../redux/slices/translation'
+import * as userSlice from '../../redux/slices/user'
+import * as vocabsSlice from '../../redux/slices/vocabs'
+import { Filters } from '../../types/filters'
+import './MyVocabulary.scss'
+import MyVocabularyActions from './MyVocabularyActions'
 
 export type MyVocabularyProps = {}
 
@@ -105,7 +105,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const selectCard = reduxAction(vocabsSlice.selectCard)
   const getData = reduxAction(appSlice.getData)
   const search = reduxAction((params: Omit<Translate, 'space'>) =>
-    translationSlice.translate({ space: 'MainVocabs', ...params }),
+    translationSlice.translate({ space: SpaceEnum.MainVocabs, ...params }),
   )
   const debouncedSearch = useDebouncedCallback(search, 300)
   const downloadAllVocabs = useAsyncCallback(async () => {

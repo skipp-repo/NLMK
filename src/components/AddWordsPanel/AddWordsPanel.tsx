@@ -15,7 +15,7 @@ export type AddWordsPanelProps = JSX.IntrinsicElements['div'] & {
   filters: Filters
   isLoading: boolean
   translationData: any
-  historyData: any
+  historyData?: any
   onAdd(word: string): void
   onSearch(newValue: string): void
   onChangeFilter({ type, selected, data }): void

@@ -3,60 +3,60 @@ import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
 import AddWordsPanel from '../../components/AddWordsPanel/AddWordsPanel'
 import useReduxAction from '../../hooks/useReduxAction'
+import * as glossariesSlice from '../../redux/slices/glossaries'
 import * as translationSlice from '../../redux/slices/translation'
 import { SpaceEnum, Translate } from '../../redux/slices/translation'
 import * as userSlice from '../../redux/slices/user'
 import { Filters } from '../../types/filters'
-import { vocabsFiltersReducer } from './reducers'
+import { glossariesFiltersReducer } from './reducers'
 
 export type VocabPanelProps = {
   className: string
   onAdd(word: string): void
 }
 
-const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
+const GlossariesPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
   const reduxAction = useReduxAction()
 
   const [query, setQuery] = React.useState('')
 
-  const [searchFilters, searchFiltersDispatch] = React.useReducer(vocabsFiltersReducer, {
+  const [searchFilters, searchFiltersDispatch] = React.useReducer(glossariesFiltersReducer, {
     glossaries: true,
     phrases: true,
     words: true,
-    vocabs: true,
-    common: true,
+    vocabs: false,
+    common: false,
   })
 
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
   const { translateLoading } = useSelector(translationSlice.selectors.translationFlags)
-  const vocabs = useSelector(userSlice.selectors.vocabs)
-  const translationData = useSelector(translationSlice.selectors.documentsVocabsSearchResults)
-  const translationHistory = useSelector(userSlice.selectors.history)
+  const glossaries = useSelector(glossariesSlice.selectors.glossariesList)
+  const searchData = useSelector(translationSlice.selectors.documentsGlossariesSearchResults)
 
   const search = reduxAction((params: Omit<Translate, 'space'>) =>
-    translationSlice.translate({ space: SpaceEnum.DocumentsVocabs, ...params }),
+    translationSlice.translate({ space: SpaceEnum.DocumentsGlossaries, ...params }),
   )
 
-  const vocabsFilters = React.useMemo(
+  const glossariesFilterList = React.useMemo(
     () =>
-      vocabs.map(({ _id, name, ...item }) => {
+      glossaries.map(({ _id, name, ...item }) => {
         let selected
 
-        if (Array.isArray(searchFilters.vocabs)) {
-          selected = searchFilters.vocabs.includes(_id)
+        if (Array.isArray(searchFilters.glossaries)) {
+          selected = searchFilters.glossaries.includes(_id)
         } else {
           selected = false
         }
 
         return {
-          type: 'Vocabs',
-          key: `Vocabs-${_id}`,
+          type: 'Glossary',
+          key: `Glossary-${_id}`,
           data: { id: _id },
-          name: name || 'Default',
+          name: name,
           selected,
         }
       }),
-    [vocabs, searchFilters.vocabs],
+    [glossaries, searchFilters.glossaries],
   )
 
   const filters: Filters = [
@@ -85,11 +85,12 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
       ],
     },
     {
-      name: 'Группа',
-      items: vocabsFilters,
+      name: 'Глоссарий',
+      items: glossariesFilterList,
     },
   ]
-  const isLoading = (!translationHistory?.length && getStatusLoading) || translateLoading
+
+  const isLoading = getStatusLoading || translateLoading
 
   const handleAdd = (word) => {
     onAdd(word)
@@ -110,7 +111,6 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
       debouncedSearch({
         query,
         filters: {
-          common: false,
           ...searchFilters,
         },
       })
@@ -119,11 +119,10 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
 
   return (
     <AddWordsPanel
-      title="Мой словарь"
-      description="Вставляйте слова и фразы из своего словаря прямо в документ"
+      title="Глоссарий"
+      description="Вставляйте слова и фразы из большой базы данных перевода компании"
       filters={filters}
-      translationData={translationData}
-      historyData={translationHistory}
+      translationData={searchData}
       isLoading={isLoading}
       onAdd={handleAdd}
       onSearch={handleSearch}
@@ -133,4 +132,4 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
   )
 }
 
-export default React.memo(VocabsPanel)
+export default React.memo(GlossariesPanel)

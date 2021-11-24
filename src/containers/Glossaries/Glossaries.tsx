@@ -1,24 +1,25 @@
 import React from 'react'
 import { useAsyncCallback } from 'react-async-hook'
-import useTitle from 'react-use/lib/useTitle'
 import { useSelector } from 'react-redux'
+import useTitle from 'react-use/lib/useTitle'
 import { useDebouncedCallback } from 'use-debounce'
 import { downloadAllGlossarys as downloadAllGlossarysRequest } from '../../api/requests/downloadAllGlossaries'
 import Container from '../../components/Container/Container'
-import PageTitle from '../../components/PageTitle/PageTitle'
 import DownloadLink from '../../components/DownloadLink/DownloadLink'
+import PageTitle from '../../components/PageTitle/PageTitle'
+import Search from '../../components/Search/Search'
 import Tabs from '../../components/Tabs/Tabs'
 import TranslationCardSelectable from '../../components/TranslationCard/TranslationCardSelectable/TranslationCardSelectable'
-import './Glossaries.scss'
-import useReduxAction from '../../hooks/useReduxAction'
-import * as userSlice from '../../redux/slices/user'
-import * as glossariesSlice from '../../redux/slices/glossaries'
-import * as appSlice from '../../redux/slices/app'
-import GlossariesActions from './GlossariesActions'
-import Search from '../../components/Search/Search'
 import VocabsFilters from '../../components/VocabsFilters/VocabsFilters'
+import useReduxAction from '../../hooks/useReduxAction'
+import * as appSlice from '../../redux/slices/app'
+import * as glossariesSlice from '../../redux/slices/glossaries'
 import * as translationSlice from '../../redux/slices/translation'
-import { Translate } from '../../redux/slices/translation'
+import { SpaceEnum, Translate } from '../../redux/slices/translation'
+import { glossariesSearchResults } from '../../redux/slices/translation/selectors'
+import * as userSlice from '../../redux/slices/user'
+import './Glossaries.scss'
+import GlossariesActions from './GlossariesActions'
 
 export type GlossariesProps = {}
 
@@ -81,7 +82,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
 
   const getData = reduxAction(appSlice.getData)
   const search = reduxAction((params: Omit<Translate, 'space'>) =>
-    translationSlice.translate({ space: 'MainVocabs', ...params }),
+    translationSlice.translate({ space: SpaceEnum.Glossaries, ...params }),
   )
   const getGlossary = reduxAction(glossariesSlice.getGlossary)
 
@@ -92,7 +93,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
     return await downloadAllGlossarysRequest({ token, glossaryIds })
   })
 
-  const searchData = useSelector(translationSlice.selectors.mainVocabsSearchResults)
+  const searchData = useSelector(translationSlice.selectors.glossariesSearchResults)
 
   const needShowSearchResults = query.length > 0
 
