@@ -1,13 +1,6 @@
 import React, { MutableRefObject } from 'react'
 import clsx from 'clsx'
-import {
-  ContentState,
-  Editor as DraftEditor,
-  EditorState,
-  Modifier,
-  RichUtils,
-  SelectionState,
-} from 'draft-js'
+import { ContentState, Editor as DraftEditor, EditorState, Modifier, RichUtils } from 'draft-js'
 import createStyles from 'draft-js-custom-styles'
 import 'draft-js/dist/Draft.css'
 import htmlToContentState from '../../utils/htmlToContentState'
@@ -23,8 +16,9 @@ function getBlockStyle(block) {
   }
 }
 
-export type EditorProps = Omit<JSX.IntrinsicElements['div'], 'onChange'> & {
+export type EditorProps = Omit<JSX.IntrinsicElements['div'], 'onChange' | 'onSelect'> & {
   onChange(content: ContentState): void
+  onSelect(sentence?: string): void
   html: string
 }
 
@@ -35,11 +29,13 @@ export type EditorRef = MutableRefObject<{
 const { styles, customStyleFn } = createStyles(['font-size'])
 
 const Editor = React.forwardRef(
-  ({ children, className, html, onChange, ...props }: EditorProps, ref: EditorRef) => {
+  (
+    { children, className, html, onChange, onSelect, onScroll, ...props }: EditorProps,
+    ref: EditorRef,
+  ) => {
     const [editorState, setEditorState] = React.useState<EditorState>(() =>
       EditorState.createEmpty(),
     )
-    const lastSelectionState = React.useRef<SelectionState>()
     const editorRef = React.useRef()
 
     const handleKeyCommand = (command, editorState) => {
@@ -58,7 +54,7 @@ const Editor = React.forwardRef(
     }
 
     const handleChange = (newState) => {
-      lastSelectionState.current = editorState.getSelection()
+      onSelect()
 
       setEditorState(newState)
 
@@ -103,7 +99,7 @@ const Editor = React.forwardRef(
 
     return (
       <div className={clsx('Editor', className)} {...props}>
-        <div className="Editor-wrapper">
+        <div className="Editor-wrapper" onScroll={onScroll}>
           <DraftEditor
             ref={editorRef}
             blockStyleFn={getBlockStyle}

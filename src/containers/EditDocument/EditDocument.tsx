@@ -14,6 +14,7 @@ import * as documentsSlice from '../../redux/slices/documents'
 import contentStateToHtml from '../../utils/contentStateToHtml'
 import VocabsPanel from './VocabsPanel'
 import GlossariessPanel from './GlossariesPanel'
+import { usePopper } from 'react-popper'
 
 export type MyEditDocumentProps = {
   params: { id: string }
@@ -21,11 +22,19 @@ export type MyEditDocumentProps = {
 
 const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const reduxAction = useReduxAction()
+  const [referenceElement, setReferenceElement] = React.useState(null)
+  const [popperElement, setPopperElement] = React.useState(null)
+
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    modifiers: [{ name: 'arrow' }],
+  })
 
   const [docName, setDocName] = React.useState('')
 
   const [, setLocation] = useLocation()
   const editorRef: EditorRef = React.useRef()
+
+  const [selectedState, setSelectedState] = React.useState({ word: undefined, sentence: undefined })
 
   const currentDocument = useSelector(documentsSlice.selectors.documentById(id))
 
@@ -62,6 +71,44 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
     editorRef?.current?.insertText(word)
   }
 
+  const updatePopupTranslation = () => {
+    let selection = document.getSelection()
+
+    const range = selection.rangeCount && selection.getRangeAt(0)
+
+    const virtualReference = {
+      getBoundingClientRect() {
+        return range.getBoundingClientRect()
+      },
+    }
+
+    setReferenceElement(virtualReference)
+  }
+
+  const handleSelect = () => {
+    const selection = document.getSelection()
+    const selectionText = selection.toString()
+    const sentence = selection.anchorNode.textContent
+
+    if (selectionText.length > 1) {
+      setSelectedState({
+        word: selectionText,
+        sentence: sentence,
+      })
+
+      updatePopupTranslation()
+    } else {
+      setSelectedState({
+        word: undefined,
+        sentence: undefined,
+      })
+    }
+  }
+
+  const handleScroll = () => {
+    updatePopupTranslation()
+  }
+
   React.useEffect(() => {
     if (id === 'new') return
 
@@ -89,19 +136,24 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
           <div className="EditDocument-editor-wrapper">
             <EditableTitle title={docName} onChange={handleChangeTitle} />
 
-            <EditorTranslationPopup
-              word={'Personality'}
-              sentence={
-                "Each cryptocurrency has its own distinct personality, so our list also provides a brief overview of each coin's origins, attributes and quirks"
-              }
-            />
-
             <Editor
               ref={editorRef}
               className="EditDocument-editor"
               onChange={handleChange}
+              onSelect={handleSelect}
+              onScroll={handleScroll}
               html={currentDocument?.data}
             />
+
+            {selectedState.word && (
+              <EditorTranslationPopup
+                word={selectedState.word}
+                sentence={selectedState.sentence}
+                ref={setPopperElement}
+                style={styles.popper}
+                {...attributes.popper}
+              />
+            )}
           </div>
 
           <div className="EditDocument-panels">

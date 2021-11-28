@@ -142,7 +142,7 @@ const Popup = () => {
           <div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>
         )}
 
-        {isLoading && <Loader />}
+        {isLoading && <Loader className="Popup-loader" />}
 
         {!isLoading && (
           <div className="Popup-cards">

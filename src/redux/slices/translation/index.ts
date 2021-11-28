@@ -86,7 +86,11 @@ const translateSlice = makeExtraReducers({
 const translationSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    clearSearchData: (state, { payload: { space } }) => {
+      delete state[space]
+    },
+  },
   extraReducers: {
     ...translateSlice,
   },
@@ -95,3 +99,5 @@ const translationSlice = createSlice({
 export default translationSlice.reducer
 
 export * as selectors from './selectors'
+
+export const { clearSearchData } = translationSlice.actions
