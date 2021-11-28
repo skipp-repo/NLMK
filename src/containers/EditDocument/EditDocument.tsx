@@ -67,7 +67,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
         updateDocument({ documentHTML, id })
       }
     }
-  }, 500)
+  }, 1000)
 
   const handleChangeTitle = (newName) => {
     if (id === 'new') {

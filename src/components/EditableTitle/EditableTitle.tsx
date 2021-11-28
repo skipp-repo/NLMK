@@ -33,6 +33,10 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
     titleValueRef.current = target.value
   }
 
+  const handleBlur = () => {
+    handleClickEdit()
+  }
+
   const IconComponent = editing ? TickIcon : PencilIcon
 
   return (
@@ -41,6 +45,7 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
         <input
           className="EditableTitle-input"
           onChange={handleChange}
+          onBlur={handleBlur}
           defaultValue={title}
           readOnly={!editing}
         />
