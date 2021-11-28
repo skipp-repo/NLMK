@@ -124,7 +124,11 @@ const editFolderSlice = makeExtraReducers({
       }
     },
     fulfilled: (state, { payload: { data } }) => {
-      adapter.updateOne(state, { id: data._id, changes: data })
+      if (!state.ids.length) {
+        adapter.addOne(state, data)
+      } else {
+        adapter.updateOne(state, { id: data._id, changes: data })
+      }
     },
   },
 })

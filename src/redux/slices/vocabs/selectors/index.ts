@@ -3,9 +3,9 @@ import find from 'lodash.find'
 import getImagesFromGlossaries from '../../../../utils/getImagesFromGlossaries'
 import glossaries from '../../user/selectors/glossaries'
 import { selectAll, selectById } from './adapterSelectors'
-import { getImagePathFromBuffer } from '../../../../utils/getImagePathFromBuffer'
 import allVocabs from './allVocabs'
 import vocabs from './vocabs'
+import { vocabs as userVocabs } from '../../user/selectors'
 
 export const selectedItems = (state) => state.vocabs.selectedItems
 
@@ -52,10 +52,12 @@ export const vocabById = (id) =>
     },
   )
 
-export const defaultVocabId = createSelector(
-  vocabsList,
-  (vocabs) => vocabs.find((item) => item.default)._id,
-)
+const findDefaultVocab = (item) => item.default
+
+export const defaultVocabId = createSelector(vocabsList, userVocabs, (vocabs, userVocabs) => {
+  const defaultVocab = vocabs?.find(findDefaultVocab) || userVocabs?.find(findDefaultVocab)
+  return defaultVocab._id
+})
 
 export const selectedCardsIdsByVocabId = (id) =>
   createSelector(selectedItemsById(id), vocabsById(id), (ids, vocab) => {
