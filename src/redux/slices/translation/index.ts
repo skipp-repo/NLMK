@@ -24,6 +24,7 @@ export enum SpaceEnum {
   Documents = 'Documents',
   DocumentsVocabs = 'DocumentsVocabs',
   DocumentsGlossaries = 'DocumentsGlossaries',
+  DocumentsPopup = 'DocumentsPopup',
 }
 
 const defaultSpace: SpaceEnum = SpaceEnum.Popup

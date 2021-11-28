@@ -1,6 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import './EditorTranslationPopup.scss'
+import Highlighter from 'react-highlight-words'
 import { useSelector } from 'react-redux'
 import useReduxAction from '../../hooks/useReduxAction'
 import { SpaceEnum, Translate } from '../../redux/slices/translation'
@@ -23,10 +24,10 @@ const EditorTranslationPopup: React.FC<EditorTranslationPopupProps> = ({
 }) => {
   const reduxAction = useReduxAction()
 
-  const translationData = useSelector(translationSlice.selectors.documentsVocabsSearchResults) // TODO
+  const translationData = useSelector(translationSlice.selectors.documentsPopupSearchResults) // TODO
 
   const search = reduxAction((params: Omit<Translate, 'space'>) =>
-    translationSlice.translate({ space: SpaceEnum.DocumentsVocabs, ...params }),
+    translationSlice.translate({ space: SpaceEnum.DocumentsPopup, ...params }),
   )
 
   const addToBookmarks = reduxAction(({ cardsToAdd }: Omit<EditFolder, 'id'>) =>
@@ -48,7 +49,7 @@ const EditorTranslationPopup: React.FC<EditorTranslationPopupProps> = ({
     return (
       <TranslationCard
         key={data._id}
-        className="AddWordsPanel-list-item"
+        className="EditorTranslationPopup-list-item"
         items={data}
         speech
         onAddToBookmarks={handleAddToBookmarks}
@@ -58,7 +59,14 @@ const EditorTranslationPopup: React.FC<EditorTranslationPopupProps> = ({
 
   return (
     <div {...props} className={clsx('EditorTranslationPopup', className)}>
-      <div className="EditorTranslationPopup-sentence">{sentence}</div>
+      <div className="EditorTranslationPopup-sentence">
+        <Highlighter
+          highlightClassName="EditorTranslationPopup-sentence_highlight"
+          searchWords={[word]}
+          autoEscape={true}
+          textToHighlight={sentence}
+        />
+      </div>
 
       <div className="EditorTranslationPopup-items">
         {!!translationData?.results?.length && (

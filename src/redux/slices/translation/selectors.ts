@@ -209,3 +209,52 @@ export const documentsGlossariesSearchResults = createSelector(
     }
   },
 )
+
+export const documentsPopupSearchResults = createSelector(
+  glossaries,
+  translation,
+  allCardsIds,
+  (glossariesState, translationState, vocabsIds) => {
+    const translationArr = translationState?.DocumentsPopup
+
+    if (translationArr) {
+      const updatedResults = translationArr?.results?.map((item) => {
+        const sortedItems = [...item].sort(sortTranslationByCommon)
+
+        return sortedItems.map((item) => {
+          const itemGlossaries = item?.translation?.glossaries
+
+          const vocabsGlossaries = itemGlossaries
+            ? item?.translation?.glossaries.map((glossaryId) => {
+                const { _id, name } = find(glossariesState, { _id: glossaryId })
+
+                return { _id, name }
+              })
+            : []
+
+          const images = getImagesFromGlossaries(
+            itemGlossaries && itemGlossaries[0],
+            glossariesState,
+          )
+
+          const inBookmarks = vocabsIds.includes(item.translation._id)
+
+          return {
+            ...item,
+            translation: {
+              ...item.translation,
+              glossaries: vocabsGlossaries,
+            },
+            images,
+            inBookmarks,
+          }
+        })
+      })
+
+      return {
+        ...translationArr,
+        results: updatedResults,
+      }
+    }
+  },
+)

@@ -2,4 +2,34 @@
 
 .EditorTranslationPopup {
   box-shadow: 0px 6px 34px -20px #45505C;
+  width: 360px;
+  max-height: 250px;
+  overflow: auto;
+  background-color: var(--white);
+
 }
+
+.EditorTranslationPopup-sentence {
+  padding: 10px;
+  border-bottom: 1px solid var(--light-gray);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--dark-gray);
+
+
+  &_highlight {
+    color: var(--blue-2);
+    font-weight: 700;
+    font-family: var(--font-Circle-Bold);
+    background-color: transparent;
+  }
+}
+
+.EditorTranslationPopup-result-title {
+  margin-top: 10px;
+}
+
+.EditorTranslationPopup-list-item.TranslationCard {
+  box-shadow: initial;
+}
+
