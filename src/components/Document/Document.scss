@@ -11,6 +11,7 @@
   border-radius: 5px;
   background: var(--white);
   cursor: pointer;
+  overflow: auto;
 
   &_new {
     display: flex;
@@ -55,6 +56,7 @@
   font-size: 12px;
   line-height: 1.5;
   color: var(--blue-gray);
+  overflow: hidden;
 }
 
 .Document-actions {
@@ -69,6 +71,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
+  background-color: var(--white);
 }
 
 .Document-name {

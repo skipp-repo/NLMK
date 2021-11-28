@@ -4,10 +4,11 @@ import './Document.scss'
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
 import Checkbox from '../Checkbox/Checkbox'
+import DOMPurify from 'dompurify'
 
 export type DocumentProps = Omit<JSX.IntrinsicElements['div'], 'id' | 'onSelect'> & {
   name: string
-  children: string
+  data: string
   checked: boolean
   id: number
   onSelect(id: number, selected: boolean): void
@@ -18,7 +19,7 @@ export type DocumentProps = Omit<JSX.IntrinsicElements['div'], 'id' | 'onSelect'
 
 const Document: React.FC<DocumentProps> = ({
   name,
-  children,
+  data,
   checked,
   id,
   onSelect,
@@ -44,14 +45,22 @@ const Document: React.FC<DocumentProps> = ({
     onDelete(id)
   }
 
+  const safeData = React.useMemo(() => {
+    const clean = DOMPurify.sanitize(data, { ALLOWED_TAGS: [] })
+
+    return clean.slice(0, 135)
+  }, [data])
+
   return (
     <div {...props} className={clsx('Document', className)}>
       <div className="Document-name">{name}</div>
       <div className="Document-container">
         <Checkbox checked={checked} className="Document-checkbox" onChange={handleSelect} />
-        <div className="Document-content" onClick={handleClick}>
-          {children}
-        </div>
+        <div
+          className="Document-content"
+          onClick={handleClick}
+          dangerouslySetInnerHTML={{ __html: safeData }}
+        />
         <div className="Document-actions">
           <div className="Document-download" onClick={handleDownload}>
             <DownloadIcon />

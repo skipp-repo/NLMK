@@ -62,20 +62,19 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
     deleteDocument({ id })
   }
 
-  const renderDocument = ({ name, text, _id, selected }) => (
+  const renderDocument = ({ name, text, _id, selected, data }) => (
     <Document
       key={_id}
       id={_id}
       name={name}
       checked={selected}
+      data={data}
       className="Documents-item"
       onClick={handleClickDocument}
       onSelect={handleSelect}
       onDownload={handleDownload}
       onDelete={handleDelete}
-    >
-      {text}
-    </Document>
+    />
   )
 
   React.useEffect(() => {
