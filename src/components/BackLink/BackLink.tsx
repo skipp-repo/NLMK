@@ -7,11 +7,12 @@ import { ReactComponent as ArrowIcon } from '../../assets/icons/back-arrow.svg'
 export type BackLinkProps = JSX.IntrinsicElements['div'] & {
   href: string
   children: string
+  onClick(): void
 }
 
-const BackLink: React.FC<BackLinkProps> = ({ children, href, className, ...props }) => {
+const BackLink: React.FC<BackLinkProps> = ({ children, href, className, onClick, ...props }) => {
   return (
-    <Link href={href}>
+    <Link href={href} onClick={onClick}>
       <div {...props} className={clsx('BackLink', className)}>
         <ArrowIcon className="BackLink-icon" />
         <span className="BackLink-text">{children}</span>

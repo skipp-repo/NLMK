@@ -58,7 +58,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
 
   const handleChange = useDebouncedCallback(async (content: ContentState) => {
     if (content.hasText()) {
-      const documentHTML = await contentStateToHtml(content)
+      const documentHTML = contentStateToHtml(content)
 
       if (id === 'new') {
         uploadDocument({ documentHTML, documentName: docName })
@@ -126,6 +126,17 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
     setEditorState(newState)
   }
 
+  const handleBackPress = async () => {
+    const content = editorState.getCurrentContent()
+    const documentHTML = contentStateToHtml(content)
+
+    if (id === 'new') {
+      uploadDocument({ documentHTML, documentName: docName })
+    } else {
+      updateDocument({ documentHTML, id })
+    }
+  }
+
   React.useEffect(() => {
     if (id === 'new') return
 
@@ -147,7 +158,9 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   return (
     <div className="EditDocument">
       <Container className="EditDocument-container">
-        <BackLink href="/documents/">Вернуться назад</BackLink>
+        <BackLink href="/documents/" onClick={handleBackPress}>
+          Вернуться назад
+        </BackLink>
 
         <div className="EditDocument-wrapper">
           <div className="EditDocument-editor-wrapper">
