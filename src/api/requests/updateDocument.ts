@@ -4,7 +4,7 @@ const { API_URL } = secrets
 
 export type UpdateDocument = {
   token: string
-  id: number
+  id: string
   documentHTML: string
   documentName?: string
 }

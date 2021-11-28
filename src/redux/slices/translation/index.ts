@@ -30,8 +30,7 @@ const defaultSpace: SpaceEnum = SpaceEnum.Popup
 
 export type Translate = Omit<TranslationRequest, 'q'> & {
   query: string
-  filters: TranslationRequest['filters']
-  space: SpaceEnum
+  space?: SpaceEnum
 }
 
 export const translate = createAsyncThunk(

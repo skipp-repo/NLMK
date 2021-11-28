@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { REHYDRATE } from 'redux-persist'
 import { UserStatus } from '../../../types'
 import getUserToken from '../../../utils/getUserToken'
+import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import { RootState } from '../../types'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { status } from '../../../api/requests/status'
@@ -36,9 +37,9 @@ const initialState: InitialState = {
   newUser: undefined,
 }
 
-export const getStatus = createAsyncThunk(
+export const getStatus = createAsyncThunkExtended(
   `${name}/getStatus`,
-  async (_: void, { getState, dispatch }) => {
+  async (_, { getState, dispatch }) => {
     try {
       const state = getState() as RootState
       const { user } = state

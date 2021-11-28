@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import useCollapse from 'react-collapsed'
 import { useDebouncedCallback } from 'use-debounce'
 import './Popup.scss'
+import TranslationListTitle from '../../components/TranslationListTitle/TranslationListTitle'
 import PopupHeader from '../../containers/PopupHeader/PopupHeader'
 import PopupSearch from '../../components/PopupSearch/PopupSearch'
 import TranslationCard from '../../components/TranslationCard/TranslationCard/TranslationCard'
@@ -15,6 +16,7 @@ import * as userSlice from '../../redux/slices/user'
 import * as translationSlice from '../../redux/slices/translation'
 import * as autocompleteSlice from '../../redux/slices/autocomplete'
 import * as appSlice from '../../redux/slices/app'
+import { EditFolder } from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 
 const Popup = () => {
@@ -36,7 +38,7 @@ const Popup = () => {
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
   const clearState = reduxAction(userSlice.clearUserState)
-  const addToBookmarks = reduxAction(({ cardsToAdd }) =>
+  const addToBookmarks = reduxAction(({ cardsToAdd }: Omit<EditFolder, 'id'>) =>
     vocabsSlice.editFolder({ id: 'default', cardsToAdd }),
   )
 
@@ -147,7 +149,9 @@ const Popup = () => {
             <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
               {!!translationData?.results?.length && (
                 <div className="Popup-cards-item">
-                  <div className="Popup-cards-title">Результат поиска</div>
+                  <TranslationListTitle className="Popup-cards-title">
+                    Результат поиска
+                  </TranslationListTitle>
 
                   <div className="Popup-cards-list">
                     {translationData?.results?.map(renderTranslationCard)}
@@ -159,7 +163,9 @@ const Popup = () => {
             <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
               {!!translationHistory?.length && (
                 <div className="Popup-cards-item">
-                  <div className="Popup-cards-title">Недавно просмотренные</div>
+                  <TranslationListTitle className="Popup-cards-title">
+                    Недавно просмотренные
+                  </TranslationListTitle>
 
                   <div className="Popup-cards-list">
                     <div className="Popup-cards-list">

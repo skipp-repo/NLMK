@@ -2,7 +2,7 @@ import createRequest from '../../utils/createRequest'
 
 export type GetDocumentById = {
   token: string
-  id: number
+  id: string
 }
 
 export const getDocumentById = async ({ token, id }: GetDocumentById, init?: RequestInit) => {

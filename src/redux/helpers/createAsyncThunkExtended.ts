@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { Dispatch } from 'redux'
 import getUserToken from '../../utils/getUserToken'
 import { RootState } from '../types'
 
@@ -10,13 +11,13 @@ type ReduxApi = {
 type SecondArg = {
   state: any
   token: string
-  dispatch: Function
+  dispatch?: Dispatch
   getState: Function
 }
 
-type CB = (params: any, { state, token, dispatch, getState }: SecondArg) => void
+type CB<T> = (params: T, { state, token, dispatch, getState }: SecondArg) => void
 
-const wrapThunk = (cb: CB) => {
+const wrapThunk = <T>(cb: CB<T>) => {
   return async (params, api) => {
     try {
       const { getState, dispatch } = api
@@ -32,8 +33,9 @@ const wrapThunk = (cb: CB) => {
   }
 }
 
-const createAsyncThunkExtended = (name, func: CB) => {
-  return createAsyncThunk(name, wrapThunk(func))
+const createAsyncThunkExtended = <A = any, B = void>(name, func: CB<B>) => {
+  // @ts-ignore
+  return createAsyncThunk<A, B, SecondArg>(name, wrapThunk(func))
 }
 
 export default createAsyncThunkExtended

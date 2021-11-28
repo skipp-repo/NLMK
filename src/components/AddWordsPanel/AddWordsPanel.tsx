@@ -6,6 +6,7 @@ import { ReactComponent as ArrowIcon } from '../../assets/icons/arrow-2.svg'
 import { Filters } from '../../types/filters'
 import Loader from '../Loader/Loader'
 import Search from '../Search/Search'
+import TranslationListTitle from '../TranslationListTitle/TranslationListTitle'
 import AddWordsFilters from './AddWordsFilters/AddWordsFilters'
 import AddWordsItem from './AddWordsItem/AddWordsItem'
 
@@ -107,7 +108,9 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
             <div className="AddWordsPanel-items">
               {!!translationData?.results?.length && (
                 <div className="AddWordsPanel-item">
-                  <div className="AddWordsPanel-result-title">Результат поиска</div>
+                  <TranslationListTitle className="AddWordsPanel-result-title">
+                    Результат поиска
+                  </TranslationListTitle>
 
                   <div className="AddWordsPanel-list">
                     {translationData?.results?.map(renderTranslationCard)}
@@ -117,7 +120,7 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
 
               {/*{!!historyData?.length && (*/}
               {/*  <div className="AddWordsPanel-item">*/}
-              {/*    <div className="AddWordsPanel-title">Недавно просмотренные</div>*/}
+              {/*    <TranslationListTitle className="AddWordsPanel-title">Недавно просмотренные</TranslationListTitle>*/}
 
               {/*    <div className="AddWordsPanel-list">*/}
               {/*      <div className="AddWordsPanel-list">{historyData?.map(renderHistoryCard)}</div>{' '}*/}

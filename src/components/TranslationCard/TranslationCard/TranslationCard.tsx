@@ -21,7 +21,7 @@ export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   action?: React.ReactElement
   speech?: boolean
   inBookmarks?: boolean
-  onSpeech(): void
+  onSpeech?(): void
   onAddToBookmarks(id: number): void
 }
 
@@ -54,6 +54,8 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
     }
 
     speak(word, lang)
+
+    onSpeech()
   }, 500)
 
   const renderTranslationItem = ({ translation, images }, index) => {

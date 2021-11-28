@@ -1,21 +1,24 @@
-import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import { useCallback } from 'react'
 
-type WrapActionReturn = (params?: any) => void
-export type UseReduxActionReturn = (func: Function, dependencies?: any[]) => WrapActionReturn
+export type Action = (params: never) => void
 
-export default (): UseReduxActionReturn => {
+export default () => {
   const dispatch = useDispatch()
 
-  const wrapAction = (func: Function, dependencies): WrapActionReturn =>
-    React.useCallback(
-      (params) => {
+  function wrapAction<T extends Action>(func: T, dependencies?: never[]): T {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const callbackFunction = useCallback(
+      (params: never) => {
         const actionObject = func(params)
 
         dispatch(actionObject)
       },
       Array.isArray(dependencies) ? [dispatch, ...dependencies] : [dispatch],
     )
+
+    return callbackFunction as T
+  }
 
   return wrapAction
 }

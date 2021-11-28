@@ -13,7 +13,6 @@ import 'draft-js/dist/Draft.css'
 import htmlToContentState from '../../utils/htmlToContentState'
 import EditorControls from './EditorControls'
 import './Editor.scss'
-import set = chrome.cookies.set
 
 function getBlockStyle(block) {
   switch (block.getType()) {

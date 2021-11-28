@@ -36,7 +36,7 @@ const initialState: InitialState = {
 }
 
 export type UploadDocumentAction = Omit<UploadDocument, 'token' | 'data'> & {
-  file: File
+  file?: File
 }
 
 export const uploadDocument = createAsyncThunkExtended(
@@ -158,12 +158,12 @@ const deleteDocumentsSlice = makeExtraReducers({
 })
 
 export type GetDocument = {
-  id: number
+  id: string
 }
 
-export const getDocument = createAsyncThunkExtended(
+export const getDocument = createAsyncThunkExtended<any, GetDocument>(
   `${name}/getDocument`,
-  async ({ id }: GetDocument, { token }) => {
+  async ({ id }, { token }) => {
     return await getDocumentByIdRequest({ token, id })
   },
 )

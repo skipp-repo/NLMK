@@ -21,6 +21,7 @@ const initialState: InitialState = {
 export const getData = createAsyncThunkExtended(`${name}/getData`, async (_, { dispatch }) => {
   // @ts-ignore
   dispatch(getVocabs())
+  // @ts-ignore
   dispatch(getStatus())
 })
 

@@ -6,6 +6,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import { useLocation } from 'wouter'
 import Container from '../../components/Container/Container'
 import EditableTitle from '../../components/EditableTitle/EditableTitle'
+import EditorTranslationPopup from '../../components/EditorTranslationPopup/EditorTranslationPopup'
 import useReduxAction from '../../hooks/useReduxAction'
 import BackLink from '../../components/BackLink/BackLink'
 import Editor, { EditorRef } from '../../components/Editor/Editor'
@@ -87,6 +88,13 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
         <div className="EditDocument-wrapper">
           <div className="EditDocument-editor-wrapper">
             <EditableTitle title={docName} onChange={handleChangeTitle} />
+
+            <EditorTranslationPopup
+              word={'Personality'}
+              sentence={
+                "Each cryptocurrency has its own distinct personality, so our list also provides a brief overview of each coin's origins, attributes and quirks"
+              }
+            />
 
             <Editor
               ref={editorRef}

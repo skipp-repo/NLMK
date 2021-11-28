@@ -14,7 +14,7 @@ import VocabsDropdown from '../../components/VocabsDropdown/VocabsDropdown'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import useReduxAction from '../../hooks/useReduxAction'
 
-export type GlossariesProps = JSX.IntrinsicElements['div'] & { activeTab: string }
+export type GlossariesProps = JSX.IntrinsicElements['div'] & { activeTab: number }
 
 const words = proschet(['слово', 'слова', 'слов'])
 

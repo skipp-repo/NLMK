@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createVocabFolder } from '../../../api/requests/createVocabFolder'
-import { editVocabFolder } from '../../../api/requests/editVocabFolder'
+import { EditVocabFolder, editVocabFolder } from '../../../api/requests/editVocabFolder'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getVocabById } from '../../../api/requests/getVocabById'
@@ -53,11 +53,11 @@ export const createFolder = createAsyncThunkExtended(
   },
 )
 
-export type EditFolder = { id: number; name: string; cardsToAdd: number[]; cardsToRemove: number[] }
+export type EditFolder = Omit<EditVocabFolder, 'token'>
 
-export const editFolder = createAsyncThunkExtended(
+export const editFolder = createAsyncThunkExtended<any, EditFolder>(
   `${name}/editFolder`,
-  async ({ id, name, cardsToAdd, cardsToRemove }: EditFolder, { token, state }) => {
+  async ({ id, name, cardsToAdd, cardsToRemove }, { token, state }) => {
     const defaultId = defaultVocabId(state)
 
     return await editVocabFolder({
