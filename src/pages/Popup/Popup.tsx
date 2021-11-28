@@ -138,7 +138,7 @@ const Popup = () => {
           <TrainingSlider {...getCollapseProps()} toggleProps={getToggleProps()} />
         )}
 
-        {isEmpty && (
+        {isEmpty && !isLoading && (
           <div className="Popup-empty">Вбейте слово в поиск, чтобы увидеть его перевод</div>
         )}
 
