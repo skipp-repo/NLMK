@@ -1,27 +1,40 @@
 @import "../../styles/general.css";
 
+:root {
+  --panels-width: 354px;
+}
+
 .EditDocument {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-grow: 1;
 }
 
 .EditDocument-wrapper {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
+  flex-grow: 1;
 }
 
 .EditDocument-panels {
-  width: 354px;
+  width: var(--panels-width);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 20px;
 }
 
 .EditDocument-editor {
-  height: 65vh;
 }
 
 .EditDocument-editor-wrapper {
-  width: calc(100% - 400px);
-  padding-right: 20px;
+  width: calc(100% - var(--panels-width));
+  padding-right: 100px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .EditDocument-panel {
@@ -30,4 +43,25 @@
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.EditDocument-button {
+}
+
+.EditDocument-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.EditDocument-controls {
+  margin-top: 10px;
+  position: sticky;
+  bottom: 0;
+  padding: 10px 20px;
+  background-color: #F9FAFC;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
 }

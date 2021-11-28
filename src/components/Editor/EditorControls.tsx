@@ -14,7 +14,7 @@ import FontSizeControl from './FontSizeControl'
 
 export type EditorControlsProps = JSX.IntrinsicElements['div'] & {
   editorState: any
-  className: string
+  className?: string
   styles: any
   onToggle(newState: any): void
   setEditorState(newEditorState: EditorState): void

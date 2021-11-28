@@ -1,10 +1,16 @@
 import React, { MutableRefObject } from 'react'
 import clsx from 'clsx'
-import { ContentState, Editor as DraftEditor, EditorState, Modifier, RichUtils } from 'draft-js'
-import createStyles from 'draft-js-custom-styles'
+import {
+  ContentBlock,
+  ContentState,
+  DraftInlineStyle,
+  Editor as DraftEditor,
+  EditorState,
+  Modifier,
+  RichUtils,
+} from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import htmlToContentState from '../../utils/htmlToContentState'
-import EditorControls from './EditorControls'
 import './Editor.scss'
 
 function getBlockStyle(block) {
@@ -20,22 +26,31 @@ export type EditorProps = Omit<JSX.IntrinsicElements['div'], 'onChange' | 'onSel
   onChange(content: ContentState): void
   onSelect(sentence?: string): void
   html: string
+  editorState: EditorState
+  setEditorState(editorState: EditorState): void
+  customStyleFn: ((style: DraftInlineStyle, block: ContentBlock) => React.CSSProperties) | undefined
 }
 
 export type EditorRef = MutableRefObject<{
   insertText(text: string): void
 }>
 
-const { styles, customStyleFn } = createStyles(['font-size'])
-
 const Editor = React.forwardRef(
   (
-    { children, className, html, onChange, onSelect, onScroll, ...props }: EditorProps,
+    {
+      children,
+      className,
+      html,
+      onChange,
+      onSelect,
+      onScroll,
+      editorState,
+      setEditorState,
+      customStyleFn,
+      ...props
+    }: EditorProps,
     ref: EditorRef,
   ) => {
-    const [editorState, setEditorState] = React.useState<EditorState>(() =>
-      EditorState.createEmpty(),
-    )
     const editorRef = React.useRef()
 
     const handleKeyCommand = (command, editorState) => {
@@ -47,10 +62,6 @@ const Editor = React.forwardRef(
       }
 
       return 'not-handled'
-    }
-
-    const handleToggle = (newState) => {
-      setEditorState(newState)
     }
 
     const handleChange = (newState) => {
@@ -111,13 +122,6 @@ const Editor = React.forwardRef(
             customStyleFn={customStyleFn}
           />
         </div>
-        <EditorControls
-          className="Editor-controls"
-          onToggle={handleToggle}
-          editorState={editorState}
-          styles={styles}
-          setEditorState={setEditorState}
-        />
       </div>
     )
   },

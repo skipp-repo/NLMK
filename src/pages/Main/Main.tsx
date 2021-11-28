@@ -15,9 +15,11 @@ const Main = () => {
   }, [])
 
   return (
-    <MainRouter>
-      <Header />
-    </MainRouter>
+    <div className="Main">
+      <MainRouter>
+        <Header />
+      </MainRouter>
+    </div>
   )
 }
 

@@ -1,30 +1,38 @@
-import { ContentState } from 'draft-js'
+import { ContentState, EditorState } from 'draft-js'
 import React from 'react'
 import './EditDocument.scss'
+import { useAsyncCallback } from 'react-async-hook'
 import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
 import { useLocation } from 'wouter'
+import { downloadDocumentsByIds as downloadDocumentsByIdsRequest } from '../../api/requests/downloadDocumentsByIds'
+import Button from '../../components/Button/Button'
 import Container from '../../components/Container/Container'
 import EditableTitle from '../../components/EditableTitle/EditableTitle'
+import EditorControls from '../../components/Editor/EditorControls'
 import EditorTranslationPopup from '../../components/EditorTranslationPopup/EditorTranslationPopup'
 import useReduxAction from '../../hooks/useReduxAction'
 import BackLink from '../../components/BackLink/BackLink'
 import Editor, { EditorRef } from '../../components/Editor/Editor'
 import * as documentsSlice from '../../redux/slices/documents'
+import * as userSlice from '../../redux/slices/user'
 import contentStateToHtml from '../../utils/contentStateToHtml'
 import VocabsPanel from './VocabsPanel'
 import GlossariessPanel from './GlossariesPanel'
 import { usePopper } from 'react-popper'
+import createStyles from 'draft-js-custom-styles'
 
 export type MyEditDocumentProps = {
   params: { id: string }
 }
 
+const { styles: editorStyles, customStyleFn } = createStyles(['font-size'])
+
 const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const reduxAction = useReduxAction()
   const [referenceElement, setReferenceElement] = React.useState(null)
   const [popperElement, setPopperElement] = React.useState(null)
-
+  const [editorState, setEditorState] = React.useState<EditorState>(() => EditorState.createEmpty())
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     modifiers: [{ name: 'arrow' }],
   })
@@ -37,11 +45,16 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const [selectedState, setSelectedState] = React.useState({ word: undefined, sentence: undefined })
 
   const currentDocument = useSelector(documentsSlice.selectors.documentById(id))
+  const token = useSelector(userSlice.selectors.token)
 
   const uploadDocument = reduxAction(documentsSlice.uploadDocument)
   const updateDocument = reduxAction(documentsSlice.updateDocument)
   const getDocument = reduxAction(documentsSlice.getDocument)
   const renameDocument = reduxAction(documentsSlice.renameDocument)
+
+  const downloadDocumentsByIds = useAsyncCallback(async () => {
+    return await downloadDocumentsByIdsRequest({ token, docIds: [Number(id)] })
+  })
 
   const handleChange = useDebouncedCallback(async (content: ContentState) => {
     if (content.hasText()) {
@@ -109,6 +122,10 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
     updatePopupTranslation()
   }
 
+  const handleToggle = (newState) => {
+    setEditorState(newState)
+  }
+
   React.useEffect(() => {
     if (id === 'new') return
 
@@ -129,7 +146,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
 
   return (
     <div className="EditDocument">
-      <Container>
+      <Container className="EditDocument-container">
         <BackLink href="/documents/">Вернуться назад</BackLink>
 
         <div className="EditDocument-wrapper">
@@ -143,6 +160,9 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
               onSelect={handleSelect}
               onScroll={handleScroll}
               html={currentDocument?.data}
+              editorState={editorState}
+              setEditorState={setEditorState}
+              customStyleFn={customStyleFn}
             />
 
             {selectedState.word && (
@@ -160,6 +180,21 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
             <VocabsPanel className="EditDocument-panel" onAdd={handleAddWord} />
             <GlossariessPanel className="EditDocument-panel" onAdd={handleAddWord} />
           </div>
+        </div>
+
+        <div className="EditDocument-controls">
+          <EditorControls
+            onToggle={handleToggle}
+            editorState={editorState}
+            styles={editorStyles}
+            setEditorState={setEditorState}
+          />
+
+          {id !== 'new' && (
+            <Button className="EditDocument-button" onClick={downloadDocumentsByIds.execute}>
+              СКАЧАТЬ ДОКУМЕНТ
+            </Button>
+          )}
         </div>
       </Container>
     </div>

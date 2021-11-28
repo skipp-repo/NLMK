@@ -23,7 +23,7 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
   const documents = useSelector(documentsSlice.selectors.documentsList)
   const token = useSelector(userSlice.selectors.token)
 
-  const downloadDocumentsByIds = useAsyncCallback(async (id) => {
+  const downloadDocumentsByIds = useAsyncCallback(async () => {
     return await downloadDocumentsByIdsRequest({ token, docIds: selectedIds })
   })
 

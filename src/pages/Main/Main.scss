@@ -1,3 +1,7 @@
 @import "../../styles/general.css";
 
-.Main {}
+.Main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
