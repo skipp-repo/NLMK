@@ -21,6 +21,9 @@ document.head.appendChild(fa)
 
 let controller
 
+const MAX_TRANSLATION_LENGTH = 1000
+const MIN_TRANSLATION_LENGTH = 2
+
 const handleSelectionChange = async (): Promise<void> => {
   const selection: any = document.getSelection()
   const text = selection.toString()
@@ -29,7 +32,14 @@ const handleSelectionChange = async (): Promise<void> => {
     controller.abort()
   }
 
-  if (!text.length || !selection.focusNode) {
+  console.log(text.length)
+
+  if (
+    !text.length ||
+    !selection.focusNode ||
+    text.length > MAX_TRANSLATION_LENGTH ||
+    text.length < MIN_TRANSLATION_LENGTH
+  ) {
     clearTooltip()
     return
   }
