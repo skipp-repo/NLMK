@@ -23,7 +23,7 @@ import GlossariesActions from './GlossariesActions'
 
 export type GlossariesProps = {}
 
-const title = 'Глоссарии НМЛК'
+const title = 'Глоссарии НЛМК'
 
 const searchFiltersReducer = (state, action) => {
   switch (action.type) {

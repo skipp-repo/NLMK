@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ children, className, ...props }) => {
         <div className="Header-nav">
           <HeaderLink href="/vocabulary">Мой словарь</HeaderLink>
 
-          <HeaderLink href="/glossaries">Глоссарии НМЛК</HeaderLink>
+          <HeaderLink href="/glossaries">Глоссарии НЛМК</HeaderLink>
 
           <HeaderLink href="/documents">Мои документы</HeaderLink>
         </div>
