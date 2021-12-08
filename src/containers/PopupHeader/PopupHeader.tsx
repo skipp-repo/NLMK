@@ -14,10 +14,10 @@ const PopupHeader: React.FC<PopupHeaderProps> = ({ children, className, ...props
         <Logo />
       </div>
       <div className="PopupHeader-buttons">
-        <a href="./main.html#vocabulary" className="PopupHeader-button" target="_blank">
+        <a href="./main.html#/vocabulary" className="PopupHeader-button" target="_blank">
           <Bookmark />
         </a>
-        <a href="./main.html#documents" className="PopupHeader-button" target="_blank">
+        <a href="./main.html#/documents" className="PopupHeader-button" target="_blank">
           <File />
         </a>
       </div>
