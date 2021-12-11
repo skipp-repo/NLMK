@@ -94,11 +94,13 @@ const GlossariesActions: React.FC<GlossariesProps> = ({
     setCheckAll(undefined)
   }, [activeTab])
 
+  const count = glossaryById?.cards?.length
+
   return (
     <Container className="Glossaries-actions">
-      <ItemsCount className="Glossaries-actions-count">{`${glossaryById?.cards?.length} ${words(
-        glossaryById?.cards?.length,
-      )}`}</ItemsCount>
+      {!!count && (
+        <ItemsCount className="Glossaries-actions-count">{`${count} ${words(count)}`}</ItemsCount>
+      )}
 
       <VocabsDropdown
         text="Переместить в группу"

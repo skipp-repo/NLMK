@@ -6,6 +6,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import { downloadAllGlossarys as downloadAllGlossarysRequest } from '../../api/requests/downloadAllGlossaries'
 import Container from '../../components/Container/Container'
 import DownloadLink from '../../components/DownloadLink/DownloadLink'
+import Loader from '../../components/Loader/Loader'
 import PageTitle from '../../components/PageTitle/PageTitle'
 import Search from '../../components/Search/Search'
 import Tabs from '../../components/Tabs/Tabs'
@@ -176,8 +177,6 @@ const Glossaries: React.FC<GlossariesProps> = () => {
 
   const handleTabChange = (id) => {
     setActiveTab(id)
-    getGlossary({ id })
-    selectAll({ glossaryId: activeTab, select: false })
   }
 
   const handleSearch = (text) => {
@@ -212,6 +211,15 @@ const Glossaries: React.FC<GlossariesProps> = () => {
     }
   }, [searchFilters, query])
 
+  React.useEffect(() => {
+    if (!activeTab) return
+
+    getGlossary({ id: activeTab })
+    selectAll({ glossaryId: activeTab, select: false })
+  }, [activeTab])
+
+  const isShowGlossariesCards = glossaries && glossaryById?.cards?.length
+
   return (
     <div className="Glossaries">
       <Container className="Glossaries-header">
@@ -223,7 +231,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
         <Tabs tabs={tabs} onChange={handleTabChange} />
       </Container>
 
-      {glossaryById?.cards?.length !== undefined && <GlossariesActions activeTab={activeTab} />}
+      <GlossariesActions activeTab={activeTab} />
 
       <Container className="Glossaries-search">
         <Search className="Glossaries-search-input" onChange={handleSearch} suggestions={[]} />
@@ -235,7 +243,9 @@ const Glossaries: React.FC<GlossariesProps> = () => {
         />
       </Container>
 
-      {!!glossaryById?.cards?.length && !needShowSearchResults && (
+      {!isShowGlossariesCards && <Loader />}
+
+      {isShowGlossariesCards && !needShowSearchResults && (
         <Container className="Glossaries-cards">{glossaryById.cards.map(renderCard)}</Container>
       )}
 
