@@ -1,1 +1,2 @@
-export default (items) => items?.map(({ translation }) => translation?.translation || '').join(', ')
+export default (items) =>
+  items?.map(({ translation }) => (translation?.translation || '').trim()).join(', ')

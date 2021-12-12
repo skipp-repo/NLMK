@@ -39,14 +39,11 @@ const initialState: InitialState = {
 
 export const getStatus = createAsyncThunkExtended(
   `${name}/getStatus`,
-  async (_, { getState, dispatch }) => {
+  async (_, { dispatch, token }) => {
     try {
-      const state = getState() as RootState
-      const { user } = state
+      const userToken = token || (await getUserToken())
 
-      const token = user.token || (await getUserToken())
-
-      const result = await status({ token })
+      const result = await status({ token: userToken })
 
       dispatch(addGlossaries({ glossaries: result.data.glossaries }))
 

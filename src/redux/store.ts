@@ -11,6 +11,7 @@ import {
 } from 'redux-persist'
 import reducer from './reducer'
 import storage from './storage'
+import { getStatus } from './slices/user'
 
 const persistConfig = {
   key: 'root',
@@ -32,7 +33,9 @@ const store = configureStore({
   devTools: true,
 })
 
-const persistor = persistStore(store)
+const persistor = persistStore(store, null, () => {
+  store.dispatch(getStatus())
+})
 
 export { store, persistor }
 
