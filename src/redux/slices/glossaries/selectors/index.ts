@@ -5,6 +5,8 @@ import { selectAll } from './adapterSelectors'
 
 export const glossaries = (state) => state.glossaries
 
+export const flags = (state) => state.glossaries.flags
+
 export const selectedItems = (state) => state.glossaries.selectedItems
 
 export const selectedItemsById = (id) =>

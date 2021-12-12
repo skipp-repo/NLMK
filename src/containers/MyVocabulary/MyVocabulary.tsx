@@ -25,6 +25,7 @@ import * as vocabsSlice from '../../redux/slices/vocabs'
 import { Filters } from '../../types/filters'
 import './MyVocabulary.scss'
 import MyVocabularyActions from './MyVocabularyActions'
+import Loader from '../../components/Loader/Loader'
 
 export type MyVocabularyProps = {}
 
@@ -82,6 +83,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
   const token = useSelector(userSlice.selectors.token)
   const glossaries = useSelector(userSlice.selectors.glossaries)
+  const { getVocabsLoading } = useSelector(vocabsSlice.selectors.flags)
 
   const [newGroupPopupVisible, showNewGroupPopup, hideNewGroupPopup] = useModal()
   const [
@@ -256,6 +258,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     }
   }, [searchFilters, query])
 
+  const isShowVocabsCards = !getVocabsLoading
+
   return (
     <div className="MyVocabulary">
       <Container className="MyVocabulary-header">
@@ -277,7 +281,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         />
       </Container>
 
-      {vocabsByID?.cards?.length !== undefined && <MyVocabularyActions activeTab={activeTab} />}
+      <MyVocabularyActions activeTab={activeTab} />
 
       <Container className="MyVocabulary-search">
         <Search className="MyVocabulary-search-input" onChange={handleSearch} suggestions={[]} />
@@ -289,8 +293,10 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         />
       </Container>
 
-      {!!vocabsByID?.cards?.length && !needShowSearchResults && (
-        <Container className="MyVocabulary-cards">{vocabsByID.cards.map(renderCard)}</Container>
+      {getVocabsLoading && <Loader />}
+
+      {!getVocabsLoading && !needShowSearchResults && (
+        <Container className="MyVocabulary-cards">{vocabsByID?.cards?.map(renderCard)}</Container>
       )}
 
       {needShowSearchResults && (

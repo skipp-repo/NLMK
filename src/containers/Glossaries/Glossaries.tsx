@@ -17,7 +17,6 @@ import * as appSlice from '../../redux/slices/app'
 import * as glossariesSlice from '../../redux/slices/glossaries'
 import * as translationSlice from '../../redux/slices/translation'
 import { SpaceEnum, Translate } from '../../redux/slices/translation'
-import { glossariesSearchResults } from '../../redux/slices/translation/selectors'
 import * as userSlice from '../../redux/slices/user'
 import './Glossaries.scss'
 import GlossariesActions from './GlossariesActions'
@@ -75,6 +74,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   })
   const glossaries = useSelector(glossariesSlice.selectors.glossariesList)
   const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
+  const { getGlossaryLoading } = useSelector(glossariesSlice.selectors.flags)
 
   const token = useSelector(userSlice.selectors.token)
 
@@ -218,7 +218,9 @@ const Glossaries: React.FC<GlossariesProps> = () => {
     selectAll({ glossaryId: activeTab, select: false })
   }, [activeTab])
 
-  const isShowGlossariesCards = glossaries && glossaryById?.cards?.length
+  const isShowGlossariesCards = !(glossaries && glossaryById?.cards?.length)
+    ? getGlossaryLoading
+    : true
 
   return (
     <div className="Glossaries">
@@ -246,7 +248,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
       {!isShowGlossariesCards && <Loader />}
 
       {isShowGlossariesCards && !needShowSearchResults && (
-        <Container className="Glossaries-cards">{glossaryById.cards.map(renderCard)}</Container>
+        <Container className="Glossaries-cards">{glossaryById?.cards?.map(renderCard)}</Container>
       )}
 
       {needShowSearchResults && (

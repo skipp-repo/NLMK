@@ -14,14 +14,15 @@ import * as userSlice from '../../redux/slices/user'
 import DocumentsActions from './DocumentsActions'
 import Document from '../../components/Document/Document'
 import NewDocument from '../../components/Document/NewDocument'
+import Loader from '../../components/Loader/Loader'
 
 export type MyDocumentsProps = {}
 
 const title = 'Документы'
 
-const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
+const Documents: React.FC<MyDocumentsProps> = () => {
   const reduxAction = useReduxAction()
-  const [location, setLocation] = useLocation()
+  const [, setLocation] = useLocation()
 
   const documents = useSelector(documentsSlice.selectors.documentsList)
 
@@ -31,6 +32,7 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
   const deleteDocument = reduxAction(documentsSlice.deleteDocument)
 
   const token = useSelector(userSlice.selectors.token)
+  const { getDocumentsLoading } = useSelector(documentsSlice.selectors.flags)
 
   const downloadDocumentById = useAsyncCallback(async (id) => {
     return await downloadDocumentByIdRequest({ token, id })
@@ -101,10 +103,14 @@ const Documents: React.FC<MyDocumentsProps> = ({ children }) => {
 
       <DocumentsActions />
 
-      <Container className="Documents-items">
-        <NewDocument onClick={handleNewDocument} className="Documents-item" />
-        {documents?.map(renderDocument)}
-      </Container>
+      {getDocumentsLoading && <Loader />}
+
+      {!getDocumentsLoading && (
+        <Container className="Documents-items">
+          <NewDocument onClick={handleNewDocument} className="Documents-item" />
+          {documents?.map(renderDocument)}
+        </Container>
+      )}
     </div>
   )
 }

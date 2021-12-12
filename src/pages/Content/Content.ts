@@ -21,7 +21,7 @@ document.head.appendChild(fa)
 
 let controller
 
-const MAX_TRANSLATION_LENGTH = 1000
+const MAX_TRANSLATION_LENGTH = 500
 const MIN_TRANSLATION_LENGTH = 2
 
 const handleSelectionChange = async (): Promise<void> => {

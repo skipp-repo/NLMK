@@ -18,12 +18,7 @@ export type GlossariesProps = JSX.IntrinsicElements['div'] & { activeTab: number
 
 const words = proschet(['слово', 'слова', 'слов'])
 
-const GlossariesActions: React.FC<GlossariesProps> = ({
-  children,
-  className,
-  activeTab,
-  ...props
-}) => {
+const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ...props }) => {
   const reduxAction = useReduxAction()
   const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
 
@@ -94,40 +89,40 @@ const GlossariesActions: React.FC<GlossariesProps> = ({
     setCheckAll(undefined)
   }, [activeTab])
 
-  const count = glossaryById?.cards?.length
+  const count = glossaryById?.cards?.length || 0
 
   return (
     <Container className="Glossaries-actions">
-      {!!count && (
-        <ItemsCount className="Glossaries-actions-count">{`${count} ${words(count)}`}</ItemsCount>
-      )}
+      <ItemsCount className="Glossaries-actions-count">{`${count} ${words(count)}`}</ItemsCount>
 
-      <VocabsDropdown
-        text="Переместить в группу"
-        items={fixedVocabs}
-        onSelect={handleSelectGroupForMoving}
-        disabled={!selectedIds.length}
-      />
-      <Checkbox
-        className="Glossaries-actions-button"
-        text="Отметить все"
-        secondary
-        checked={checkAll}
-        onChange={handleSelectAll}
-      />
-      <Checkbox
-        className="Glossaries-actions-button"
-        text="Снять все"
-        secondary
-        checked={checkAll === false}
-        onChange={handleUnselectAll}
-      />
-      <IconButton
-        className="Glossaries-actions-button"
-        text="Скачать"
-        Icon={DownloadIcon}
-        onClick={handleDownloadVocab}
-      />
+      <div className="Glossaries-actions-wrapper">
+        <VocabsDropdown
+          text="Переместить в группу"
+          items={fixedVocabs}
+          onSelect={handleSelectGroupForMoving}
+          disabled={!selectedIds.length}
+        />
+        <Checkbox
+          className="Glossaries-actions-button"
+          text="Отметить все"
+          secondary
+          checked={checkAll}
+          onChange={handleSelectAll}
+        />
+        <Checkbox
+          className="Glossaries-actions-button"
+          text="Снять все"
+          secondary
+          checked={checkAll === false}
+          onChange={handleUnselectAll}
+        />
+        <IconButton
+          className="Glossaries-actions-button"
+          text="Скачать"
+          Icon={DownloadIcon}
+          onClick={handleDownloadVocab}
+        />
+      </div>
     </Container>
   )
 }

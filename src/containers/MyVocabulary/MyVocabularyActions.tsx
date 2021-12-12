@@ -1,4 +1,3 @@
-import fileDownload from 'js-file-download'
 import React from 'react'
 import proschet from 'proschet'
 import { useAsyncCallback } from 'react-async-hook'
@@ -22,7 +21,6 @@ export type MyVocabularyActionsProps = JSX.IntrinsicElements['div'] & { activeTa
 const words = proschet(['слово', 'слова', 'слов'])
 
 const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
-  children,
   className,
   activeTab,
   ...props
@@ -109,46 +107,48 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
     setCheckAll(undefined)
   }, [activeTab])
 
+  const count = vocabsByID?.cards?.length || 0
+
   return (
     <Container className="MyVocabulary-actions">
-      <ItemsCount className="MyVocabulary-actions-count">{`${vocabsByID?.cards.length} ${words(
-        vocabsByID?.cards.length,
-      )}`}</ItemsCount>
+      <ItemsCount className="Glossaries-actions-count">{`${count} ${words(count)}`}</ItemsCount>
 
-      <VocabsDropdown
-        text="Переместить в группу"
-        items={fixedVocabs}
-        onSelect={handleSelectGroupForMoving}
-        disabled={!selectedIds.length}
-      />
-      <Checkbox
-        className="MyVocabulary-actions-button"
-        text="Отметить все"
-        secondary
-        checked={checkAll}
-        onChange={handleSelectAll}
-      />
-      <Checkbox
-        className="MyVocabulary-actions-button"
-        text="Снять все"
-        secondary
-        checked={checkAll === false}
-        onChange={handleUnselectAll}
-      />
+      <div className="MyVocabulary-actions-wrapper">
+        <VocabsDropdown
+          text="Переместить в группу"
+          items={fixedVocabs}
+          onSelect={handleSelectGroupForMoving}
+          disabled={!selectedIds.length}
+        />
+        <Checkbox
+          className="MyVocabulary-actions-button"
+          text="Отметить все"
+          secondary
+          checked={checkAll}
+          onChange={handleSelectAll}
+        />
+        <Checkbox
+          className="MyVocabulary-actions-button"
+          text="Снять все"
+          secondary
+          checked={checkAll === false}
+          onChange={handleUnselectAll}
+        />
 
-      <IconButton
-        className="MyVocabulary-actions-button"
-        text="Удалить"
-        Icon={DeleteIcon}
-        disabled={!selectedIds.length}
-        onClick={handleRemoveCards}
-      />
-      <IconButton
-        className="MyVocabulary-actions-button"
-        text={selectedIds.length ? `Скачать группу (${selectedIds.length})` : 'Скачать группу'}
-        Icon={DownloadIcon}
-        onClick={handleDownloadVocab}
-      />
+        <IconButton
+          className="MyVocabulary-actions-button"
+          text="Удалить"
+          Icon={DeleteIcon}
+          disabled={!selectedIds.length}
+          onClick={handleRemoveCards}
+        />
+        <IconButton
+          className="MyVocabulary-actions-button"
+          text={selectedIds.length ? `Скачать группу (${selectedIds.length})` : 'Скачать группу'}
+          Icon={DownloadIcon}
+          onClick={handleDownloadVocab}
+        />
+      </div>
     </Container>
   )
 }

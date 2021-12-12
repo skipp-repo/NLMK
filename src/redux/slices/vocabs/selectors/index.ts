@@ -9,6 +9,8 @@ import { vocabs as userVocabs } from '../../user/selectors'
 
 export const selectedItems = (state) => state.vocabs.selectedItems
 
+export const flags = (state) => state.vocabs.flags
+
 export const selectedItemsById = (id) => createSelector(selectedItems, (items) => items[id])
 
 export const vocabsList = createSelector(vocabs, selectAll)

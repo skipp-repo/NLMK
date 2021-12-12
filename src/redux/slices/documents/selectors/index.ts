@@ -3,6 +3,8 @@ import { selectAll, selectById } from './adapterSelectors'
 
 export const documents = (state) => state.documents
 
+export const flags = (state) => state.documents.flags
+
 export const selectedItems = (state) => state.documents.selectedItems
 
 export const selectedItemsById = (id) =>
