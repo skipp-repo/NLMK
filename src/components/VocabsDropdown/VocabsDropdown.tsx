@@ -6,15 +6,24 @@ import IconButton from '../IconButton/IconButton'
 import { ReactComponent as ArrowIcon } from '../../assets/icons/arrow-2.svg'
 import Checkbox from '../Checkbox/Checkbox'
 
+export enum ItemType {
+  checkbox = 'checkbox',
+  action = 'action',
+}
+
+type Id = number | string
+
 type Item = {
-  id: number
+  id?: Id
   name: string
+  checked?: boolean
+  type?: ItemType
 }
 
 export type VocabsDropdownProps = Omit<JSX.IntrinsicElements['div'], 'onSelect' | 'disabled'> & {
   text: string
   items?: Item[]
-  onSelect?(id: number, checked: boolean): void
+  onSelect?(id: Id, checked?: boolean): void
   disabled: boolean
 }
 
@@ -40,15 +49,31 @@ const VocabsDropdown: React.FC<VocabsDropdownProps> = ({
       onSelect(id, checked)
     }
 
-  const renderItem = ({ id, name, checked }) => (
-    <Checkbox
-      key={id}
-      className="VocabsDropdown-item"
-      text={name}
-      onChange={handleSelect(id)}
-      checked={checked}
-    />
-  )
+  const handleActionClick = (id) => () => onSelect(id)
+
+  const renderItem = ({ id, name, checked, type = ItemType.checkbox }: Item) => {
+    switch (type) {
+      case ItemType.checkbox: {
+        return (
+          <Checkbox
+            key={id}
+            className="VocabsDropdown-item"
+            text={name}
+            onChange={handleSelect(id)}
+            checked={checked}
+          />
+        )
+      }
+      case ItemType.action: {
+        return (
+          <div className="VocabsDropdown-item-action" key={id} onClick={handleActionClick(id)}>
+            {name}
+          </div>
+        )
+      }
+    }
+    return
+  }
 
   useClickOutside([ref], () => setOpened(false))
 

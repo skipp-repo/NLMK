@@ -73,4 +73,17 @@ export const cardsIdsByVocabId = (id) =>
     return vocab.cards.map(({ _id }) => _id)
   })
 
+export const dropdownVocabs = (activeTab: number, vocabIdsForMoving: number[]) =>
+  createSelector(vocabsList, (vocabs) =>
+    vocabs
+      .filter(({ _id }) => activeTab !== _id)
+      .map(({ _id, name, ...item }) => {
+        return {
+          id: _id,
+          name: item.default ? 'Default' : name,
+          checked: vocabIdsForMoving.includes(_id),
+        }
+      }),
+  )
+
 export { allVocabs, vocabs }

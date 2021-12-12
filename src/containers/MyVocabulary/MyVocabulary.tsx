@@ -7,7 +7,6 @@ import { downloadAllVocabs as downloadAllVocabsRequest } from '../../api/request
 import Button from '../../components/Button/Button'
 import Container from '../../components/Container/Container'
 import DownloadLink from '../../components/DownloadLink/DownloadLink'
-import ModalNewVocabGroup from '../../components/ModalNewVocabGroup/ModalNewVocabGroup'
 import ModalRemoveVocabGroup from '../../components/ModalRemoveVocabGroup/ModalRemoveVocabGroup'
 import ModalRenameVocabGroup from '../../components/ModalRenameVocabGroup/ModalRenameVocabGroup'
 import PageTitle from '../../components/PageTitle/PageTitle'
@@ -26,6 +25,7 @@ import { Filters } from '../../types/filters'
 import './MyVocabulary.scss'
 import MyVocabularyActions from './MyVocabularyActions'
 import Loader from '../../components/Loader/Loader'
+import useCreateNewGroupPopup from '../../hooks/useCreateNewGroupPopup'
 
 export type MyVocabularyProps = {}
 
@@ -85,7 +85,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const glossaries = useSelector(userSlice.selectors.glossaries)
   const { getVocabsLoading } = useSelector(vocabsSlice.selectors.flags)
 
-  const [newGroupPopupVisible, showNewGroupPopup, hideNewGroupPopup] = useModal()
+  const { showNewGroupPopup, createNewGroupModalComponent } = useCreateNewGroupPopup()
+
   const [
     removeGroupModalVisible,
     showRemoveGroupModal,
@@ -101,7 +102,6 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     setDataRenameGroupModal,
   ] = useModal()
 
-  const createFolder = reduxAction(vocabsSlice.createFolder)
   const removeFolder = reduxAction(vocabsSlice.removeFolder)
   const editFolder = reduxAction(vocabsSlice.editFolder)
   const selectCard = reduxAction(vocabsSlice.selectCard)
@@ -217,11 +217,6 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
     setQuery(text)
   }
 
-  const handleCreateNewGroup = (name) => {
-    createFolder({ name })
-    hideNewGroupPopup()
-  }
-
   const handleRenameGroup = (name) => {
     editFolder({
       id: renameData?.id,
@@ -257,8 +252,6 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       })
     }
   }, [searchFilters, query])
-
-  const isShowVocabsCards = !getVocabsLoading
 
   return (
     <div className="MyVocabulary">
@@ -305,11 +298,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
         </Container>
       )}
 
-      <ModalNewVocabGroup
-        visible={newGroupPopupVisible}
-        onCreate={handleCreateNewGroup}
-        onClose={hideNewGroupPopup}
-      />
+      {createNewGroupModalComponent}
 
       <ModalRemoveVocabGroup
         visible={removeGroupModalVisible}

@@ -12,7 +12,7 @@ import * as userSlice from '../../redux/slices/user'
 import * as vocabsSlices from '../../redux/slices/vocabs'
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
 import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg'
-import VocabsDropdown from '../../components/VocabsDropdown/VocabsDropdown'
+import VocabListDropdown from '../VocabListDropdown/VocabListDropdown'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import useReduxAction from '../../hooks/useReduxAction'
 
@@ -20,20 +20,13 @@ export type MyVocabularyActionsProps = JSX.IntrinsicElements['div'] & { activeTa
 
 const words = proschet(['слово', 'слова', 'слов'])
 
-const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
-  className,
-  activeTab,
-  ...props
-}) => {
-  const reduxAction = useReduxAction()
-  const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
-
-  const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
-
-  const selectedIds = useSelector(vocabsSlice.selectors.selectedCardsIdsByVocabId(activeTab))
-
+const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({ className, activeTab }) => {
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
   const [vocabIdsForMoving, setVocabsIdsForMoving] = React.useState([])
+
+  const reduxAction = useReduxAction()
+  const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
+  const selectedIds = useSelector(vocabsSlice.selectors.selectedCardsIdsByVocabId(activeTab))
 
   const editFolder = reduxAction(vocabsSlices.editFolder)
   const selectAll = reduxAction(vocabsSlice.selectAll)
@@ -47,20 +40,6 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
   const downloadVocabByIds = useAsyncCallback(async () => {
     return await downloadVocabByIdsRequest({ token, cardIds: selectedIds })
   })
-
-  const fixedVocabs = React.useMemo(
-    () =>
-      vocabs
-        .filter(({ _id }) => activeTab !== _id)
-        .map(({ _id, name, ...item }) => {
-          return {
-            id: _id,
-            name: item.default ? 'Default' : name,
-            checked: vocabIdsForMoving.includes(_id),
-          }
-        }),
-    [vocabs, activeTab, vocabIdsForMoving],
-  )
 
   const handleSelectAll = ({ target }) => {
     setCheckAll(target.checked ? true : undefined)
@@ -114,9 +93,9 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({
       <ItemsCount className="Glossaries-actions-count">{`${count} ${words(count)}`}</ItemsCount>
 
       <div className="MyVocabulary-actions-wrapper">
-        <VocabsDropdown
-          text="Переместить в группу"
-          items={fixedVocabs}
+        <VocabListDropdown
+          activeTab={activeTab}
+          vocabIdsForMoving={vocabIdsForMoving}
           onSelect={handleSelectGroupForMoving}
           disabled={!selectedIds.length}
         />

@@ -24,3 +24,13 @@
     margin-bottom: 0;
   }
 }
+
+.VocabsDropdown-item-action {
+  font-size: 16px;
+  line-height: 1;
+  top: 2px;
+  position: relative;
+  color: var(--blue);
+  cursor: pointer;
+  padding-top: 5px;
+}

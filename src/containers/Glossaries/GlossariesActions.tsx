@@ -10,9 +10,9 @@ import { useSelector } from 'react-redux'
 import * as glossariesSlice from '../../redux/slices/glossaries'
 import * as userSlice from '../../redux/slices/user'
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg'
-import VocabsDropdown from '../../components/VocabsDropdown/VocabsDropdown'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import useReduxAction from '../../hooks/useReduxAction'
+import VocabListDropdown from '../VocabListDropdown/VocabListDropdown'
 
 export type GlossariesProps = JSX.IntrinsicElements['div'] & { activeTab: number }
 
@@ -21,8 +21,6 @@ const words = proschet(['слово', 'слова', 'слов'])
 const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ...props }) => {
   const reduxAction = useReduxAction()
   const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
-
-  const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
 
   const selectedIds = useSelector(glossariesSlice.selectors.selectedCardsIdsByVocabId(activeTab))
 
@@ -37,20 +35,6 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
   const downloadCurrentVocab = useAsyncCallback(async (id) => {
     return await downloadGlossaryById({ token, id })
   })
-
-  const fixedVocabs = React.useMemo(
-    () =>
-      vocabs
-        .filter(({ _id }) => activeTab !== _id)
-        .map(({ _id, name, ...item }) => {
-          return {
-            id: _id,
-            name: item.default ? 'Default' : name,
-            checked: vocabIdsForMoving.includes(_id),
-          }
-        }),
-    [vocabs, activeTab, vocabIdsForMoving],
-  )
 
   const handleSelectAll = ({ target }) => {
     setCheckAll(target.checked ? true : undefined)
@@ -96,9 +80,9 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
       <ItemsCount className="Glossaries-actions-count">{`${count} ${words(count)}`}</ItemsCount>
 
       <div className="Glossaries-actions-wrapper">
-        <VocabsDropdown
-          text="Переместить в группу"
-          items={fixedVocabs}
+        <VocabListDropdown
+          activeTab={activeTab}
+          vocabIdsForMoving={vocabIdsForMoving}
           onSelect={handleSelectGroupForMoving}
           disabled={!selectedIds.length}
         />
