@@ -7,6 +7,7 @@ import { translation as translationRequest } from '../../../api/requests/transla
 import createTranslationString from '../../../utils/createTranslationString'
 import { createPopper } from '@popperjs/core/lib/popper-lite'
 import flatten from 'arr-flatten'
+import clickManager from '../clickManagerInstanse'
 
 let controller
 
@@ -18,15 +19,18 @@ export default async (): Promise<void> => {
     controller.abort()
   }
 
-  if (
-    !text.length ||
-    !selection.focusNode ||
-    text.length > MAX_TRANSLATION_LENGTH ||
-    text.length < MIN_TRANSLATION_LENGTH
-  ) {
-    clearTooltip()
-    return
-  }
+  console.log('target', clickManager.lastTarget, clickManager.getLastTarget())
+
+  // if (
+  //   !text.length ||
+  //   !selection.focusNode ||
+  //   text.length > MAX_TRANSLATION_LENGTH ||
+  //   text.length < MIN_TRANSLATION_LENGTH
+  // ) {
+  //   clearTooltip()
+  //
+  //   return
+  // }
 
   const state = store.getState()
 
@@ -46,9 +50,11 @@ export default async (): Promise<void> => {
 
   const results = flatten(data?.results)
 
+  console.log('search')
+
   const translation = createTranslationString(results)
 
-  const tooltip = getTooltip(translation)
+  const tooltip = getTooltip(translation, false)
 
   const popper = createPopper(rangeRef, tooltip, {
     placement: 'top',
