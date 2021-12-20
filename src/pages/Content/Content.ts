@@ -4,7 +4,6 @@ import translate from './helpers/translate'
 import BookmarkSvg from '../../assets/icons/bookmark2.svg?raw'
 import BookmarkSvgOutline from '../../assets/icons/bookmark2-outline.svg?raw'
 import { ICON_CLASS1, POPPER_ID } from './constants'
-import { clearTooltip } from './helpers/getTooltip'
 
 addStyles()
 

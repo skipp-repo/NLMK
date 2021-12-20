@@ -1,11 +1,8 @@
 import { MAX_TRANSLATION_LENGTH, MIN_TRANSLATION_LENGTH } from '../../../constantes'
-import { clearTooltip, getTooltip } from './getTooltip'
 import { store } from '../../../redux/store'
 import initUser from './initUser'
-import RangeRef from '../../../utils/RangeRef'
 import { translation as translationRequest } from '../../../api/requests/translation'
 import createTranslationString from '../../../utils/createTranslationString'
-import { createPopper } from '@popperjs/core/lib/popper-lite'
 import flatten from 'arr-flatten'
 import clickManager from '../clickManagerInstanse'
 import Tooltip from './Tooltip'
@@ -32,16 +29,16 @@ export default async (): Promise<void> => {
     text.length > MAX_TRANSLATION_LENGTH ||
     text.length < MIN_TRANSLATION_LENGTH
   ) {
-    clearTooltip()
+    Tooltip.clearTooltip()
 
     return
   }
 
+  console.log('text', text)
+
   const state = store.getState()
 
   let token = state?.user?.token || (await initUser())
-
-  const rangeRef = new RangeRef()
 
   controller = new AbortController()
 
@@ -55,20 +52,7 @@ export default async (): Promise<void> => {
 
   const results = flatten(data?.results)
 
-  console.log('search')
-
   const translation = createTranslationString(results)
 
-  const tooltip = getTooltip(translation, false)
-
-  const popper = createPopper(rangeRef, tooltip, {
-    placement: 'top',
-  })
-
-  rangeRef.rectChangedCallback = ({ width }) => {
-    if (width > 0) {
-      popper.update()
-    } else {
-    }
-  }
+  Tooltip.init(translation, false)
 }
