@@ -8,6 +8,7 @@ import createTranslationString from '../../../utils/createTranslationString'
 import { createPopper } from '@popperjs/core/lib/popper-lite'
 import flatten from 'arr-flatten'
 import clickManager from '../clickManagerInstanse'
+import Tooltip from './Tooltip'
 
 let controller
 
@@ -19,18 +20,22 @@ export default async (): Promise<void> => {
     controller.abort()
   }
 
-  console.log('target', clickManager.lastTarget, clickManager.getLastTarget())
+  if (Tooltip.checkNodeInTooltip(clickManager.lastTarget)) {
+    return
+  }
 
-  // if (
-  //   !text.length ||
-  //   !selection.focusNode ||
-  //   text.length > MAX_TRANSLATION_LENGTH ||
-  //   text.length < MIN_TRANSLATION_LENGTH
-  // ) {
-  //   clearTooltip()
-  //
-  //   return
-  // }
+  console.log('target', clickManager.lastTarget)
+
+  if (
+    !text.length ||
+    !selection.focusNode ||
+    text.length > MAX_TRANSLATION_LENGTH ||
+    text.length < MIN_TRANSLATION_LENGTH
+  ) {
+    clearTooltip()
+
+    return
+  }
 
   const state = store.getState()
 

@@ -5,7 +5,8 @@ export default class ClickManager {
     this.init()
   }
 
-  handler = (e) => {
+  handler = (e: MouseEvent) => {
+    e.stopPropagation()
     this.lastTarget = e.target
   }
 
@@ -15,10 +16,5 @@ export default class ClickManager {
 
   destroy() {
     document.removeEventListener('click', this.handler)
-  }
-
-  getLastTarget() {
-    console.log(this.lastTarget)
-    return this.lastTarget
   }
 }
