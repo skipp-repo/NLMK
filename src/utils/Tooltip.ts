@@ -1,4 +1,11 @@
-import { ICON_CLASS1, ICON_CLASS2, POPPER_ID, TOOLTIP_TEXT_CLASS } from '../pages/Content/constants'
+import {
+  ICON_CLASS1,
+  ICON_CLASS2,
+  POPPER_ID,
+  POPPER_ROOT_ID,
+  TOOLTIP_ROOT_CLASS,
+  TOOLTIP_TEXT_CLASS,
+} from '../pages/Content/constants'
 import BookmarkSvg from '../assets/icons/bookmark2.svg?raw'
 import BookmarkSvgOutline from '../assets/icons/bookmark2-outline.svg?raw'
 import { createPopper } from '@popperjs/core/lib/popper-lite'
@@ -13,19 +20,32 @@ class Tooltip {
   rangeRef = new RangeRef()
   tooltip = null
   popper: Instance | null = null
+  tooltipText = ''
+  tooltipBookmarked = false
 
   constructor() {
+    this.init()
+
     this.rangeRef.rectChangedCallback = () => {
       this.popper?.update()
     }
   }
 
-  private static createTooltipHTML(text, active = true) {
+  private createTooltipRoot() {
+    const el = document.createElement('div')
+
+    el.classList.add(TOOLTIP_ROOT_CLASS)
+    el.id = POPPER_ROOT_ID
+
+    this.tooltip = el
+  }
+
+  private createTooltipHTML() {
     return `
-  <div id="${POPPER_ID}" class="${POPPER_ID}" data-active="${active}">
-    <div class="${TOOLTIP_TEXT_CLASS}">${text}</div>
+  <div id="${POPPER_ID}" class="${POPPER_ID}" data-active="${this.tooltipBookmarked}">
+    <div class="${TOOLTIP_TEXT_CLASS}">${this.tooltipText}</div>
     <div class="${ICON_CLASS1} ${ICON_CLASS2}">
-      ${active ? BookmarkSvg : BookmarkSvgOutline}
+      ${this.tooltipBookmarked ? BookmarkSvg : BookmarkSvgOutline}
     </div>
   </div>
 `
@@ -38,14 +58,24 @@ class Tooltip {
     }
   }
 
-  private insertTooltip(text, active = true) {
+  private insertTooltip() {
     this.removeTooltip()
 
-    document.body.insertAdjacentHTML('beforeend', Tooltip.createTooltipHTML(text, active))
+    this.createTooltipRoot()
 
-    this.tooltip = document.getElementById(POPPER_ID)
+    this.tooltip.insertAdjacentHTML('beforeend', this.createTooltipHTML())
 
-    return this.tooltip
+    document.body.append(this.tooltip)
+
+    this.tooltip = document.getElementById(POPPER_ROOT_ID)
+  }
+
+  private updateTooltip() {
+    const tooltipContent = document.getElementById(POPPER_ID)
+
+    tooltipContent.remove()
+
+    this.tooltip.insertAdjacentHTML('beforeend', this.createTooltipHTML())
   }
 
   private initPopper() {
@@ -56,14 +86,16 @@ class Tooltip {
     })
   }
 
-  private clearTooltip = () => {
+  public clearTooltip = () => {
+    if (!this.tooltip) return
+
     const textEls = document.getElementsByClassName(TOOLTIP_TEXT_CLASS)
 
     if (!textEls.length) return
 
     const textEl = textEls[0]
 
-    textEl.textContent = ''
+    textEl.textContent = 'загрузка...'
   }
 
   public checkNodeInTooltip(node) {
@@ -72,9 +104,21 @@ class Tooltip {
     return node?.closest(`.${POPPER_ID}`)
   }
 
-  public init(text, active) {
-    this.insertTooltip(text, active)
+  private init() {
+    this.insertTooltip()
     this.initPopper()
+  }
+
+  public update(text, tooltipBookmarked) {
+    this.tooltipText = text
+    this.tooltipBookmarked = tooltipBookmarked
+
+    if (!this.tooltip) {
+      this.init()
+      return
+    }
+
+    this.updateTooltip()
   }
 
   public destroy() {

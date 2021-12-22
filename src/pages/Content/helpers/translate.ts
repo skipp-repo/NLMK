@@ -9,7 +9,7 @@ import Tooltip from '../../../utils/Tooltip'
 
 let controller
 
-export default async (event): Promise<void> => {
+export default async (): Promise<void> => {
   const selection: any = document.getSelection()
   const text = selection.toString()
 
@@ -36,6 +36,8 @@ export default async (event): Promise<void> => {
 
   controller = new AbortController()
 
+  Tooltip.clearTooltip()
+
   const request = await translationRequest({ token, q: text }, { signal: controller.signal })
 
   if (!request) return
@@ -48,5 +50,5 @@ export default async (event): Promise<void> => {
 
   const translation = createTranslationString(results)
 
-  Tooltip.init(translation, false)
+  Tooltip.update(translation, false)
 }
