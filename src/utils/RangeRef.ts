@@ -1,3 +1,5 @@
+import Tooltip from './Tooltip'
+
 type Rect = {
   top: number
   left: number
@@ -23,19 +25,23 @@ export default class RangeRef {
 
     const update: EventListener = (evt) => {
       let selection = document.getSelection()
+      const text = selection.toString()
 
-      this.range = selection && selection.rangeCount && selection.getRangeAt(0)
+      if (evt?.target && Tooltip.checkNodeInTooltip(evt.target)) {
+        return
+      }
 
+      this.range = selection && text.length && selection.getRangeAt(0)
       this.updateRect()
     }
 
     document.querySelector('*').addEventListener('mouseup', update)
     document.querySelector('*').addEventListener('input', update)
-    document.querySelector('*').addEventListener('keydown', (evt) => update(evt))
+    document.querySelector('*').addEventListener('keydown', update)
+    document.scrollingElement.addEventListener('scroll', update)
 
     window.addEventListener('scroll', update)
-
-    document.scrollingElement.addEventListener('scroll', update)
+    window.addEventListener('resize', update)
   }
 
   updateRect() {

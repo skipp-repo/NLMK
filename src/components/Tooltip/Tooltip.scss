@@ -10,8 +10,14 @@
     align-items: flex-start;
     justify-content: space-between;
     box-sizing: border-box;
-    max-width: 30vw;
     white-space: pre-wrap;
+
+    &[data-popper-reference-hidden],
+    &[data-popper-escaped] {
+        visibility: hidden;
+        pointer-events: none;
+    }
+
 }
 
 .NLMK-Extension-Tooltip-text {

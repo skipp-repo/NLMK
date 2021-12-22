@@ -5,7 +5,7 @@ import { translation as translationRequest } from '../../../api/requests/transla
 import createTranslationString from '../../../utils/createTranslationString'
 import flatten from 'arr-flatten'
 import clickManager from '../clickManagerInstanse'
-import Tooltip from './Tooltip'
+import Tooltip from '../../../utils/Tooltip'
 
 let controller
 
@@ -27,10 +27,6 @@ export default async (event): Promise<void> => {
     text.length > MAX_TRANSLATION_LENGTH ||
     text.length < MIN_TRANSLATION_LENGTH
   ) {
-    Tooltip.destroy()
-
-    console.log('destroy')
-
     return
   }
 
