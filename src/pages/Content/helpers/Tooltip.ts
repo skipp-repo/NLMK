@@ -3,13 +3,15 @@ import BookmarkSvg from '../../../assets/icons/bookmark2.svg?raw'
 import BookmarkSvgOutline from '../../../assets/icons/bookmark2-outline.svg?raw'
 import { createPopper } from '@popperjs/core/lib/popper-lite'
 import RangeRef from '../../../utils/RangeRef'
+import { Instance } from '@popperjs/core/lib/types'
+import clickManager from '../clickManagerInstanse'
 
 class Tooltip {
   text = ''
   active = false
   rangeRef = new RangeRef()
   tooltip = null
-  popper = null
+  popper: Instance | null = null
 
   checkNodeInTooltip(node) {
     if (!node) return false
@@ -31,12 +33,15 @@ class Tooltip {
 `
   }
 
-  insertTooltip(text, active = true) {
-    let tooltip = document.getElementById(POPPER_ID)
-
-    if (tooltip) {
-      document.body.removeChild(tooltip)
+  removeTooltip() {
+    if (this.tooltip) {
+      document.body.removeChild(this.tooltip)
+      this.tooltip = null
     }
+  }
+
+  insertTooltip(text, active = true) {
+    this.removeTooltip()
 
     document.body.insertAdjacentHTML('beforeend', this.createTooltipHTML(text, active))
 
@@ -52,8 +57,7 @@ class Tooltip {
 
     this.rangeRef.rectChangedCallback = ({ width }) => {
       if (width > 0) {
-        console.log('rectChangedCallback')
-        this.popper.update()
+        // this.popper.update()
       }
     }
   }
@@ -73,7 +77,10 @@ class Tooltip {
     this.initPopper()
   }
 
-  public destroy() {}
+  public destroy() {
+    this.removeTooltip()
+    this.popper?.destroy()
+  }
 }
 
 export default new Tooltip()

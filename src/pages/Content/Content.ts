@@ -8,6 +8,7 @@ import { ICON_CLASS1, POPPER_ID } from './constants'
 addStyles()
 
 document.addEventListener('selectionchange', translate)
+document.addEventListener('click', translate)
 
 document.addEventListener('click', (e) => {
   // @ts-ignore

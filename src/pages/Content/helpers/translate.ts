@@ -9,9 +9,11 @@ import Tooltip from './Tooltip'
 
 let controller
 
-export default async (): Promise<void> => {
+export default async (event): Promise<void> => {
   const selection: any = document.getSelection()
   const text = selection.toString()
+
+  console.log('event', event.target)
 
   if (controller) {
     controller.abort()
@@ -21,20 +23,18 @@ export default async (): Promise<void> => {
     return
   }
 
-  console.log('target', clickManager.lastTarget)
-
   if (
     !text.length ||
     !selection.focusNode ||
     text.length > MAX_TRANSLATION_LENGTH ||
     text.length < MIN_TRANSLATION_LENGTH
   ) {
-    Tooltip.clearTooltip()
+    Tooltip.destroy()
+
+    console.log('destroy')
 
     return
   }
-
-  console.log('text', text)
 
   const state = store.getState()
 
