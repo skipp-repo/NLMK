@@ -22,10 +22,7 @@ class Tooltip {
   createTooltipHTML(text, active = true) {
     return `
   <div id="${POPPER_ID}" class="${POPPER_ID}" data-active="${active}">
-    <div class="${TOOLTIP_TEXT_CLASS}">
-      ${text}
-    </div>
-    
+    <div class="${TOOLTIP_TEXT_CLASS}">${text}</div>
     <div class="${ICON_CLASS1} ${ICON_CLASS2}">
       ${active ? BookmarkSvg : BookmarkSvgOutline}
     </div>

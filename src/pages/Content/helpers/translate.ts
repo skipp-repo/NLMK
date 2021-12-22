@@ -13,8 +13,6 @@ export default async (event): Promise<void> => {
   const selection: any = document.getSelection()
   const text = selection.toString()
 
-  console.log('event', event.target)
-
   if (controller) {
     controller.abort()
   }
