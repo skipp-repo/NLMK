@@ -14,6 +14,12 @@ class Tooltip {
   tooltip = null
   popper: Instance | null = null
 
+  constructor() {
+    this.rangeRef.rectChangedCallback = () => {
+      this.popper?.update()
+    }
+  }
+
   private static createTooltipHTML(text, active = true) {
     return `
   <div id="${POPPER_ID}" class="${POPPER_ID}" data-active="${active}">

@@ -27,11 +27,12 @@ export default class RangeRef {
       let selection = document.getSelection()
       const text = selection.toString()
 
-      if (evt?.target && Tooltip.checkNodeInTooltip(evt.target)) {
-        return
+      if ((evt?.target && Tooltip.checkNodeInTooltip(evt.target)) || !text.length) {
+        this.range = null
+      } else {
+        this.range = selection && selection.getRangeAt(0)
       }
 
-      this.range = selection && text.length && selection.getRangeAt(0)
       this.updateRect()
     }
 
