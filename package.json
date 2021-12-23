@@ -15,7 +15,7 @@
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.16.5",
     "@hot-loader/react-dom": "^17.0.1",
-    "@popperjs/core": "^2.9.2",
+    "@popperjs/core": "2.11.0",
     "@reduxjs/toolkit": "^1.6.0",
     "@stdlib/utils-noop": "^0.0.8",
     "@svgr/webpack": "^5.5.0",
@@ -37,6 +37,7 @@
     "draft-js-export-html": "^1.4.1",
     "draft-js-import-html": "^1.4.1",
     "js-file-download": "^0.4.12",
+    "lodash.debounce": "^4.0.8",
     "lodash.find": "^4.6.0",
     "lodash.isequal": "^4.5.0",
     "lodash.memoize": "^4.1.2",

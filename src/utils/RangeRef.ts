@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce'
 import { MIN_TRANSLATION_LENGTH } from '../constantes'
 import Tooltip from './Tooltip'
 
@@ -24,34 +25,36 @@ export default class RangeRef {
   constructor() {
     this.updateRect()
 
-    const update: EventListener = (evt) => {
+    const update: EventListener = debounce((evt) => {
       let selection = document.getSelection()
       let text = selection.toString()
 
       text = text.trim()
 
-      if (
-        (evt?.target && Tooltip.checkNodeInTooltip(evt.target)) ||
-        !text.length ||
-        text.length < MIN_TRANSLATION_LENGTH
-      ) {
+      if (evt.type === 'selectionchange' && evt?.target instanceof Document) {
+        return
+      }
+
+      if (evt?.target && Tooltip.checkNodeInTooltip(evt.target)) {
+        return
+      }
+
+      if (!text.length || text.length < MIN_TRANSLATION_LENGTH) {
         this.range = null
       } else {
         this.range = selection && selection.getRangeAt(0)
       }
 
       this.updateRect()
-    }
+    }, 200)
 
-    document.querySelector('*').addEventListener('mouseup', update)
-    document.querySelector('*').addEventListener('keydown', update)
-
+    document.addEventListener('mouseup', update)
+    document.addEventListener('keydown', update)
     document.addEventListener('selectionchange', update)
 
-    //
-    // document.scrollingElement.addEventListener('scroll', update)
-    // window.addEventListener('scroll', update)
-    //
+    document.scrollingElement.addEventListener('scroll', update)
+
+    window.addEventListener('scroll', update)
     window.addEventListener('resize', update)
   }
 

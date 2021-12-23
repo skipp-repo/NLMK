@@ -26,9 +26,17 @@ class Tooltip {
   constructor() {
     this.init()
 
-    this.rangeRef.rectChangedCallback = () => {
+    this.rangeRef.rectChangedCallback = ({ width }) => {
       this.popper?.update()
     }
+
+    document.addEventListener('click', (e) => {
+      if (Tooltip.checkNodeIsBookmark(e.target)) {
+        this.updateBookmarkedState()
+
+        this.onBookmarkled(this.tooltipBookmarked)
+      }
+    })
   }
 
   private createTooltipRoot() {
@@ -76,6 +84,8 @@ class Tooltip {
     tooltipContent.remove()
 
     this.tooltip.insertAdjacentHTML('beforeend', this.createTooltipHTML())
+
+    this.popper?.update()
   }
 
   private initPopper() {
@@ -106,9 +116,14 @@ class Tooltip {
   }
 
   public checkNodeInTooltip(node) {
-    if (!node) return false
+    if (!node || !node.closest) return false
+    return node.closest(`.${POPPER_ROOT_ID}`)
+  }
 
-    return node.closest && node.closest(`.${POPPER_ID}`)
+  private static checkNodeIsBookmark(node) {
+    if (!node || !node.closest) return false
+
+    return node.closest(`.${ICON_CLASS1}`)
   }
 
   private init() {
@@ -128,10 +143,18 @@ class Tooltip {
     this.updateTooltip()
   }
 
+  private updateBookmarkedState = () => {
+    this.tooltipBookmarked = !this.tooltipBookmarked
+
+    this.updateTooltip()
+  }
+
   public destroy() {
     this.popper?.destroy()
     this.removeTooltip()
   }
+
+  public onBookmarkled = (active) => {}
 }
 
 export default new Tooltip()
