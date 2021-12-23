@@ -11,7 +11,9 @@ let controller
 
 export default async (): Promise<void> => {
   const selection: any = document.getSelection()
-  const text = selection.toString()
+  let text = selection.toString()
+
+  text = text.trim()
 
   if (controller) {
     controller.abort()

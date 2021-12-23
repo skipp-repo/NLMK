@@ -1,3 +1,4 @@
+import { MIN_TRANSLATION_LENGTH } from '../constantes'
 import Tooltip from './Tooltip'
 
 type Rect = {
@@ -25,9 +26,15 @@ export default class RangeRef {
 
     const update: EventListener = (evt) => {
       let selection = document.getSelection()
-      const text = selection.toString()
+      let text = selection.toString()
 
-      if ((evt?.target && Tooltip.checkNodeInTooltip(evt.target)) || !text.length) {
+      text = text.trim()
+
+      if (
+        (evt?.target && Tooltip.checkNodeInTooltip(evt.target)) ||
+        !text.length ||
+        text.length < MIN_TRANSLATION_LENGTH
+      ) {
         this.range = null
       } else {
         this.range = selection && selection.getRangeAt(0)
@@ -37,11 +44,14 @@ export default class RangeRef {
     }
 
     document.querySelector('*').addEventListener('mouseup', update)
-    document.querySelector('*').addEventListener('input', update)
     document.querySelector('*').addEventListener('keydown', update)
-    document.scrollingElement.addEventListener('scroll', update)
 
-    window.addEventListener('scroll', update)
+    document.addEventListener('selectionchange', update)
+
+    //
+    // document.scrollingElement.addEventListener('scroll', update)
+    // window.addEventListener('scroll', update)
+    //
     window.addEventListener('resize', update)
   }
 

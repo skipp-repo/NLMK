@@ -81,8 +81,15 @@ class Tooltip {
   private initPopper() {
     this.popper = createPopper(this.rangeRef, this.tooltip, {
       placement: 'top',
-      // @ts-ignore
-      modifiers: [hide, sameWidth],
+      modifiers: [
+        hide,
+        // @ts-ignore
+        sameWidth,
+        {
+          name: 'eventListeners',
+          options: { scroll: false },
+        },
+      ],
     })
   }
 
@@ -101,7 +108,7 @@ class Tooltip {
   public checkNodeInTooltip(node) {
     if (!node) return false
 
-    return node?.closest(`.${POPPER_ID}`)
+    return node.closest && node.closest(`.${POPPER_ID}`)
   }
 
   private init() {
