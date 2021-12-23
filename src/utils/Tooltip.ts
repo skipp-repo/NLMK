@@ -22,6 +22,7 @@ class Tooltip {
   popper: Instance | null = null
   tooltipText = ''
   tooltipBookmarked = false
+  bookmarkButtonHidden = false
 
   constructor() {
     this.init()
@@ -53,7 +54,13 @@ class Tooltip {
   <div id="${POPPER_ID}" class="${POPPER_ID}" data-active="${this.tooltipBookmarked}">
     <div class="${TOOLTIP_TEXT_CLASS}">${this.tooltipText}</div>
     <div class="${ICON_CLASS1} ${ICON_CLASS2}">
-      ${this.tooltipBookmarked ? BookmarkSvg : BookmarkSvgOutline}
+      ${
+        !this.bookmarkButtonHidden
+          ? this.tooltipBookmarked
+            ? BookmarkSvg
+            : BookmarkSvgOutline
+          : ''
+      }
     </div>
   </div>
 `
@@ -103,16 +110,13 @@ class Tooltip {
     })
   }
 
-  public clearTooltip = () => {
+  public setLoading = () => {
     if (!this.tooltip) return
 
-    const textEls = document.getElementsByClassName(TOOLTIP_TEXT_CLASS)
-
-    if (!textEls.length) return
-
-    const textEl = textEls[0]
-
-    textEl.textContent = 'загрузка...'
+    this.tooltipText = 'загрузка...'
+    this.tooltipBookmarked = false
+    this.bookmarkButtonHidden = true
+    this.updateTooltip()
   }
 
   public checkNodeInTooltip(node) {
@@ -134,6 +138,7 @@ class Tooltip {
   public update(text, tooltipBookmarked) {
     this.tooltipText = text
     this.tooltipBookmarked = tooltipBookmarked
+    this.bookmarkButtonHidden = false
 
     if (!this.tooltip) {
       this.init()
