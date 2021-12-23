@@ -20,9 +20,8 @@ const persistConfig = {
 }
 
 const middlewares = getDefaultMiddleware({
-  serializableCheck: {
-    ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-  },
+  serializableCheck: false,
+  immutableCheck: false,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)
