@@ -3,7 +3,8 @@ import find from 'lodash.find'
 import flatten from 'arr-flatten'
 import glossaries from '../user/selectors/glossaries'
 import sortTranslationByCommon from '../../../utils/sortTranslationByCommon'
-import { allSelectedIds } from '../vocabs/selectors'
+import { allSelectedIds as allVocabsSelectedIds } from '../vocabs/selectors'
+import { allSelectedIds as allGlossariesSelectedIds } from '../glossaries/selectors'
 import allCardsIds from '../vocabs/selectors/allCardsIds'
 import getImagesFromGlossaries from '../../../utils/getImagesFromGlossaries'
 
@@ -62,7 +63,7 @@ export const popupSearchResults = createSelector(
 export const mainVocabsSearchResults = createSelector(
   glossaries,
   translation,
-  allSelectedIds,
+  allVocabsSelectedIds,
   (glossariesState, translationState, selectedIds) => {
     const translationArr = translationState?.MainVocabs
 
@@ -106,8 +107,8 @@ export const mainVocabsSearchResults = createSelector(
 export const glossariesSearchResults = createSelector(
   glossaries,
   translation,
-  allCardsIds,
-  (glossariesState, translationState, vocabsIds) => {
+  allGlossariesSelectedIds,
+  (glossariesState, translationState, selectedIds) => {
     const translationArr = translationState?.Glossaries
 
     if (!translationArr) return
@@ -127,10 +128,17 @@ export const glossariesSearchResults = createSelector(
 
       const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
 
+      console.log(selectedIds)
+      const selected =
+        selectedIds === 'all' ||
+        (selectedIds?.length && selectedIds.includes(item.translation._id)) ||
+        false
+
       return {
         ...item.translation,
         glossaries: vocabsGlossaries,
         images,
+        selected,
       }
     })
 

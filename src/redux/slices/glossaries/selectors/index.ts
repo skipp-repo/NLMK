@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit'
+import flatten from 'arr-flatten'
 import find from 'lodash.find'
 import getImagesFromGlossaries from '../../../../utils/getImagesFromGlossaries'
 import { selectAll } from './adapterSelectors'
@@ -8,6 +9,12 @@ export const glossaries = (state) => state.glossaries
 export const flags = (state) => state.glossaries.flags
 
 export const selectedItems = (state) => state.glossaries.selectedItems
+
+export const allSelectedIds = createSelector(selectedItems, (items) => {
+  const arr = Object.keys(items).map((key) => items[key])
+
+  return flatten(arr)
+})
 
 export const selectedItemsById = (id) =>
   createSelector(selectedItems, (items) => {
