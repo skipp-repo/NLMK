@@ -61,8 +61,12 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
       const documentHTML = contentStateToHtml(content)
 
       if (id === 'new') {
-        uploadDocument({ documentHTML, documentName: docName })
-        setLocation('/documents/')
+        // @ts-ignore
+        const { payload } = await uploadDocument({ documentHTML, documentName: docName })
+
+        if (payload.data._id) {
+          setLocation(`/documents/edit/${payload.data._id}`)
+        }
       } else {
         updateDocument({ documentHTML, id })
       }

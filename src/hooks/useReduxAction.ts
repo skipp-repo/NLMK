@@ -12,7 +12,7 @@ export default () => {
       (params: never) => {
         const actionObject = func(params)
 
-        dispatch(actionObject)
+        return dispatch(actionObject)
       },
       Array.isArray(dependencies) ? [dispatch, ...dependencies] : [dispatch],
     )
