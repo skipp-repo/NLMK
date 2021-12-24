@@ -3,6 +3,7 @@ import find from 'lodash.find'
 import flatten from 'arr-flatten'
 import glossaries from '../user/selectors/glossaries'
 import sortTranslationByCommon from '../../../utils/sortTranslationByCommon'
+import { allSelectedIds, selectedItems } from '../vocabs/selectors'
 import allCardsIds from '../vocabs/selectors/allCardsIds'
 import getImagesFromGlossaries from '../../../utils/getImagesFromGlossaries'
 
@@ -61,8 +62,8 @@ export const popupSearchResults = createSelector(
 export const mainVocabsSearchResults = createSelector(
   glossaries,
   translation,
-  allCardsIds,
-  (glossariesState, translationState, vocabsIds) => {
+  allSelectedIds,
+  (glossariesState, translationState, selectedIds) => {
     const translationArr = translationState?.MainVocabs
 
     if (!translationArr) return
@@ -82,9 +83,15 @@ export const mainVocabsSearchResults = createSelector(
 
       const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
 
+      const selected =
+        selectedIds === 'all' ||
+        (selectedIds?.length && selectedIds.includes(item.translation._id)) ||
+        false
+
       return {
         ...item.translation,
         glossaries: vocabsGlossaries,
+        selected,
         images,
       }
     })
