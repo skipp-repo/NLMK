@@ -18,6 +18,7 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
 }) => {
   const [editing, setEditing] = React.useState(false)
   const [value, setValue] = React.useState(title)
+  const inputRef = React.useRef<HTMLInputElement>()
 
   const handleClickEdit = () => {
     const nextEditing = !editing
@@ -43,6 +44,12 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
     setValue(title)
   }, [title])
 
+  React.useEffect(() => {
+    if (!editing) return
+
+    inputRef.current?.focus()
+  }, [editing])
+
   return (
     <div {...props} className={clsx('EditableTitle', className)}>
       {editing ? (
@@ -52,6 +59,7 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
           onBlur={handleBlur}
           value={value}
           readOnly={!editing}
+          ref={inputRef}
         />
       ) : (
         <div className="EditableTitle-title">{value}</div>
