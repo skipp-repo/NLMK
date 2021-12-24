@@ -17,20 +17,20 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
   ...props
 }) => {
   const [editing, setEditing] = React.useState(false)
-  const titleValueRef = React.useRef(title)
+  const [value, setValue] = React.useState(title)
 
   const handleClickEdit = () => {
     const nextEditing = !editing
 
     setEditing(nextEditing)
 
-    if (!nextEditing && titleValueRef.current.length) {
-      onChange(titleValueRef.current)
+    if (!nextEditing && value.length) {
+      onChange(value)
     }
   }
 
   const handleChange = ({ target }) => {
-    titleValueRef.current = target.value
+    setValue(target.value)
   }
 
   const handleBlur = () => {
@@ -39,6 +39,10 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
 
   const IconComponent = editing ? TickIcon : PencilIcon
 
+  React.useEffect(() => {
+    setValue(title)
+  }, [title])
+
   return (
     <div {...props} className={clsx('EditableTitle', className)}>
       {editing ? (
@@ -46,11 +50,11 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
           className="EditableTitle-input"
           onChange={handleChange}
           onBlur={handleBlur}
-          defaultValue={title}
+          value={value}
           readOnly={!editing}
         />
       ) : (
-        <div className="EditableTitle-title">{title}</div>
+        <div className="EditableTitle-title">{value}</div>
       )}
       <IconComponent className="EditableTitle-icon" onClick={handleClickEdit} />
     </div>
