@@ -3,7 +3,7 @@ import find from 'lodash.find'
 import flatten from 'arr-flatten'
 import glossaries from '../user/selectors/glossaries'
 import sortTranslationByCommon from '../../../utils/sortTranslationByCommon'
-import { allSelectedIds, selectedItems } from '../vocabs/selectors'
+import { allSelectedIds } from '../vocabs/selectors'
 import allCardsIds from '../vocabs/selectors/allCardsIds'
 import getImagesFromGlossaries from '../../../utils/getImagesFromGlossaries'
 
