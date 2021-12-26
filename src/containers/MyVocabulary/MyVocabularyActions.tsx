@@ -75,7 +75,7 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({ activeTab }) 
     editFolder({ id: activeTab, cardsToRemove: selectedIds })
   }
 
-  const handleDownloadVocab = () => {
+  const handleDownload = () => {
     if (selectedIds.length) {
       downloadVocabByIds.execute()
     } else {
@@ -126,7 +126,8 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({ activeTab }) 
           className="MyVocabulary-actions-button"
           text={selectedIds.length ? `Скачать группу (${selectedIds.length})` : 'Скачать группу'}
           Icon={DownloadIcon}
-          onClick={handleDownloadVocab}
+          onClick={handleDownload}
+          disabled={count === 0}
         />
       </div>
     </Container>

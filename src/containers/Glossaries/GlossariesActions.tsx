@@ -2,6 +2,7 @@ import React from 'react'
 import proschet from 'proschet'
 import { useAsyncCallback } from 'react-async-hook'
 import { downloadGlossaryById } from '../../api/requests/downloadGlossaryById'
+import { downloadVocabByIds as downloadVocabByIdsRequest } from '../../api/requests/downloadVocabByIds'
 import ItemsCount from '../../components/ItemsCount/ItemsCount'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import Container from '../../components/Container/Container'
@@ -32,8 +33,12 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
 
   const token = useSelector(userSlice.selectors.token)
 
-  const downloadCurrentVocab = useAsyncCallback(async (id) => {
+  const downloadGlossary = useAsyncCallback(async (id) => {
     return await downloadGlossaryById({ token, id })
+  })
+
+  const downloadVocabByIds = useAsyncCallback(async () => {
+    return await downloadVocabByIdsRequest({ token, cardIds: selectedIds })
   })
 
   const handleSelectAll = ({ target }) => {
@@ -66,8 +71,12 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
     }
   }
 
-  const handleDownloadVocab = () => {
-    downloadCurrentVocab.execute(activeTab)
+  const handleDownload = () => {
+    if (selectedIds.length) {
+      downloadVocabByIds.execute()
+    } else {
+      downloadGlossary.execute(activeTab)
+    }
   }
 
   React.useEffect(() => {
@@ -105,9 +114,9 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
         />
         <IconButton
           className="Glossaries-actions-button"
-          text="Скачать"
+          text={selectedIds.length ? `Скачать группу (${selectedIds.length})` : 'Скачать группу'}
           Icon={DownloadIcon}
-          onClick={handleDownloadVocab}
+          onClick={handleDownload}
         />
       </div>
     </Container>
