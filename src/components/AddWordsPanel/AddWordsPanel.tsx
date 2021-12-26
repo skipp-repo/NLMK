@@ -17,12 +17,14 @@ export type AddWordsPanelProps = JSX.IntrinsicElements['div'] & {
   isLoading: boolean
   translationData: any
   historyData?: any
+  query: string
   onAdd(word: string): void
   onSearch(newValue: string): void
   onChangeFilter({ type, selected, data }): void
 }
 
 const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
+  query,
   title,
   description,
   className,
@@ -87,6 +89,7 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
               suggestions={[]}
               className="AddWordsPanel-search-input-wrapper"
               inputProps={{ className: 'AddWordsPanel-search-input' }}
+              value={query}
             />
 
             <AddWordsFilters

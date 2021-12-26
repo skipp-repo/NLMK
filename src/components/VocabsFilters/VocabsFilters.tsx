@@ -44,12 +44,10 @@ const VocabsFilters: React.FC<VocabsFiltersProps> = ({
   )
 
   const renderItem = ({ name, items }) => (
-    <>
-      <span key={name} className="VocabsFilters-name">
-        {name}
-      </span>
+    <React.Fragment key={name}>
+      <span className="VocabsFilters-name">{name}</span>
       {items.map(renderCheckbox)}
-    </>
+    </React.Fragment>
   )
 
   useClickOutside([ref], () => setOpened(false))

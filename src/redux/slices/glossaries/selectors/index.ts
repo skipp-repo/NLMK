@@ -10,12 +10,6 @@ export const flags = (state) => state.glossaries.flags
 
 export const selectedItems = (state) => state.glossaries.selectedItems
 
-export const allSelectedIds = createSelector(selectedItems, (items) => {
-  const arr = Object.keys(items).map((key) => items[key])
-
-  return flatten(arr)
-})
-
 export const glossariesList = createSelector(glossaries, selectAll)
 
 const glossariesById = (id) =>

@@ -8,36 +8,32 @@ export type SearchProps = {
   suggestions: string[]
   className?: string
   inputProps?: JSX.IntrinsicElements['input']
+  value: string
   onChange(value: string): void
 }
 
 const renderSuggestion = (suggestion) => suggestion
+
+function getSuggestionValue(suggestion) {
+  return suggestion
+}
 
 const Search: React.FC<SearchProps> = ({
   children,
   className,
   suggestions,
   inputProps,
+  value,
   onChange,
   ...props
 }) => {
-  const [value, setValue] = React.useState('')
-
   const handleChange = (event, { newValue }) => {
-    setValue(newValue)
-
     onChange && onChange(newValue)
   }
 
   const handleSuggestionsFetchRequested = ({ value }) => {}
 
   const handleSuggestionsClearRequested = () => {}
-
-  function getSuggestionValue(suggestion) {
-    setValue(suggestion)
-
-    return suggestion
-  }
 
   return (
     <div className={clsx('Search', className)}>

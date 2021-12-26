@@ -6,6 +6,8 @@ import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getVocabById } from '../../../api/requests/getVocabById'
 import { getVocabs as getVocabsRequest } from '../../../api/requests/getVocabs'
 import { removeVocabFolder } from '../../../api/requests/deleteVocabFolder'
+import { HandlerAction } from '../../types'
+import { cardsIdsByGlossId } from '../glossaries/selectors'
 import adapter from './adapter'
 import { cardsIdsByVocabId, defaultVocabId } from './selectors'
 
@@ -13,15 +15,13 @@ const name = 'vocabs'
 
 export type InitialState = {
   flags: {}
-  selectedItems: {
-    [key: number]: number[]
-  }
+  selectedItems: number[]
 }
 
 const initialState: InitialState = {
   flags: {},
   ...adapter.getInitialState(),
-  selectedItems: {},
+  selectedItems: [],
 }
 
 export const getVocabs = createAsyncThunkExtended(
@@ -151,25 +151,31 @@ const removeFolderSlice = makeExtraReducers({
   },
 })
 
+type SelectCardParams = HandlerAction<{
+  cardId: number
+  selected: boolean
+}>
+
+type SelectAllParams = HandlerAction<{
+  vocabId: number
+  select: boolean
+}>
+
 const vocabsSlice = createSlice({
   name,
   initialState,
   reducers: {
-    selectCard: (state, { payload: { vocabId, cardId, selected } }) => {
-      if (!state.selectedItems[vocabId]) {
-        state.selectedItems[vocabId] = []
-      }
-
+    selectCard: (state, { payload: { cardId, selected } }: SelectCardParams) => {
       if (selected) {
-        state.selectedItems[vocabId].push(cardId)
+        state.selectedItems.push(cardId)
       } else {
-        state.selectedItems[vocabId] = state.selectedItems[vocabId].filter((id) => id !== cardId)
+        state.selectedItems = state.selectedItems.filter((id) => id !== cardId)
       }
     },
-    selectAll: (state, { payload: { vocabId, select } }) => {
+    selectAll: (state, { payload: { vocabId, select } }: SelectAllParams) => {
       const cardIds = cardsIdsByVocabId(vocabId)({ vocabs: state })
 
-      state.selectedItems[vocabId] = select ? cardIds : []
+      state.selectedItems = select ? cardIds : []
     },
   },
   extraReducers: {

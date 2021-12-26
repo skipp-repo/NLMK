@@ -3,8 +3,8 @@ import find from 'lodash.find'
 import flatten from 'arr-flatten'
 import glossaries from '../user/selectors/glossaries'
 import sortTranslationByCommon from '../../../utils/sortTranslationByCommon'
-import { allSelectedIds as allVocabsSelectedIds } from '../vocabs/selectors'
-import { allSelectedIds as allGlossariesSelectedIds } from '../glossaries/selectors'
+import { selectedItems as vocabsSelectedIds } from '../vocabs/selectors'
+import { selectedItems as glossariesSelectedIds } from '../glossaries/selectors'
 import allCardsIds from '../vocabs/selectors/allCardsIds'
 import getImagesFromGlossaries from '../../../utils/getImagesFromGlossaries'
 
@@ -63,7 +63,7 @@ export const popupSearchResults = createSelector(
 export const mainVocabsSearchResults = createSelector(
   glossaries,
   translation,
-  allVocabsSelectedIds,
+  vocabsSelectedIds,
   (glossariesState, translationState, selectedIds) => {
     const translationArr = translationState?.MainVocabs
 
@@ -107,7 +107,7 @@ export const mainVocabsSearchResults = createSelector(
 export const glossariesSearchResults = createSelector(
   glossaries,
   translation,
-  allGlossariesSelectedIds,
+  glossariesSelectedIds,
   (glossariesState, translationState, selectedIds) => {
     const translationArr = translationState?.Glossaries
 
@@ -128,7 +128,6 @@ export const glossariesSearchResults = createSelector(
 
       const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
 
-      console.log(selectedIds)
       const selected =
         selectedIds === 'all' ||
         (selectedIds?.length && selectedIds.includes(item.translation._id)) ||
@@ -152,8 +151,7 @@ export const glossariesSearchResults = createSelector(
 export const documentsVocabsSearchResults = createSelector(
   glossaries,
   translation,
-  allCardsIds,
-  (glossariesState, translationState, vocabsIds) => {
+  (glossariesState, translationState) => {
     const translationArr = translationState?.DocumentsVocabs
 
     if (!translationArr) return
@@ -190,8 +188,7 @@ export const documentsVocabsSearchResults = createSelector(
 export const documentsGlossariesSearchResults = createSelector(
   glossaries,
   translation,
-  allCardsIds,
-  (glossariesState, translationState, vocabsIds) => {
+  (glossariesState, translationState) => {
     const translationArr = translationState?.DocumentsGlossaries
 
     if (!translationArr) return

@@ -42,12 +42,10 @@ const AddWordsFilters: React.FC<AddWordsFiltersProps> = ({
   )
 
   const renderItem = ({ name, items }) => (
-    <>
-      <span key={name} className="AddWordsFilters-name">
-        {name}
-      </span>
+    <React.Fragment key={name}>
+      <span className="AddWordsFilters-name">{name}</span>
       {items.map(renderCheckbox)}
-    </>
+    </React.Fragment>
   )
 
   useClickOutside([ref], () => setOpened(false))

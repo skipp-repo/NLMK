@@ -109,6 +109,8 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   const search = reduxAction((params: Omit<Translate, 'space'>) =>
     translationSlice.translate({ space: SpaceEnum.MainVocabs, ...params }),
   )
+  const selectAll = reduxAction(vocabsSlice.selectAll)
+
   const debouncedSearch = useDebouncedCallback(search, 300)
   const downloadAllVocabs = useAsyncCallback(async () => {
     return await downloadAllVocabsRequest({ token })
@@ -177,7 +179,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
   }))
 
   const handleCardSelect = (cardId: number, selected: boolean) => {
-    selectCard({ vocabId: activeTab, cardId, selected })
+    selectCard({ cardId, selected })
   }
 
   const renderCard = (data) => {
@@ -195,7 +197,11 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const handleSpeech = () => {}
 
-  const handleTabChange = (id) => setActiveTab(id)
+  const handleTabChange = (id) => {
+    setQuery('')
+    setActiveTab(id)
+    selectAll({ vocabId: activeTab, select: false })
+  }
 
   const handleTabRename = ({ id, name }) => {
     setDataRenameGroupModal({ id, name })
@@ -277,7 +283,12 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
       <MyVocabularyActions activeTab={activeTab} />
 
       <Container className="MyVocabulary-search">
-        <Search className="MyVocabulary-search-input" onChange={handleSearch} suggestions={[]} />
+        <Search
+          className="MyVocabulary-search-input"
+          onChange={handleSearch}
+          suggestions={[]}
+          value={query}
+        />
 
         <VocabsFilters
           className="MyVocabulary-search-filter"

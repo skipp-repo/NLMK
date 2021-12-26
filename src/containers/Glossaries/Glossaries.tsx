@@ -176,9 +176,10 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   const handleSpeech = () => {}
 
   const handleTabChange = (id) => {
+    setQuery('')
     setActiveTab(id)
+    selectAll({ glossaryId: activeTab, select: false })
   }
-
   const handleSearch = (text) => {
     setQuery(text)
   }
@@ -236,7 +237,12 @@ const Glossaries: React.FC<GlossariesProps> = () => {
       <GlossariesActions activeTab={activeTab} />
 
       <Container className="Glossaries-search">
-        <Search className="Glossaries-search-input" onChange={handleSearch} suggestions={[]} />
+        <Search
+          className="Glossaries-search-input"
+          onChange={handleSearch}
+          suggestions={[]}
+          value={query}
+        />
 
         <VocabsFilters
           className="Glossaries-search-filter"

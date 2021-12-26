@@ -20,13 +20,13 @@ export type MyVocabularyActionsProps = JSX.IntrinsicElements['div'] & { activeTa
 
 const words = proschet(['слово', 'слова', 'слов'])
 
-const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({ className, activeTab }) => {
+const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({ activeTab }) => {
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
   const [vocabIdsForMoving, setVocabsIdsForMoving] = React.useState([])
 
   const reduxAction = useReduxAction()
   const vocabsByID = useSelector(vocabsSlices.selectors.vocabById(activeTab))
-  const selectedIds = useSelector(vocabsSlice.selectors.selectedCardsIdsByVocabId(activeTab))
+  const selectedIds = useSelector(vocabsSlice.selectors.selectedItems)
 
   const editFolder = reduxAction(vocabsSlices.editFolder)
   const selectAll = reduxAction(vocabsSlice.selectAll)
@@ -62,6 +62,7 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({ className, ac
 
       setTimeout(() => {
         setVocabsIdsForMoving([])
+        selectAll({ vocabId: activeTab, select: false })
       }, 500)
     } else {
       setVocabsIdsForMoving((state) => {

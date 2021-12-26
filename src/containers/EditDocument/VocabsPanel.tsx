@@ -125,6 +125,7 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
       translationData={translationData}
       historyData={translationHistory}
       isLoading={isLoading}
+      query={query}
       onAdd={handleAdd}
       onSearch={handleSearch}
       onChangeFilter={handleChangeFilter}

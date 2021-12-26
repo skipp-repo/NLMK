@@ -57,6 +57,7 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
 
       setTimeout(() => {
         setVocabsIdsForMoving([])
+        selectAll({ glossaryId: activeTab, select: false })
       }, 500)
     } else {
       setVocabsIdsForMoving((state) => {
