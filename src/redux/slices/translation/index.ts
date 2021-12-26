@@ -10,6 +10,8 @@ import { updateTranslationHistory } from '../user'
 const name = 'translation'
 
 export type InitialState = {
+  [key in `${SpaceEnum}`]?: any
+} & {
   flags: {}
 }
 
@@ -21,7 +23,6 @@ export enum SpaceEnum {
   Popup = 'Popup',
   MainVocabs = 'MainVocabs',
   Glossaries = 'Glossaries',
-  Documents = 'Documents',
   DocumentsVocabs = 'DocumentsVocabs',
   DocumentsGlossaries = 'DocumentsGlossaries',
   DocumentsPopup = 'DocumentsPopup',

@@ -22,7 +22,7 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
   const reduxAction = useReduxAction()
   const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
 
-  const selectedIds = useSelector(glossariesSlice.selectors.selectedCardsIdsByVocabId(activeTab))
+  const selectedIds = useSelector(glossariesSlice.selectors.selectedItems)
 
   const [checkAll, setCheckAll] = React.useState<undefined | boolean>()
   const [vocabIdsForMoving, setVocabsIdsForMoving] = React.useState([])
@@ -74,6 +74,8 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
   }, [activeTab])
 
   const count = glossaryById?.cards?.length || 0
+
+  console.log(selectedIds)
 
   return (
     <Container className="Glossaries-actions">

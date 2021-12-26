@@ -157,7 +157,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   }))
 
   const handleCardSelect = (cardId: number, selected: boolean) => {
-    selectCard({ glossaryId: activeTab, cardId, selected })
+    selectCard({ cardId, selected })
   }
 
   const renderCard = (data) => {

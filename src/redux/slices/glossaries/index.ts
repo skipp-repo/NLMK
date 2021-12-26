@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getGlossaryById } from '../../../api/requests/getGlossaryById'
+import type { HandlerAction } from '../../types'
 import adapter from './adapter'
 import { cardsIdsByGlossId } from './selectors'
 
@@ -9,15 +10,13 @@ const name = 'glossaries'
 
 export type InitialState = {
   flags: {}
-  selectedItems: {
-    [key: number]: number[]
-  }
+  selectedItems: number[]
 }
 
 const initialState: InitialState = {
   ...adapter.getInitialState(),
   flags: {},
-  selectedItems: {},
+  selectedItems: [],
 }
 
 export type GetVocab = {
@@ -40,29 +39,37 @@ const getGlossarySlice = makeExtraReducers({
   },
 })
 
+type SelectCardParams = HandlerAction<{
+  cardId: number
+  selected: boolean
+}>
+
+type SelectAllParams = HandlerAction<{
+  glossaryId: number
+  select: boolean
+}>
+
+type AddClossariesParams = HandlerAction<{
+  glossaries: number
+}>
+
 const glossariesSlice = createSlice({
   name,
   initialState,
   reducers: {
-    selectCard: (state, { payload: { glossaryId, cardId, selected } }) => {
-      if (!state.selectedItems[glossaryId]) {
-        state.selectedItems[glossaryId] = []
-      }
-
+    selectCard: (state, { payload: { cardId, selected } }: SelectCardParams) => {
       if (selected) {
-        state.selectedItems[glossaryId].push(cardId)
+        state.selectedItems.push(cardId)
       } else {
-        state.selectedItems[glossaryId] = state.selectedItems[glossaryId].filter(
-          (id) => id !== cardId,
-        )
+        state.selectedItems = state.selectedItems.filter((id) => id !== cardId)
       }
     },
-    selectAll: (state, { payload: { glossaryId, select } }) => {
+    selectAll: (state, { payload: { glossaryId, select } }: SelectAllParams) => {
       const cardIds = cardsIdsByGlossId(glossaryId)({ glossaries: state })
 
-      state.selectedItems[glossaryId] = select ? cardIds : []
+      state.selectedItems = select ? cardIds : []
     },
-    addGlossaries: (state, { payload: { glossaries } }) => {
+    addGlossaries: (state, { payload: { glossaries } }: AddClossariesParams) => {
       // @ts-ignore
       adapter.addMany(state, glossaries)
     },

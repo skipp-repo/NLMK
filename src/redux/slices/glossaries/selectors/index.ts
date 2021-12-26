@@ -16,13 +16,6 @@ export const allSelectedIds = createSelector(selectedItems, (items) => {
   return flatten(arr)
 })
 
-export const selectedItemsById = (id) =>
-  createSelector(selectedItems, (items) => {
-    if (!id || !items) return []
-
-    return items[id]
-  })
-
 export const glossariesList = createSelector(glossaries, selectAll)
 
 const glossariesById = (id) =>
@@ -36,7 +29,7 @@ export const glossaryById = (id) =>
   createSelector(
     glossariesById(id),
     glossariesList,
-    selectedItemsById(id),
+    selectedItems,
     (glossary, allGlossaries, selectedIds) => {
       if (!glossary || !id) return {}
 
@@ -73,13 +66,6 @@ export const glossaryById = (id) =>
       }
     },
   )
-
-export const selectedCardsIdsByVocabId = (id) =>
-  createSelector(selectedItemsById(id), glossariesById(id), (ids, glossary) => {
-    if (!ids) return []
-
-    return glossary.cards?.map(({ _id }) => _id).filter((itemId) => ids.includes(itemId)) || []
-  })
 
 export const cardsIdsByGlossId = (id) =>
   createSelector(glossaryById(id), (glossary) => {
