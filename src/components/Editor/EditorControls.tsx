@@ -35,8 +35,8 @@ const ACTIONS = [
   { type: ActionType.BLOCK, label: 'H1', Icon: H1Icon, style: 'header-one' },
   { type: ActionType.BLOCK, label: 'H2', Icon: H2Icon, style: 'header-two' },
   { type: ActionType.SEPARATOR },
-  { type: ActionType.BLOCK, label: 'UL', Icon: OlIcon, style: 'unordered-list-item' },
-  { type: ActionType.BLOCK, label: 'OL', Icon: UlIcon, style: 'ordered-list-item' },
+  { type: ActionType.BLOCK, label: 'UL', Icon: OlIcon, style: 'ordered-list-item' },
+  { type: ActionType.BLOCK, label: 'OL', Icon: UlIcon, style: 'unordered-list-item' },
   { type: ActionType.SEPARATOR },
   {
     type: ActionType.FONT_SIZE_CHANGE,
