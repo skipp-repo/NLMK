@@ -71,7 +71,7 @@ const glossariesSlice = createSlice({
     },
     addGlossaries: (state, { payload: { glossaries } }: AddClossariesParams) => {
       // @ts-ignore
-      adapter.addMany(state, glossaries)
+      adapter.setAll(state, glossaries)
     },
   },
   extraReducers: {
