@@ -7,13 +7,6 @@ export const flags = (state) => state.documents.flags
 
 export const selectedItems = (state) => state.documents.selectedItems
 
-export const selectedItemsById = (id) =>
-  createSelector(selectedItems, (items) => {
-    if (!id || !items) return []
-
-    return items[id]
-  })
-
 export const documentsList = createSelector(
   createSelector(documents, selectAll),
   selectedItems,

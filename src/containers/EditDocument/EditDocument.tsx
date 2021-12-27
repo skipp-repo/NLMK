@@ -105,9 +105,9 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const handleSelect = () => {
     const selection = document.getSelection()
     const selectionText = selection.toString()
-    const sentence = selection.anchorNode.textContent
+    const sentence = selection?.anchorNode?.textContent
 
-    if (selectionText.length > 1) {
+    if (selectionText.length > 1 && sentence) {
       setSelectedState({
         word: selectionText,
         sentence: sentence,

@@ -24,7 +24,7 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
     phrases: true,
     words: true,
     vocabs: true,
-    common: true,
+    common: false,
   })
 
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
@@ -109,10 +109,7 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
     if (query) {
       debouncedSearch({
         query,
-        filters: {
-          common: false,
-          ...searchFilters,
-        },
+        filters: searchFilters,
         remember: true,
       })
     }

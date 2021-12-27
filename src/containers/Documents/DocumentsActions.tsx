@@ -47,6 +47,7 @@ const DocumentsActions: React.FC<DocumentsActionsProps> = ({ children, className
   }
   const handleRemoveCards = () => {
     deleteDocuments({ docIds: selectedIds })
+    selectAll({ select: false })
   }
 
   return (
