@@ -16,7 +16,7 @@ export type AddWordsPanelProps = JSX.IntrinsicElements['div'] & {
   filters: Filters
   isLoading: boolean
   translationData: any
-  historyData?: any
+  historyData?: any[]
   query: string
   onAdd(word: string): void
   onSearch(newValue: string): void
@@ -48,27 +48,30 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
       <AddWordsItem
         key={data._id}
         className="AddWordsPanel-list-item"
-        item={data}
+        items={data}
         speech
         onAdd={handleAdd}
       />
     )
   }
 
-  // const renderHistoryCard = React.useCallback(({ results, request: { q } }) => {
-  //   return results?.map((data) => {
-  //     return (
-  //       <AddWordsPanel
-  //         key={data?.translation?._id}
-  //         className="AddWordsPanel-list-item"
-  //         input={q}
-  //         item={data}
-  //         speech
-  //         onAdd={handleAdd}
-  //       />
-  //     )
-  //   })
-  // }, [])
+  const renderHistoryCard = React.useCallback(
+    ({ results, request: { q } }) => {
+      return results?.map((data) => {
+        return (
+          <AddWordsItem
+            key={data?.translation?._id}
+            className="Popup-cards-list-item"
+            input={q}
+            items={data}
+            onAdd={handleAdd}
+            speech
+          />
+        )
+      })
+    },
+    [historyData],
+  )
 
   return (
     <div {...props} className={clsx('AddWordsPanel', className)}>
@@ -99,7 +102,7 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
             />
           </div>
 
-          {!translationData?.results?.length && (
+          {!translationData?.results?.length && !historyData?.length && (
             <div className="AddWordsPanel-empty">
               Вбейте слово в поиск, чтобы увидеть его перевод
             </div>
@@ -121,15 +124,17 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
                 </div>
               )}
 
-              {/*{!!historyData?.length && (*/}
-              {/*  <div className="AddWordsPanel-item">*/}
-              {/*    <TranslationListTitle className="AddWordsPanel-title">Недавно просмотренные</TranslationListTitle>*/}
+              {!!historyData?.length && (
+                <div className="AddWordsPanel-item">
+                  <TranslationListTitle className="AddWordsPanel-result-title">
+                    Недавно просмотренные
+                  </TranslationListTitle>
 
-              {/*    <div className="AddWordsPanel-list">*/}
-              {/*      <div className="AddWordsPanel-list">{historyData?.map(renderHistoryCard)}</div>{' '}*/}
-              {/*    </div>*/}
-              {/*  </div>*/}
-              {/*)}*/}
+                  <div className="AddWordsPanel-list">
+                    <div className="AddWordsPanel-list">{historyData?.map(renderHistoryCard)}</div>{' '}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

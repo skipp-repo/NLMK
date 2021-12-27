@@ -1,10 +1,19 @@
 @import "../../../styles/general.css";
 
 .AddWordsItem {
-  padding: 7px 72px 7px 10px;
+  padding: 7px 53px 7px 10px;
   display: flex;
   flex-direction: column;
   position: relative;
+
+  &_listItem {
+    padding-left: 0;
+
+    .AddWordsItem-button {
+      right: -1px;
+      transform: translateX(100%);
+    }
+  }
 }
 
 .AddWordsItem-wrapper {

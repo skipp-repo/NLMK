@@ -156,26 +156,31 @@ export const documentsVocabsSearchResults = createSelector(
 
     if (!translationArr) return
 
-    const results = flatten(translationArr?.results)
+    const updatedResults = translationArr?.results?.map((item) => {
+      const sortedItems = [...item].sort(sortTranslationByCommon)
 
-    const updatedResults = results?.map((item) => {
-      const itemGlossaries = item?.translation?.glossaries
+      return sortedItems.map((item) => {
+        const itemGlossaries = item?.translation?.glossaries
 
-      const vocabsGlossaries = itemGlossaries
-        ? item?.translation?.glossaries.map((glossaryId) => {
-            const { _id, name } = find(glossariesState, { _id: glossaryId })
+        const vocabsGlossaries = itemGlossaries
+          ? item?.translation?.glossaries.map((glossaryId) => {
+              const { _id, name } = find(glossariesState, { _id: glossaryId })
 
-            return { _id, name }
-          })
-        : []
+              return { _id, name }
+            })
+          : []
 
-      const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
+        const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
 
-      return {
-        ...item.translation,
-        glossaries: vocabsGlossaries,
-        images,
-      }
+        return {
+          ...item,
+          translation: {
+            ...item.translation,
+            glossaries: vocabsGlossaries,
+          },
+          images,
+        }
+      })
     })
 
     return {
@@ -193,26 +198,31 @@ export const documentsGlossariesSearchResults = createSelector(
 
     if (!translationArr) return
 
-    const results = flatten(translationArr?.results)
+    const updatedResults = translationArr?.results?.map((item) => {
+      const sortedItems = [...item].sort(sortTranslationByCommon)
 
-    const updatedResults = results?.map((item) => {
-      const itemGlossaries = item?.translation?.glossaries
+      return sortedItems.map((item) => {
+        const itemGlossaries = item?.translation?.glossaries
 
-      const vocabsGlossaries = itemGlossaries
-        ? item?.translation?.glossaries.map((glossaryId) => {
-            const { _id, name } = find(glossariesState, { _id: glossaryId })
+        const vocabsGlossaries = itemGlossaries
+          ? item?.translation?.glossaries.map((glossaryId) => {
+              const { _id, name } = find(glossariesState, { _id: glossaryId })
 
-            return { _id, name }
-          })
-        : []
+              return { _id, name }
+            })
+          : []
 
-      const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
+        const images = getImagesFromGlossaries(itemGlossaries && itemGlossaries[0], glossariesState)
 
-      return {
-        ...item.translation,
-        glossaries: vocabsGlossaries,
-        images,
-      }
+        return {
+          ...item,
+          translation: {
+            ...item.translation,
+            glossaries: vocabsGlossaries,
+          },
+          images,
+        }
+      })
     })
 
     return {

@@ -1,7 +1,11 @@
 import React from 'react'
 import clsx from 'clsx'
 import './AddWordsItem.scss'
-import { PhraseTranslationLocal } from '../../../types'
+import useCollapse from 'react-collapsed'
+import flatten from 'arr-flatten'
+import { ReactComponent as ArrowIcon } from '../../../assets/icons/arrow.svg'
+import { TranslationResultItemLocal } from '../../../types'
+import createTranslationString from '../../../utils/createTranslationString'
 import TranslationCardWord from '../../TranslationCard/TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from '../../TranslationCard/TranslationCardImage/TranslationCardImage'
 import TranslationCardMeaning from '../../TranslationCard/TranslationCardMeaning/TranslationCardMeaning'
@@ -12,7 +16,7 @@ import { ReactComponent as PlusIcon } from '../../../assets/icons/plus.svg'
 
 export type AddWordsItemProps = Omit<JSX.IntrinsicElements['div'], 'onAdd'> & {
   input?: string
-  item: PhraseTranslationLocal
+  items: TranslationResultItemLocal[]
   action?: React.ReactElement
   speech?: boolean
   onAdd(word: string): void
@@ -20,22 +24,73 @@ export type AddWordsItemProps = Omit<JSX.IntrinsicElements['div'], 'onAdd'> & {
 
 const AddWordsItem: React.FC<AddWordsItemProps> = ({
   input,
-  item,
+  items,
   className,
   action,
   speech = false,
   onAdd = () => {},
   ...props
 }) => {
-  const imgSrc = item.images?.length ? item.images[0] : undefined
+  const { getCollapseProps, getToggleProps } = useCollapse()
 
-  const handleAdd = ({ target }) => {
-    onAdd(item.translation)
-  }
+  const firstItem = items.find(({ images }) => !!images) || items[0]
+  const glossaries = flatten(
+    items.map(({ translation }) => translation.glossaries).filter((glossary) => glossary !== null),
+  )
+
+  const imgSrc = firstItem?.images?.length && firstItem.images[0]
+
+  const renderTranslationsString = createTranslationString(items)
 
   const handleSpeech = useDebouncedCallback(() => {
-    speak(item.translation, item.targetLang)
+    let word = firstItem.translation.translation
+    let lang = firstItem.translation.targetLang
+
+    if (firstItem.translation.targetLang === 'ru') {
+      word = firstItem.translation.text
+      lang = firstItem.translation.sourceLang
+    }
+
+    speak(word, lang)
   }, 500)
+
+  const handleAdd = () => {
+    onAdd(firstItem.translation.translation)
+  }
+
+  const renderTranslationItem = ({ translation, images }) => {
+    const imgSrc = images?.length && images[0]
+
+    const handleAdd = () => {
+      onAdd(translation.translation)
+    }
+
+    return (
+      <div className="AddWordsItem AddWordsItem_listItem">
+        <div className="AddWordsItem-wrapper">
+          <TranslationCardImage src={imgSrc} className="AddWordsItem-image" />
+
+          <div className="AddWordsItem-content">
+            <TranslationCardWord
+              className="AddWordsItem-word"
+              onSpeech={handleSpeech}
+              speech={speech}
+              input={input}
+            >
+              {translation.text}
+            </TranslationCardWord>
+            <TranslationCardMeaning className="AddWordsItem-meaning">
+              {translation.translation}
+            </TranslationCardMeaning>
+          </div>
+
+          <div className="AddWordsItem-button" onClick={handleAdd}>
+            <PlusIcon />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div {...props} className={clsx('AddWordsItem', className)}>
@@ -49,23 +104,34 @@ const AddWordsItem: React.FC<AddWordsItemProps> = ({
             speech={speech}
             input={input}
           >
-            {item.text}
+            {firstItem.translation.text}
           </TranslationCardWord>
           <TranslationCardMeaning className="AddWordsItem-meaning">
-            {item.translation}
+            {renderTranslationsString}
           </TranslationCardMeaning>
-          {!!item.glossaries && (
+
+          {!!glossaries?.length && (
             <TranslationCardGlossaries
               className="AddWordsItem-glossaries"
-              glossaries={item.glossaries}
+              glossaries={glossaries}
             />
           )}
         </div>
 
-        <div className="AddWordsItem-button" onClick={handleAdd}>
-          <PlusIcon />
-        </div>
+        {items.length === 1 && (
+          <div className="AddWordsItem-button" onClick={handleAdd}>
+            <PlusIcon />
+          </div>
+        )}
+
+        {items.length > 1 && (
+          <div className="AddWordsItem-button" {...getToggleProps()}>
+            <ArrowIcon />
+          </div>
+        )}
       </div>
+
+      {items.length > 1 && <div {...getCollapseProps()}>{items?.map(renderTranslationItem)}</div>}
     </div>
   )
 }

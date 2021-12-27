@@ -113,6 +113,7 @@ const GlossariesPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
         filters: {
           ...searchFilters,
         },
+        remember: true,
       })
     }
   }, [searchFilters, query])

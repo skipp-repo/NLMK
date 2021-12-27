@@ -113,6 +113,7 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
           common: false,
           ...searchFilters,
         },
+        remember: true,
       })
     }
   }, [searchFilters, query])
