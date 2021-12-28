@@ -152,7 +152,7 @@ const Popup = () => {
         {!isLoading && (
           <div className="Popup-cards">
             <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
-              {translationData?.searchPhrase && (
+              {!!translationData?.searchPhrase && (
                 <div className="Popup-cards-item">
                   <TranslationListTitle className="Popup-cards-title">
                     {translationData?.results?.length ? 'Результат поиска' : 'Ничего не найдено'}
