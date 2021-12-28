@@ -119,7 +119,12 @@ const Popup = () => {
     getData()
   }, [])
 
-  const isEmpty = !translationData?.results?.length && !translationHistory?.length
+  const isEmptyTranslationData = !translationData
+  const isEmptyTranslationHistory = !(
+    translationHistory?.length && translationHistory.find(({ results }) => results.length)
+  )
+
+  const isEmpty = isEmptyTranslationData && isEmptyTranslationHistory
 
   const isLoading = (!translationHistory?.length && getStatusLoading) || translateLoading
 
@@ -147,10 +152,10 @@ const Popup = () => {
         {!isLoading && (
           <div className="Popup-cards">
             <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
-              {!!translationData?.results?.length && (
+              {translationData?.searchPhrase && (
                 <div className="Popup-cards-item">
                   <TranslationListTitle className="Popup-cards-title">
-                    Результат поиска
+                    {translationData?.results?.length ? 'Результат поиска' : 'Ничего не найдено'}
                   </TranslationListTitle>
 
                   <div className="Popup-cards-list">
@@ -161,7 +166,7 @@ const Popup = () => {
             </ErrorBoundary>
 
             <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
-              {!!translationHistory?.length && (
+              {!isEmptyTranslationHistory && (
                 <div className="Popup-cards-item">
                   <TranslationListTitle className="Popup-cards-title">
                     Недавно просмотренные
@@ -170,7 +175,7 @@ const Popup = () => {
                   <div className="Popup-cards-list">
                     <div className="Popup-cards-list">
                       {translationHistory?.map(renderHistoryCard)}
-                    </div>{' '}
+                    </div>
                   </div>
                 </div>
               )}
