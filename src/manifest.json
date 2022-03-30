@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "NLMK",
+  "name": "Echo",
   "background": { "service_worker": "background.bundle.js" },
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
+    "default_icon": "icon-48.png"
   },
   "chrome_url_overrides": {
   },
@@ -25,7 +25,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["icon-128.png", "icon-34.png", "Circe.otf", "Circe-Bold.otf"],
+      "resources": ["icon-128.png", "icon-48.png", "icon-16.png", "Circe.otf", "Circe-Bold.otf"],
       "matches": ["http://*/*", "https://*/*"]
     }
   ],

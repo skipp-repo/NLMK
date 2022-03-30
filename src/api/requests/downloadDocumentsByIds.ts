@@ -37,6 +37,6 @@ export const downloadDocumentsByIds = async (
       fileDownload(binData, filename)
     }
   } catch (error) {
-    console.error('NLMK extension request error:', error)
+    console.error('Echo extension request error:', error)
   }
 }

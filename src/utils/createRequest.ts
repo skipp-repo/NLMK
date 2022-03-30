@@ -8,10 +8,10 @@ export default async (url: string, init?: RequestInit) => {
     return await data.json()
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.warn(`NLMK: api request ${url} aborted`)
+      console.warn(`Echo: api request ${url} aborted`)
       return
     }
 
-    console.error('NLMK extension request error:', error)
+    console.error('Echo extension request error:', error)
   }
 }

@@ -32,6 +32,6 @@ export const downloadVocabById = async ({ token, id }: DownloadVocabById, init?:
 
     return { blob, filename }
   } catch (error) {
-    console.error('NLMK extension request error:', error)
+    console.error('Echo extension request error:', error)
   }
 }

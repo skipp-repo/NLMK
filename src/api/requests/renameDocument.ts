@@ -29,6 +29,6 @@ export const renameDocument = async (
 
     return await result.json()
   } catch (error) {
-    console.error('NLMK extension request error:', error)
+    console.error('Echo extension request error:', error)
   }
 }

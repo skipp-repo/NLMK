@@ -9,11 +9,11 @@ export type TooltipProps = JSX.IntrinsicElements['div'] & {
 
 const Tooltip: React.FC<TooltipProps> = ({ children, isBookmark, className, ...props }) => {
   return (
-    <div {...props} className={clsx('NLMK-Extension-Tooltip', className)}>
-      <div className="NLMK-Extension-Tooltip-text">{children}</div>
+    <div {...props} className={clsx('Echo-Extension-Tooltip', className)}>
+      <div className="Echo-Extension-Tooltip-text">{children}</div>
       {isBookmark && (
         <BookmarkButton
-          className="NLMK-Extension-Tooltip-bookmark"
+          className="Echo-Extension-Tooltip-bookmark"
           active
           iconProps={{ width: 11, height: 14 }}
         />

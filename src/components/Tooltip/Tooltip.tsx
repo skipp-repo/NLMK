@@ -43,7 +43,7 @@ const Tooltip: React.FC<TooltipProps> = React.forwardRef(
     return (
       <div
         {...props}
-        className={clsx('NLMK-Extension-Tooltip', className)}
+        className={clsx('Echo-Extension-Tooltip', className)}
         ref={setPopperElement}
         style={styles.popper}
         {...attributes.popper}

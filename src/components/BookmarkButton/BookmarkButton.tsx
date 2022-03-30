@@ -17,7 +17,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   ...props
 }) => {
   return (
-    <div {...props} className={clsx('NLMK-Extension-Bookmark-Button', className)}>
+    <div {...props} className={clsx('Echo-Extension-Bookmark-Button', className)}>
       {active && <BookmarkIconActive {...iconProps} />}
       {!active && <BookmarkIconOutline {...iconProps} />}
       {children}

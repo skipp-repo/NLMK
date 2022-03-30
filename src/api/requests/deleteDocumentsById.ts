@@ -24,6 +24,6 @@ export const deleteDocumentsByIds = async (
       ...init,
     })
   } catch (error) {
-    console.error('NLMK extension request error:', error)
+    console.error('Echo extension request error:', error)
   }
 }
