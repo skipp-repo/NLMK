@@ -1,4 +1,4 @@
-.NLMK-Extension-Tooltip {
+.Echo-Extension-Tooltip {
     all: unset;
     background-color: var(--white);
     box-shadow: 0px 4px 22px -8px rgba(179, 182, 192, 0.7);
@@ -20,14 +20,14 @@
 
 }
 
-.NLMK-Extension-Tooltip-text {
+.Echo-Extension-Tooltip-text {
     font-family: var(--font-Circle);
     font-size: r(12px);
     line-height: 1.3;
     color: var(--black);
 }
 
-.NLMK-Extension-Tooltip-bookmark {
+.Echo-Extension-Tooltip-bookmark {
     margin-left: r(10px);
     height: r(14px);
     display: flex;
