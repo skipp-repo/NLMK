@@ -85,7 +85,7 @@
     "fs-extra": "^9.1.0",
     "html-loader": "^2.1.0",
     "html-webpack-plugin": "^5.2.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "7.0.1",
     "plop": "^2.7.4",
     "prettier": "^2.2.1",
     "sass-loader": "^11.0.1",
@@ -96,5 +96,8 @@
     "webpack": "^5.23.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "engines": {
+    "node": "~16.14.2"
   }
 }
