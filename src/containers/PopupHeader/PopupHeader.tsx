@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import './PopupHeader.css'
-import { ReactComponent as Logo } from '../../assets/icons/logo.svg'
+import logo from '../../assets/img/icon-128.png'
 import { ReactComponent as Bookmark } from '../../assets/icons/bookmark.svg'
 import { ReactComponent as File } from '../../assets/icons/file.svg'
 
@@ -10,9 +10,8 @@ export type PopupHeaderProps = JSX.IntrinsicElements['div'] & {}
 const PopupHeader: React.FC<PopupHeaderProps> = ({ children, className, ...props }) => {
   return (
     <div {...props} className={clsx('PopupHeader', className)}>
-      <div className="PopupHeader-logo">
-        <Logo />
-      </div>
+      <img src={logo} alt=""  className="PopupHeader-logo"/>
+
       <div className="PopupHeader-buttons">
         <a href="./main.html#/vocabulary" className="PopupHeader-button" target="_blank">
           <Bookmark />
