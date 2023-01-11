@@ -14,6 +14,7 @@ export default class TranslationController {
   translationResult = null
   token = null
   selectedText = null
+  translationRequestError = false
   isBookmarked = false
 
   constructor() {
@@ -23,10 +24,14 @@ export default class TranslationController {
   }
 
   private async setToken() {
-    this.token = await initUser()
+    const token = await initUser()
+
+    if (token) {
+      this.token = token
+    }
   }
 
-  private setIsBookmarked() {
+  private setIsBookmarkedByResult() {
     const state = store.getState()
 
     if (this.translationResult.length > 1) return false
@@ -40,18 +45,26 @@ export default class TranslationController {
   }
 
   private async translationRequest() {
-    const request = await translationRequest(
-      { token: this.token, q: this.selectedText },
-      { signal: this.abortController.signal },
-    )
+    try {
+      this.translationResult = false
+      this.translationRequestError = false
 
-    if (!request) return
+      const request = await translationRequest(
+       { token: this.token, q: this.selectedText },
+       { signal: this.abortController.signal },
+      )
+      const { status, error, data } = request
 
-    const { status, error, data } = request
+      if (status !== 200 || error || !data?.results?.length)  {
+        this.translationRequestError = true
+        this.translationResult = []
+        return
+      }
 
-    if (status !== 200 || error || !data?.results?.length) return
-
-    this.translationResult = flatten(data?.results)
+      this.translationResult = flatten(data?.results)
+    } catch (err) {
+      this.translationRequestError = true
+    }
   }
 
   private onSelelectionChange = async (): Promise<void> => {
@@ -77,17 +90,22 @@ export default class TranslationController {
       return
     }
 
+    Tooltip.setLoading()
+
     if (!this.token) {
       await this.setToken()
     }
 
     this.abortController = new AbortController()
 
-    Tooltip.setLoading()
-
     await this.translationRequest()
 
-    this.setIsBookmarked()
+    if (this.translationRequestError) {
+      Tooltip.showError("Ошибка выполнения запроса")
+      return
+    }
+
+    this.setIsBookmarkedByResult()
 
     const translation = createTranslationString(this.translationResult)
 

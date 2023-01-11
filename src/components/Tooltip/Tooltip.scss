@@ -20,11 +20,22 @@
 
 }
 
+.Echo-Extension-Tooltip-root {
+    z-index: 1000000000;
+}
+
 .Echo-Extension-Tooltip-text {
     font-family: var(--font-Circle);
     font-size: r(12px);
     line-height: 1.3;
     color: var(--black);
+}
+
+.Echo-Extension-Tooltip-errorText {
+    font-family: var(--font-Circle);
+    font-size: r(12px);
+    line-height: 1.3;
+    color: red
 }
 
 .Echo-Extension-Tooltip-bookmark {

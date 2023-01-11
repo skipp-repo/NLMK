@@ -2,7 +2,7 @@ import {
   ICON_CLASS1,
   ICON_CLASS2,
   POPPER_ID,
-  POPPER_ROOT_ID,
+  POPPER_ROOT_ID, TOOLTIP_ERROR_TEXT_CLASS,
   TOOLTIP_ROOT_CLASS,
   TOOLTIP_TEXT_CLASS,
 } from '../pages/Content/constants'
@@ -21,6 +21,7 @@ class Tooltip {
   tooltip = null
   popper: Instance | null = null
   tooltipText = ''
+  errorText = null
   tooltipBookmarked = false
   bookmarkButtonHidden = false
 
@@ -50,8 +51,11 @@ class Tooltip {
   }
 
   private createTooltipHTML() {
+    const errorTextHtml = this.errorText ? `<div class="${TOOLTIP_ERROR_TEXT_CLASS}">${this.errorText}</div>` : ''
+
     return `
   <div id="${POPPER_ID}" class="${POPPER_ID}" data-active="${this.tooltipBookmarked}">
+    ${errorTextHtml}
     <div class="${TOOLTIP_TEXT_CLASS}">${this.tooltipText}</div>
     <div class="${ICON_CLASS1} ${ICON_CLASS2}">
       ${
@@ -116,6 +120,7 @@ class Tooltip {
     this.tooltipText = 'загрузка...'
     this.tooltipBookmarked = false
     this.bookmarkButtonHidden = true
+    this.errorText = null
     this.updateTooltip()
   }
 
@@ -136,6 +141,7 @@ class Tooltip {
   }
 
   public update(text, tooltipBookmarked) {
+    this.errorText = null
     this.tooltipText = text
     this.tooltipBookmarked = tooltipBookmarked
     this.bookmarkButtonHidden = false
@@ -147,6 +153,17 @@ class Tooltip {
 
     this.updateTooltip()
   }
+
+
+  public showError(text) {
+    this.errorText = text
+
+    this.tooltipText = ''
+    this.bookmarkButtonHidden = true
+
+    this.updateTooltip()
+  }
+
 
   private updateBookmarkedState = () => {
     this.tooltipBookmarked = !this.tooltipBookmarked
