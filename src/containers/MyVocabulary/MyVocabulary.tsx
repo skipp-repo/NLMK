@@ -122,7 +122,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const glossariesFilterList = React.useMemo(
     () =>
-      glossaries.map(({ _id, name, ...item }) => {
+      glossaries?.map(({ _id, name, ...item }) => {
         let selected
 
         if (Array.isArray(searchFilters.glossaries)) {
