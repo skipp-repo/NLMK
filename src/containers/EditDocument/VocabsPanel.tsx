@@ -39,7 +39,7 @@ const VocabsPanel: React.FC<VocabPanelProps> = ({ onAdd, ...props }) => {
 
   const vocabsFilters = React.useMemo(
     () =>
-      vocabs.map(({ _id, name, ...item }) => {
+      vocabs?.map(({ _id, name, ...item }) => {
         let selected
 
         if (Array.isArray(searchFilters.vocabs)) {
