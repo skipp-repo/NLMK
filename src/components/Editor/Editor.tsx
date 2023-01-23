@@ -4,11 +4,11 @@ import {
   ContentBlock,
   ContentState,
   DraftInlineStyle,
-  Editor as DraftEditor,
   EditorState,
   Modifier,
   RichUtils,
 } from 'draft-js'
+import DraftEditor from '@draft-js-plugins/editor'
 import 'draft-js/dist/Draft.css'
 import htmlToContentState from '../../utils/htmlToContentState'
 import './Editor.scss'
@@ -27,6 +27,7 @@ export type EditorProps = Omit<JSX.IntrinsicElements['div'], 'onChange' | 'onSel
   onSelect(sentence?: string): void
   html: string
   editorState: EditorState
+  plugins?: any[]
   setEditorState(editorState: EditorState): void
   customStyleFn: ((style: DraftInlineStyle, block: ContentBlock) => React.CSSProperties) | undefined
 }
@@ -47,6 +48,7 @@ const Editor = React.forwardRef(
       editorState,
       setEditorState,
       customStyleFn,
+      plugins,
       ...props
     }: EditorProps,
     ref: EditorRef,
@@ -113,6 +115,8 @@ const Editor = React.forwardRef(
         <div className="Editor-wrapper" onScroll={onScroll}>
           <DraftEditor
             ref={editorRef}
+            // @ts-ignore
+            plugins={plugins}
             blockStyleFn={getBlockStyle}
             editorState={editorState}
             onChange={handleChange}

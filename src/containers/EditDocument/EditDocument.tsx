@@ -21,29 +21,30 @@ import VocabsPanel from './VocabsPanel'
 import GlossariessPanel from './GlossariesPanel'
 import { usePopper } from 'react-popper'
 import createStyles from 'draft-js-custom-styles'
+import createSideToolbarPlugin from '../../components/@draft-js/SideToolbar/SideToolbar'
 
 export type MyEditDocumentProps = {
   params: { id: string }
 }
 
 const { styles: editorStyles, customStyleFn } = createStyles(['font-size'])
+const sideToolbarPlugin = createSideToolbarPlugin({
+  popperOptions: {
+    modifiers: [{ name: 'arrow' }],
+  },
+})
+
+const plugins = [sideToolbarPlugin]
+
+const { SideToolbar } = sideToolbarPlugin
 
 const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const reduxAction = useReduxAction()
-  const [referenceElement, setReferenceElement] = React.useState(null)
-  const [popperElement, setPopperElement] = React.useState(null)
   const [editorState, setEditorState] = React.useState<EditorState>(() => EditorState.createEmpty())
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    modifiers: [{ name: 'arrow' }],
-  })
-
   const [docName, setDocName] = React.useState('')
-
   const [, setLocation] = useLocation()
   const editorRef: EditorRef = React.useRef()
-
   const [selectedState, setSelectedState] = React.useState({ word: undefined, sentence: undefined })
-
   const currentDocument = useSelector(documentsSlice.selectors.documentById(id))
   const token = useSelector(userSlice.selectors.token)
 
@@ -92,14 +93,6 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
     let selection = document.getSelection()
 
     const range = selection.rangeCount && selection.getRangeAt(0)
-
-    const virtualReference = {
-      getBoundingClientRect() {
-        return range.getBoundingClientRect()
-      },
-    }
-
-    setReferenceElement(virtualReference)
   }
 
   const handleSelect = () => {
@@ -115,10 +108,10 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
 
       updatePopupTranslation()
     } else {
-      setSelectedState({
-        word: undefined,
-        sentence: undefined,
-      })
+      // setSelectedState({
+      //   word: undefined,
+      //   sentence: undefined,
+      // })
     }
   }
 
@@ -173,6 +166,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
             <Editor
               ref={editorRef}
               className="EditDocument-editor"
+              plugins={plugins}
               onChange={handleChange}
               onSelect={handleSelect}
               onScroll={handleScroll}
@@ -182,15 +176,9 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
               customStyleFn={customStyleFn}
             />
 
-            {selectedState.word && (
-              <EditorTranslationPopup
-                word={selectedState.word}
-                sentence={selectedState.sentence}
-                ref={setPopperElement}
-                style={styles.popper}
-                {...attributes.popper}
-              />
-            )}
+            <SideToolbar>
+              <EditorTranslationPopup word={selectedState.word} sentence={selectedState.sentence} />
+            </SideToolbar>
           </div>
 
           <div className="EditDocument-panels">

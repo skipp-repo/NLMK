@@ -66,7 +66,7 @@ const EditorTranslationPopup: React.FC<EditorTranslationPopupProps> = React.forw
     }
 
     return (
-      <div {...props} className={clsx('EditorTranslationPopup', className)} ref={ref}>
+      <div {...props} className={clsx('EditorTranslationPopup', className)}>
         <div className="EditorTranslationPopup-sentence">
           <Highlighter
             highlightClassName="EditorTranslationPopup-sentence_highlight"
