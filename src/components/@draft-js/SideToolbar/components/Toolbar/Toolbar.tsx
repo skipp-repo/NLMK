@@ -1,15 +1,15 @@
-import React, { ReactElement, useState, useCallback, useEffect } from 'react'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import React, { ReactElement, useState, useEffect } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 import DraftOffsetKey from 'draft-js/lib/DraftOffsetKey'
 import { PopperOptions, SideToolbarPluginStore, SideToolbarPosition } from '../../types'
-import Popover from './Popover'
+import Popover from '../../../../Popover/Popover'
+import '../../SideToolbar.scss'
 
-interface ToolbarProps {
-  children?: ReactElement
+export type ToolbarProps = JSX.IntrinsicElements['div'] & {
   store: SideToolbarPluginStore
   position: SideToolbarPosition
   popperOptions?: PopperOptions
+  className: string
 }
 
 export default function Toolbar({
@@ -17,21 +17,26 @@ export default function Toolbar({
   popperOptions,
   store,
   children,
+  className,
 }: ToolbarProps): ReactElement | null {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null)
 
-  const onSelectionChanged = useCallback((selection) => {
+  const onUpdate = useDebouncedCallback(({ target, type }) => {
     const editorState = store.getItem('getEditorState')!()
+    const documentSelection = document.getSelection()
+    const selection = editorState.getSelection()
+    const text = documentSelection.toString()
 
-    console.log(selection.getHasFocus())
+    if (type === 'click' && target?.closest && target?.closest(`.${className}`)) return
 
-    // if (!selection.getHasFocus()) {
-    //   setReferenceElement(null)
-    //   return
-    // }
+    if (!text) {
+      setReferenceElement(null)
+      return
+    }
 
     const currentContent = editorState!.getCurrentContent()
     const currentBlock = currentContent.getBlockForKey(selection.getStartKey())
+
     // TODO verify that always a key-0-0 exists
     const offsetKey = DraftOffsetKey.encode(currentBlock.getKey(), 0, 0)
     // Note: need to wait on tick to make sure the DOM node has been create by Draft.js
@@ -39,12 +44,15 @@ export default function Toolbar({
       const node = document.querySelectorAll<HTMLDivElement>(`[data-offset-key="${offsetKey}"]`)[0]
       setReferenceElement(node)
     }, 0)
-  }, [])
+  }, 100)
 
   useEffect(() => {
-    store.subscribeToItem('selection', onSelectionChanged)
+    window.document.addEventListener('click', onUpdate)
+    window.document.addEventListener('keydown', onUpdate)
+
     return () => {
-      store.unsubscribeFromItem('selection', onSelectionChanged)
+      window.document.removeEventListener('click', onUpdate)
+      window.document.removeEventListener('keydown', onUpdate)
     }
   }, [store])
 
@@ -56,6 +64,7 @@ export default function Toolbar({
   return (
     <>
       <Popover
+        className={className}
         referenceElement={referenceElement}
         position={position}
         popperOptions={popperOptions}

@@ -1,16 +1,15 @@
-import React, { ReactElement, ReactNode, useState } from 'react'
+import React, { useState } from 'react'
 import { usePopper } from 'react-popper'
-import { PopperOptions, SideToolbarPosition } from '../../types'
+import { PopperOptions, SideToolbarPosition } from '../@draft-js/SideToolbar/types'
+import './Popover.scss'
 
-interface PopoverProps {
+export type PopoverProps = JSX.IntrinsicElements['div'] & {
   referenceElement: HTMLElement | null
-  children: ReactNode
-  className?: string
   popperOptions?: PopperOptions
   position: SideToolbarPosition
 }
 
-export default function Popover({
+const Popover: React.FC<PopoverProps> = ({
   referenceElement,
   children,
   className,
@@ -19,7 +18,7 @@ export default function Popover({
     placement: position,
     modifiers: [{ name: 'arrow' }],
   },
-}: PopoverProps): ReactElement {
+}) => {
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null)
   const { styles, attributes } = usePopper(referenceElement, popperElement, popperOptions)
   return (
@@ -28,3 +27,5 @@ export default function Popover({
     </div>
   )
 }
+
+export default React.memo(Popover)

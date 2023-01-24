@@ -85,8 +85,6 @@ const GlossariesActions: React.FC<GlossariesProps> = ({ className, activeTab, ..
 
   const count = glossaryById?.cards?.length || 0
 
-  console.log(selectedIds)
-
   return (
     <Container className="Glossaries-actions">
       <ItemsCount className="Glossaries-actions-count">{`${count} ${words(count)}`}</ItemsCount>

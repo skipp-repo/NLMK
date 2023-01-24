@@ -11,7 +11,13 @@ export default (config: SideToolbarPluginConfig = {}): SideToolbarPlugin => {
   const { position = 'bottom', popperOptions } = config
 
   const SideToolbar = (props: SideToolbarProps): ReactElement => (
-    <Toolbar {...props} store={store} position={position} popperOptions={popperOptions} />
+    <Toolbar
+      {...props}
+      store={store}
+      position={position}
+      popperOptions={popperOptions}
+      className="SideToolbar-popover"
+    />
   )
 
   return {
@@ -22,7 +28,6 @@ export default (config: SideToolbarPluginConfig = {}): SideToolbarPlugin => {
     },
     // Re-Render the toolbar on every change
     onChange: (editorState) => {
-      store.updateItem('selection', editorState.getSelection())
       return editorState
     },
     SideToolbar,
