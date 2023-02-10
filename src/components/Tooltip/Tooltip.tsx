@@ -10,48 +10,53 @@ export type TooltipProps = JSX.IntrinsicElements['div'] & {
   placement?: PopperJS.Placement
 }
 
-const Tooltip: React.FC<TooltipProps> = React.forwardRef(
-  ({ children, className, referenceElement, placement, offset, ...props }, ref) => {
-    const [popperElement, setPopperElement] = React.useState(null)
-    const { styles, attributes, forceUpdate, update, state } = usePopper(
-      referenceElement,
-      popperElement,
-      {
-        placement: placement || 'top',
-        modifiers: [
-          {
-            name: 'offset' || placement,
-            options: {
-              offset,
-            },
+const Tooltip: React.FC<TooltipProps> = ({
+  children,
+  className,
+  referenceElement,
+  placement,
+  offset,
+  ...props
+}) => {
+  const [popperElement, setPopperElement] = React.useState(null)
+  const { styles, attributes, forceUpdate, update, state } = usePopper(
+    referenceElement,
+    popperElement,
+    {
+      placement: placement || 'top',
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset,
           },
-        ],
-      },
-    )
+        },
+      ],
+    },
+  )
+  //
+  // React.useEffect(() => {
+  //   if (ref) {
+  //     // @ts-ignore
+  //     ref.current = {
+  //       forceUpdate,
+  //       update,
+  //       state,
+  //     }
+  //   }
+  // }, [ref, forceUpdate, update, state])
 
-    React.useEffect(() => {
-      if (ref) {
-        // @ts-ignore
-        ref.current = {
-          forceUpdate,
-          update,
-          state,
-        }
-      }
-    }, [ref, forceUpdate, update, state])
-
-    return (
-      <div
-        {...props}
-        className={clsx('Echo-Extension-Tooltip', className)}
-        ref={setPopperElement}
-        style={styles.popper}
-        {...attributes.popper}
-      >
-        {children}
-      </div>
-    )
-  },
-)
+  return (
+    <div
+      {...props}
+      className={clsx('Echo-Extension-Tooltip', className)}
+      ref={setPopperElement}
+      style={styles.popper}
+      {...attributes.popper}
+    >
+      {children}
+    </div>
+  )
+}
 
 export default React.memo(Tooltip)

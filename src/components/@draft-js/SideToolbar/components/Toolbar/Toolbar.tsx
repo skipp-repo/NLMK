@@ -1,60 +1,38 @@
-import React, { ReactElement, useState, useEffect } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
-import DraftOffsetKey from 'draft-js/lib/DraftOffsetKey'
-import { PopperOptions, SideToolbarPluginStore, SideToolbarPosition } from '../../types'
+import React from 'react'
+import { PopperOptions, SideToolbarPosition } from '../../types'
 import Popover from '../../../../Popover/Popover'
+import RangeRef from '../../../../../utils/RangeRef'
+import checkNodeContainsInNode from '../../../../../utils/checkNodeContainsInNode'
 import '../../SideToolbar.scss'
 
 export type ToolbarProps = JSX.IntrinsicElements['div'] & {
-  store: SideToolbarPluginStore
   position: SideToolbarPosition
   popperOptions?: PopperOptions
   className: string
 }
 
-export default function Toolbar({
-  position,
-  popperOptions,
-  store,
-  children,
-  className,
-}: ToolbarProps): ReactElement | null {
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null)
+const Toolbar: React.FC<ToolbarProps> = ({ position, popperOptions, children, className }) => {
+  const [referenceElement, setReferenceElement] = React.useState<RangeRef | null>(null)
+  const checkNodeInTooltip = React.useCallback(
+    (node) => checkNodeContainsInNode(node, className),
+    [className],
+  )
+  const rangeRef = React.useMemo(() => new RangeRef(checkNodeInTooltip), [checkNodeInTooltip])
+  const popperRef = React.useRef<{ update: Function } | null>(null)
 
-  const onUpdate = useDebouncedCallback(({ target, type }) => {
-    const editorState = store.getItem('getEditorState')!()
-    const documentSelection = document.getSelection()
-    const selection = editorState.getSelection()
-    const text = documentSelection.toString()
+  React.useEffect(() => {
+    rangeRef.rectChangedCallback = ({ width }) => {
+      if (!width) {
+        setReferenceElement(null)
+      } else {
+        setReferenceElement(rangeRef)
+      }
 
-    if (type === 'click' && target?.closest && target?.closest(`.${className}`)) return
-
-    if (!text) {
-      setReferenceElement(null)
-      return
+      if (popperRef.current) {
+        popperRef.current.update()
+      }
     }
-
-    const currentContent = editorState!.getCurrentContent()
-    const currentBlock = currentContent.getBlockForKey(selection.getStartKey())
-
-    // TODO verify that always a key-0-0 exists
-    const offsetKey = DraftOffsetKey.encode(currentBlock.getKey(), 0, 0)
-    // Note: need to wait on tick to make sure the DOM node has been create by Draft.js
-    setTimeout(() => {
-      const node = document.querySelectorAll<HTMLDivElement>(`[data-offset-key="${offsetKey}"]`)[0]
-      setReferenceElement(node)
-    }, 0)
-  }, 100)
-
-  useEffect(() => {
-    window.document.addEventListener('click', onUpdate)
-    window.document.addEventListener('keydown', onUpdate)
-
-    return () => {
-      window.document.removeEventListener('click', onUpdate)
-      window.document.removeEventListener('keydown', onUpdate)
-    }
-  }, [store])
+  }, [])
 
   if (referenceElement === null) {
     //do not show popover if reference element is not there
@@ -68,9 +46,12 @@ export default function Toolbar({
         referenceElement={referenceElement}
         position={position}
         popperOptions={popperOptions}
+        popperRef={popperRef}
       >
         {children}
       </Popover>
     </>
   )
 }
+
+export default Toolbar

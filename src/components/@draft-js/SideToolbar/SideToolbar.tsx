@@ -13,7 +13,6 @@ export default (config: SideToolbarPluginConfig = {}): SideToolbarPlugin => {
   const SideToolbar = (props: SideToolbarProps): ReactElement => (
     <Toolbar
       {...props}
-      store={store}
       position={position}
       popperOptions={popperOptions}
       className="SideToolbar-popover"
