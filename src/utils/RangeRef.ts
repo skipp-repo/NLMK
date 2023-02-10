@@ -1,6 +1,5 @@
 import debounce from 'lodash.debounce'
 import { MIN_TRANSLATION_LENGTH } from '../constantes'
-import Tooltip from './Tooltip'
 
 type Rect = {
   top: number
@@ -12,20 +11,15 @@ type Rect = {
 }
 
 export default class RangeRef {
-  range: Range
-  rect: {
-    top: number
-    left: number
-    right: number
-    bottom: number
-    width: number
-    height: number
-  }
+  protected range: Range | null
+  protected rect: Rect
 
-  constructor() {
+  private update: EventListener
+
+  constructor(checkNodeInTooltip: (node: HTMLElement) => boolean) {
     this.updateRect()
 
-    const update: EventListener = debounce((evt) => {
+    this.update = debounce((evt) => {
       let selection = document.getSelection()
       let text = selection.toString()
 
@@ -35,7 +29,7 @@ export default class RangeRef {
         return
       }
 
-      if (evt?.target && Tooltip.checkNodeInTooltip(evt.target)) {
+      if (evt?.target && checkNodeInTooltip(evt.target)) {
         return
       }
 
@@ -48,14 +42,7 @@ export default class RangeRef {
       this.updateRect()
     }, 200)
 
-    document.addEventListener('mouseup', update)
-    document.addEventListener('keydown', update)
-    document.addEventListener('selectionchange', update)
-
-    document.scrollingElement.addEventListener('scroll', update)
-
-    window.addEventListener('scroll', update)
-    window.addEventListener('resize', update)
+    this.addListeners(this.update)
   }
 
   updateRect() {
@@ -89,5 +76,27 @@ export default class RangeRef {
 
   get clientHeight() {
     return this.rect.height
+  }
+
+  addListeners(callback) {
+    if (!callback) return
+
+    document.addEventListener('mouseup', callback)
+    document.addEventListener('keydown', callback)
+    document.addEventListener('selectionchange', callback)
+    window.addEventListener('scroll', callback)
+    window.addEventListener('resize', callback)
+
+    document.scrollingElement.addEventListener('scroll', callback)
+  }
+
+  removeListeners() {
+    document.removeEventListener('mouseup', this.update)
+    document.removeEventListener('keydown', this.update)
+    document.removeEventListener('selectionchange', this.update)
+    window.removeEventListener('scroll', this.update)
+    window.removeEventListener('resize', this.update)
+
+    document.scrollingElement.removeEventListener('scroll', this.update)
   }
 }
