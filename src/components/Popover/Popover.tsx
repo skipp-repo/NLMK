@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
+import * as PopperJS from '@popperjs/core'
 import { usePopper } from 'react-popper'
 import { PopperOptions, SideToolbarPosition } from '../@draft-js/SideToolbar/types'
 import './Popover.scss'
 
 export type PopoverProps = JSX.IntrinsicElements['div'] & {
-  referenceElement: HTMLElement | null
+  referenceElement: PopperJS.VirtualElement | null
   popperOptions?: PopperOptions
   position: SideToolbarPosition
+  popperRef: React.Ref<any>
 }
 
 const Popover: React.FC<PopoverProps> = ({
@@ -16,11 +18,24 @@ const Popover: React.FC<PopoverProps> = ({
   position,
   popperOptions = {
     placement: position,
-    modifiers: [{ name: 'arrow' }],
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 5],
+        },
+      },
+    ],
   },
+  popperRef,
 }) => {
-  const [popperElement, setPopperElement] = useState<HTMLElement | null>(null)
-  const { styles, attributes } = usePopper(referenceElement, popperElement, popperOptions)
+  const [popperElement, setPopperElement] = React.useState<HTMLElement | null>(null)
+  const { styles, attributes, update } = usePopper(referenceElement, popperElement, popperOptions)
+
+  React.useImperativeHandle(popperRef, () => ({
+    update,
+  }))
+
   return (
     <div ref={setPopperElement} style={styles.popper} {...attributes.popper} className={className}>
       {children}
