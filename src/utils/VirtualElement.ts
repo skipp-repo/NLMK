@@ -10,72 +10,53 @@ type Rect = {
   height: number
 }
 
-export default class RangeRef {
+export default class VirtualElement {
   protected range: Range | null
-  protected rect: Rect
+  protected rect: Rect | null = null
 
-  private update: EventListener
+  checkNodeInTooltip: (node: HTMLElement) => boolean
 
   constructor(checkNodeInTooltip: (node: HTMLElement) => boolean) {
-    this.updateRect()
-
-    this.update = debounce((evt) => {
-      let selection = document.getSelection()
-      let text = selection.toString()
-
-      text = text.trim()
-
-      if (evt.type === 'selectionchange' && evt?.target instanceof Document) {
-        return
-      }
-
-      if (evt?.target && checkNodeInTooltip(evt.target)) {
-        return
-      }
-
-      if (!text.length || text.length < MIN_TRANSLATION_LENGTH) {
-        this.range = null
-      } else {
-        this.range = selection && selection.getRangeAt(0)
-      }
-
-      this.updateRect()
-    }, 200)
+    this.checkNodeInTooltip = checkNodeInTooltip
 
     this.addListeners(this.update)
   }
+
+  update = debounce((evt) => {
+    let selection = document.getSelection()
+    let text = selection.toString()
+
+    text = text.trim()
+
+    if (evt.type === 'selectionchange' && evt?.target instanceof Document) {
+      return
+    }
+
+    if (evt?.target && this.checkNodeInTooltip(evt.target)) {
+      return
+    }
+
+    if (!text.length || text.length < MIN_TRANSLATION_LENGTH) {
+      this.range = null
+    } else {
+      this.range = selection && selection.getRangeAt(0)
+    }
+
+    this.updateRect()
+
+    this.rectChangedCallback(this.rect, text)
+  }, 200)
 
   updateRect() {
     if (this.range) {
       this.rect = this.range.getBoundingClientRect()
     } else {
-      this.rect = {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: 0,
-        height: 0,
-      }
+      this.rect = null
     }
-
-    this.rectChangedCallback(this.rect)
   }
 
-  rectChangedCallback(rect: Rect) {
+  rectChangedCallback(rect: Rect, text: string) {
     // Abstract to be implemented
-  }
-
-  getBoundingClientRect() {
-    return this.rect
-  }
-
-  get clientWidth() {
-    return this.rect.width
-  }
-
-  get clientHeight() {
-    return this.rect.height
   }
 
   addListeners(callback) {
@@ -98,5 +79,23 @@ export default class RangeRef {
     window.removeEventListener('resize', this.update)
 
     document.scrollingElement.removeEventListener('scroll', this.update)
+  }
+
+  destroy() {
+    this.removeListeners()
+  }
+
+  // Methods for using in Popper js
+
+  getBoundingClientRect() {
+    return this.rect
+  }
+
+  get clientWidth() {
+    return this.rect.width
+  }
+
+  get clientHeight() {
+    return this.rect.height
   }
 }

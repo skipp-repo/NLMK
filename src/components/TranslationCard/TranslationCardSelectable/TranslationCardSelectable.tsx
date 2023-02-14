@@ -4,7 +4,6 @@ import './TranslationCardSelectable.scss'
 import { PhraseTranslationLocal } from '../../../types'
 import TranslationCardWord from '../TranslationCardWord/TranslationCardWord'
 import TranslationCardImage from '../TranslationCardImage/TranslationCardImage'
-import TranslationCardMeaning from '../TranslationCardMeaning/TranslationCardMeaning'
 import TranslationCardGlossaries from '../TranslationCardGlossaries/TranslationCardGlossaries'
 import Checkbox from '../../Checkbox/Checkbox'
 import speak from '../../../utils/speak'
@@ -53,7 +52,6 @@ const TranslationCardSelectable: React.FC<TranslationCardProps> = ({
           >
             {item.text}
           </TranslationCardWord>
-          <TranslationCardMeaning>{item.translation}</TranslationCardMeaning>
           {!!item.glossaries && <TranslationCardGlossaries glossaries={item.glossaries} />}
         </div>
 

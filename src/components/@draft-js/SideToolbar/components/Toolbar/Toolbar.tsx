@@ -1,7 +1,7 @@
 import React from 'react'
 import { PopperOptions, SideToolbarPosition } from '../../types'
 import Popover from '../../../../Popover/Popover'
-import RangeRef from '../../../../../utils/RangeRef'
+import VirtualElement from '../../../../../utils/VirtualElement'
 import checkNodeContainsInNode from '../../../../../utils/checkNodeContainsInNode'
 import '../../SideToolbar.scss'
 
@@ -12,17 +12,17 @@ export type ToolbarProps = JSX.IntrinsicElements['div'] & {
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ position, popperOptions, children, className }) => {
-  const [referenceElement, setReferenceElement] = React.useState<RangeRef | null>(null)
+  const [referenceElement, setReferenceElement] = React.useState<VirtualElement | null>(null)
   const checkNodeInTooltip = React.useCallback(
     (node) => checkNodeContainsInNode(node, className),
     [className],
   )
-  const rangeRef = React.useMemo(() => new RangeRef(checkNodeInTooltip), [checkNodeInTooltip])
+  const rangeRef = React.useMemo(() => new VirtualElement(checkNodeInTooltip), [checkNodeInTooltip])
   const popperRef = React.useRef<{ update: Function } | null>(null)
 
   React.useEffect(() => {
-    rangeRef.rectChangedCallback = ({ width }) => {
-      if (!width) {
+    rangeRef.rectChangedCallback = (rect) => {
+      if (!rect) {
         setReferenceElement(null)
       } else {
         setReferenceElement(rangeRef)

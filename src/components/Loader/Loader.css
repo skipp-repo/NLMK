@@ -1,13 +1,17 @@
 .Loader {
-	height: 100px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
+	margin: auto;
+}
+
+.loader-iconWrapper {
+	transform: scale(3.5);
 }
 
 .Loader-icon {
-	animation: 4s linear 0s infinite rotation;;
+	animation: 4s linear 0s infinite rotation;
 }
 @keyframes rotation {
 	from {

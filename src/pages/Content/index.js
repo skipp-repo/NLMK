@@ -1,10 +1,17 @@
-// import React from 'react'
+import React from 'react'
 import { render } from 'react-dom'
 import Content from './Content'
+import Provider from '../../containers/Provider/Provider'
 
-// const app = document.createElement('div')
-// app.id = 'nlmk'
-//
-// document.body.append(app)
+const app = document.createElement('div')
+app.id = 'echoExtension'
 
-// render(<Content />, window.document.querySelector(`#${app.id}`))
+document.body.append(app)
+
+const content = (
+  <Provider>
+    <Content />
+  </Provider>
+)
+
+render(content, window.document.querySelector(`#${app.id}`))

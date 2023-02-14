@@ -30,7 +30,7 @@
     }
   ],
   "permissions": [
-    "storage", "identity", "identity.email"
+    "storage", "unlimitedStorage", "identity", "identity.email"
   ],
   "host_permissions": ["<all_urls>"]
 }

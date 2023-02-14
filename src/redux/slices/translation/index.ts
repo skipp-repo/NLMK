@@ -26,6 +26,7 @@ export enum SpaceEnum {
   DocumentsVocabs = 'DocumentsVocabs',
   DocumentsGlossaries = 'DocumentsGlossaries',
   DocumentsPopup = 'DocumentsPopup',
+  Content = 'Content',
 }
 
 const defaultSpace: SpaceEnum = SpaceEnum.Popup
@@ -43,11 +44,11 @@ export const translate = createAsyncThunk(
   ): Promise<TranslationResult> => {
     try {
       const state = getState() as RootState
-      const { user, translation } = state
+      const { user } = state
 
       const token = user.token || (await getUserToken())
 
-      dispatch(updateTranslationHistory(translation.Popup))
+      dispatch(updateTranslationHistory(space))
 
       return await translationRequest({
         token,

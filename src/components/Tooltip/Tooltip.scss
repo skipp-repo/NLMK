@@ -11,13 +11,7 @@
     justify-content: space-between;
     box-sizing: border-box;
     white-space: pre-wrap;
-
-    &[data-popper-reference-hidden],
-    &[data-popper-escaped] {
-        visibility: hidden;
-        pointer-events: none;
-    }
-
+    min-width: 100px;
 }
 
 .Echo-Extension-Tooltip-root {

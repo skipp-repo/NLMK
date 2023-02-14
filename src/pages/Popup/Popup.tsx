@@ -14,10 +14,13 @@ import ErrorFallback from '../../components/ErrorFallback/ErrorFallback'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as userSlice from '../../redux/slices/user'
 import * as translationSlice from '../../redux/slices/translation'
+import { SpaceEnum } from '../../redux/slices/translation'
 import * as autocompleteSlice from '../../redux/slices/autocomplete'
 import * as appSlice from '../../redux/slices/app'
-import { EditFolder } from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
+import { EditFolder } from '../../redux/slices/vocabs'
+import useDebouncedTranslate from '../../hooks/useDebouncedTranslate'
+import { DEBOUNCE_AUTOCOMPLETE_TIME } from '../../constantes'
 
 const Popup = () => {
   const reduxAction = useReduxAction()
@@ -34,7 +37,6 @@ const Popup = () => {
   const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
 
   const getData = reduxAction(appSlice.getData)
-  const translate = reduxAction(translationSlice.translate)
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
   const clearState = reduxAction(userSlice.clearUserState)
@@ -89,18 +91,13 @@ const Popup = () => {
     [translationHistory],
   )
 
-  const debouncedTranslate = useDebouncedCallback((query) => {
-    translate({
-      query,
-      remember: true,
-    })
-  }, 1000)
+  const debouncedTranslate = useDebouncedTranslate(SpaceEnum.Popup)
 
   const debouncedAutocomplete = useDebouncedCallback((query) => {
     autocomplete({
       query,
     })
-  }, 300)
+  }, DEBOUNCE_AUTOCOMPLETE_TIME)
 
   const handleSearch = (newValue) => {
     if (queryRef.current.length < 2 && newValue.length < 2) return
@@ -121,7 +118,7 @@ const Popup = () => {
 
   const isEmptyTranslationData = !translationData
   const isEmptyTranslationHistory = !(
-    translationHistory?.length && translationHistory.find(({ results }) => results.length)
+    translationHistory?.length && translationHistory.find(({ results }) => results?.length)
   )
 
   const isEmpty = isEmptyTranslationData && isEmptyTranslationHistory
