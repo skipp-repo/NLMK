@@ -1,22 +1,13 @@
-import createRequest from '../../utils/createRequest'
+import axios from '../axios'
 
 export type Autocomplete = {
-  token: string
   q: string
 }
 
-export const autocomplete = async ({ token, q }: Autocomplete, init?: RequestInit) => {
-  const params = {
+export const autocomplete = async ({ q }: Autocomplete): Promise<any> => {
+  const { data } = await axios.post(`/autocompletion`, {
     q,
-  }
-
-  return await createRequest(`/autocompletion`, {
-    method: 'POST',
-    headers: {
-      'X-USER-ID': token,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-    ...init,
   })
+
+  return data
 }

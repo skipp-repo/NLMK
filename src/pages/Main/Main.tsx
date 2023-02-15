@@ -4,8 +4,11 @@ import Header from '../../components/Header/Header'
 import './Main.scss'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as vocabsSlices from '../../redux/slices/vocabs'
+import useStatus from '../../hooks/useStatus'
 
 const Main = () => {
+  useStatus()
+
   const reduxAction = useReduxAction()
 
   const getVocabs = reduxAction(vocabsSlices.getVocabs)

@@ -1,27 +1,16 @@
-import createRequest from '../../utils/createRequest'
 import { TranslationRequest } from '../../types'
+import axios from '../axios'
 
-export type Translation = TranslationRequest & {
-  token: string
-}
+export type Translation = TranslationRequest & {}
 
-export const translation = async (
-  { token, q, remember, filters }: Translation,
-  init?: RequestInit,
-) => {
-  const params: TranslationRequest = {
+export const translation = async ({ q, remember, filters }: Translation): Promise<any> => {
+  if (!q) return null
+
+  const { data } = await axios.post(`/translation`, {
     q,
     filters,
     remember,
-  }
-
-  return await createRequest(`/translation`, {
-    method: 'POST',
-    headers: {
-      'X-USER-ID': token,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-    ...init,
   })
+
+  return data
 }

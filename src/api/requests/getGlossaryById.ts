@@ -1,17 +1,11 @@
-import createRequest from '../../utils/createRequest'
+import axios from '../axios'
 
 export type GetVocabById = {
-  token: string
   id: number
 }
 
-export const getGlossaryById = async ({ token, id }: GetVocabById, init?: RequestInit) => {
-  return await createRequest(`/glossarycards/${id}`, {
-    method: 'GET',
-    headers: {
-      'X-USER-ID': token,
-      'Content-Type': 'application/json',
-    },
-    ...init,
-  })
+export const getGlossaryById = async ({ id }: GetVocabById) => {
+  const { data } = await axios.get(`/glossarycards/${id}`)
+
+  return data
 }

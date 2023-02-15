@@ -81,7 +81,6 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const vocabsByID = useSelector(vocabsSlice.selectors.vocabById(activeTab))
   const vocabs = useSelector(vocabsSlice.selectors.vocabsList)
-  const token = useSelector(userSlice.selectors.token)
   const glossaries = useSelector(userSlice.selectors.glossaries)
   const { getVocabsLoading } = useSelector(vocabsSlice.selectors.flags)
 
@@ -113,7 +112,7 @@ const MyVocabulary: React.FC<MyVocabularyProps> = () => {
 
   const debouncedSearch = useDebouncedCallback(search, 300)
   const downloadAllVocabs = useAsyncCallback(async () => {
-    return await downloadAllVocabsRequest({ token })
+    return await downloadAllVocabsRequest()
   })
 
   const searchData = useSelector(translationSlice.selectors.mainVocabsSearchResults)

@@ -1,29 +1,9 @@
-import createRequest from '../../utils/createRequest'
+import axios from '../axios'
 
 export type DeleteAllDocuments = {
-  token: string
   docIds: number[]
 }
 
-export const deleteDocumentsByIds = async (
-  { token, docIds }: DeleteAllDocuments,
-  init?: RequestInit,
-) => {
-  try {
-    const params = {
-      docIds,
-    }
-
-    return await createRequest(`/documents`, {
-      method: 'DELETE',
-      headers: {
-        'X-USER-ID': token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-      ...init,
-    })
-  } catch (error) {
-    console.error('Echo extension request error:', error)
-  }
+export const deleteDocumentsByIds = async ({ docIds }: DeleteAllDocuments): Promise<any> => {
+  return axios.delete(`/documents`, { data: { docIds } })
 }

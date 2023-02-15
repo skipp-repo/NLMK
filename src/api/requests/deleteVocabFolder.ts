@@ -1,17 +1,9 @@
-import createRequest from '../../utils/createRequest'
+import axios from '../axios'
 
 export type RemoveVocabFolder = {
-  token: string
   id: number
 }
 
-export const removeVocabFolder = async ({ token, id }: RemoveVocabFolder, init?: RequestInit) => {
-  return await createRequest(`/vocab/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'X-USER-ID': token,
-      'Content-Type': 'application/json',
-    },
-    ...init,
-  })
+export const removeVocabFolder = async ({ id }: RemoveVocabFolder, init?: RequestInit) => {
+  return await axios.delete(`/vocab/${id}`)
 }

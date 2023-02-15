@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import getUniqNameForDocument from '../../../utils/getUniqNameForDocument'
 import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
-// import { getDocumentById } from '../../../api/requests/getDocumentById'
 import {
   UploadDocument,
   uploadDocument as uploadDocumentRequest,
@@ -35,19 +34,19 @@ const initialState: InitialState = {
   selectedItems: [],
 }
 
-export type UploadDocumentAction = Omit<UploadDocument, 'token' | 'data'> & {
+export type UploadDocumentAction = Omit<UploadDocument, 'data'> & {
   file?: File
 }
 
 export const uploadDocument = createAsyncThunkExtended(
   `${name}/uploadDocument`,
-  async ({ file, documentHTML, documentName }: UploadDocumentAction, { token, state }) => {
+  async ({ file, documentHTML, documentName }: UploadDocumentAction, { state }) => {
     const namesArr = allNames(state)
 
     if (documentHTML) {
       const name = getUniqNameForDocument(documentName, namesArr)
 
-      return await uploadDocumentRequest({ token, documentHTML, documentName: name })
+      return await uploadDocumentRequest({ documentHTML, documentName: name })
     }
 
     if (file) {
@@ -57,7 +56,7 @@ export const uploadDocument = createAsyncThunkExtended(
 
       data.append('userDoc', file, name)
 
-      return await uploadDocumentRequest({ token, data })
+      return await uploadDocumentRequest({ data })
     }
   },
 )
@@ -73,8 +72,8 @@ const uploadDocumentSlice = makeExtraReducers({
 
 export const updateDocument = createAsyncThunkExtended(
   `${name}/updateDocument`,
-  async ({ id, documentHTML, documentName }: Omit<UpdateDocument, 'token'>, { token }) => {
-    return await updateDocumentRequest({ token, id, documentHTML, documentName })
+  async ({ id, documentHTML, documentName }: UpdateDocument) => {
+    return await updateDocumentRequest({ id, documentHTML, documentName })
   },
 )
 
@@ -87,12 +86,9 @@ const updateDocumentSlice = makeExtraReducers({
   },
 })
 
-export const getDocuments = createAsyncThunkExtended(
-  `${name}/getDocuments`,
-  async (_, { token }) => {
-    return await getDocumentsRequest({ token })
-  },
-)
+export const getDocuments = createAsyncThunkExtended(`${name}/getDocuments`, async (_) => {
+  return await getDocumentsRequest()
+})
 
 const getDocumentsSlice = makeExtraReducers({
   action: getDocuments,
@@ -109,8 +105,8 @@ export type DeleteDocument = {
 
 export const deleteDocument = createAsyncThunkExtended(
   `${name}/deleteDocument`,
-  async ({ id }: DeleteDocument, { token }) => {
-    return await deleteDocumentRequest({ token, id })
+  async ({ id }: DeleteDocument) => {
+    return await deleteDocumentRequest({ id })
   },
 )
 
@@ -136,8 +132,8 @@ export type DeleteDocuments = {
 
 export const deleteDocuments = createAsyncThunkExtended(
   `${name}/deleteDocuments`,
-  async ({ docIds }: DeleteDocuments, { token }) => {
-    return await deleteDocumentsRequest({ token, docIds })
+  async ({ docIds }: DeleteDocuments) => {
+    return await deleteDocumentsRequest({ docIds })
   },
 )
 
@@ -163,8 +159,8 @@ export type GetDocument = {
 
 export const getDocument = createAsyncThunkExtended<any, GetDocument>(
   `${name}/getDocument`,
-  async ({ id }, { token }) => {
-    return await getDocumentByIdRequest({ token, id })
+  async ({ id }) => {
+    return await getDocumentByIdRequest({ id })
   },
 )
 
@@ -179,8 +175,8 @@ const getDocumentSlice = makeExtraReducers({
 
 export const renameDocument = createAsyncThunkExtended(
   `${name}/renameDocument`,
-  async ({ id, newName }: Omit<RenameDocument, 'token'>, { token }) => {
-    return await renameDocumentRequest({ token, id, newName })
+  async ({ id, newName }: RenameDocument) => {
+    return await renameDocumentRequest({ id, newName })
   },
 )
 

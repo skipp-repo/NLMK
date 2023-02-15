@@ -1,34 +1,21 @@
 import fileDownload from 'js-file-download'
-import secrets from 'secrets'
-
-const { API_URL } = secrets
+import axios from '../axios'
 
 export type DownloadAllGlossaries = {
-  token: string
   glossaryIds: number[]
 }
 
-export const downloadAllGlossarys = async (
-  { token, glossaryIds }: DownloadAllGlossaries,
-  init?: RequestInit,
-) => {
+export const downloadAllGlossarys = async ({ glossaryIds }: DownloadAllGlossaries) => {
   try {
     const params = {
       glossaryIds,
     }
 
-    const result = await fetch(`${API_URL}/download/glossary/`, {
-      method: 'POST',
-      headers: {
-        'X-USER-ID': token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-      ...init,
+    const { data } = await axios.post('/download/glossary/', params, {
+      responseType: 'arraybuffer',
     })
 
-    const json = await result.json()
-    const streams = json._streams
+    const streams = data._streams
 
     for (let i = 0; i <= streams.length - 3; i = i + 3) {
       const filename = streams[i].split('filename=')[1].split('"')[1]

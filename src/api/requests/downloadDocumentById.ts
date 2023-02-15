@@ -1,39 +1,25 @@
+import axios from '../axios'
 import fileDownload from 'js-file-download'
-import secrets from 'secrets'
-
-const { API_URL } = secrets
 
 export type DownloadVocabById = {
-  token: string
   id: string
 }
 
-export const downloadDocumentById = async (
-  { token, id }: DownloadVocabById,
-  init?: RequestInit,
-) => {
+export const downloadDocumentById = async ({ id }: DownloadVocabById) => {
   try {
-    const result = await fetch(`${API_URL}/download/documents/${id}`, {
-      method: 'GET',
-      headers: {
-        'X-USER-ID': token,
-        'Content-Type': 'application/json',
-        responseType: 'blob',
-      },
-      ...init,
+    const { data, headers } = await axios.get(`/download/documents/${id}`, {
+      responseType: 'blob',
     })
 
-    const blob = await result.blob()
-
-    const contentDisposHeader = result.headers.get('Content-Disposition') as string
+    const contentDisposHeader = headers['content-disposition'] as string
 
     const match = contentDisposHeader.match(/filename="(.+)"/)
 
     let filename = !match ? 'unnamed.docx' : match[1]
 
-    fileDownload(blob, decodeURI(filename))
+    fileDownload(data, decodeURI(filename))
 
-    return { blob, filename }
+    return { blob: data, filename }
   } catch (error) {
     console.error('Echo extension request error:', error)
   }

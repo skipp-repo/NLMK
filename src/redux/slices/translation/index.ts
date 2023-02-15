@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { translation as translationRequest } from '../../../api/requests/translation'
 import { TranslationRequest, TranslationResult } from '../../../types'
-import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { updateTranslationHistory } from '../user'
@@ -46,12 +45,9 @@ export const translate = createAsyncThunk(
       const state = getState() as RootState
       const { user } = state
 
-      const token = user.token || (await getUserToken())
-
       dispatch(updateTranslationHistory(space))
 
       return await translationRequest({
-        token,
         q: query,
         filters,
         remember,

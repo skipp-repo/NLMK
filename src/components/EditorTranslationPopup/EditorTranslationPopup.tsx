@@ -6,11 +6,11 @@ import { useSelector } from 'react-redux'
 import useReduxAction from '../../hooks/useReduxAction'
 import { SpaceEnum, Translate } from '../../redux/slices/translation'
 import * as translationSlice from '../../redux/slices/translation'
-import { EditFolder } from '../../redux/slices/vocabs'
 import * as vocabsSlice from '../../redux/slices/vocabs'
 import Loader from '../Loader/Loader'
 import TranslationCard from '../TranslationCard/TranslationCard/TranslationCard'
 import TranslationListTitle from '../TranslationListTitle/TranslationListTitle'
+import { EditVocabFolder } from '../../api/requests/editVocabFolder'
 
 export type EditorTranslationPopupProps = JSX.IntrinsicElements['div'] & {
   word: string
@@ -30,7 +30,7 @@ const EditorTranslationPopup: React.FC<EditorTranslationPopupProps> = React.forw
       translationSlice.translate({ space: SpaceEnum.DocumentsPopup, ...params }),
     )
 
-    const addToBookmarks = reduxAction(({ cardsToAdd }: Omit<EditFolder, 'id'>) =>
+    const addToBookmarks = reduxAction(({ cardsToAdd }: Omit<EditVocabFolder, 'id'>) =>
       vocabsSlice.editFolder({ id: 'default', cardsToAdd }),
     )
 

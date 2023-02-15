@@ -1,40 +1,24 @@
+import axios from '../axios'
 import fileDownload from 'js-file-download'
-import secrets from 'secrets'
 
-const { API_URL } = secrets
-
-export type DownloadVocabById = {
-  token: string
+export type DownloadGlossaryById = {
   id: string
 }
 
-export const downloadGlossaryById = async (
-  { token, id }: DownloadVocabById,
-  init?: RequestInit,
-) => {
+export const downloadGlossaryById = async ({ id }: DownloadGlossaryById) => {
   try {
-    const result = await fetch(`${API_URL}/download/glossary/${id}`, {
-      method: 'GET',
-      headers: {
-        'X-USER-ID': token,
-        'Content-Type': 'application/json',
-        responseType: 'blob',
-      },
-      ...init,
+    const { data, headers } = await axios.get(`/download/glossary/${id}`, {
+      responseType: 'blob',
     })
 
-    const blob = await result.blob()
-
-    const contentDisposHeader = result.headers.get('Content-Disposition') as string
-
+    const contentDisposHeader = headers['content-disposition']
     const match = contentDisposHeader.match(/filename="(.+)"/)
-
     let filename = !match ? 'unnamed.csv' : match[1]
 
-    fileDownload(blob, decodeURI(filename))
+    fileDownload(data, decodeURI(filename))
 
-    return { blob, filename }
+    return { blob: data, filename }
   } catch (error) {
-    console.error('Echo extension request error:', error)
+    console.error('Echo / Error downloading glossary:', error)
   }
 }

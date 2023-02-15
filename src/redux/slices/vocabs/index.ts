@@ -1,13 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { createVocabFolder } from '../../../api/requests/createVocabFolder'
 import { EditVocabFolder, editVocabFolder } from '../../../api/requests/editVocabFolder'
-import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getVocabById } from '../../../api/requests/getVocabById'
 import { getVocabs as getVocabsRequest } from '../../../api/requests/getVocabs'
 import { removeVocabFolder } from '../../../api/requests/deleteVocabFolder'
 import { HandlerAction } from '../../types'
-import { cardsIdsByGlossId } from '../glossaries/selectors'
 import adapter from './adapter'
 import { cardsIdsByVocabId, defaultVocabId } from './selectors'
 
@@ -24,44 +22,34 @@ const initialState: InitialState = {
   selectedItems: [],
 }
 
-export const getVocabs = createAsyncThunkExtended(
-  `${name}/getVocabs`,
-  async (_: void, { token }) => {
-    return await getVocabsRequest({ token })
-  },
-)
+export const getVocabs = createAsyncThunk(`${name}/getVocabs`, async () => {
+  return await getVocabsRequest()
+})
 
 export type GetVocab = {
   id: number
 }
 
-export const getVocab = createAsyncThunkExtended(
-  `${name}/getVocab`,
-  async ({ id }: GetVocab, { state, token }) => {
-    const { user } = state
-
-    return await getVocabById({ token, id })
-  },
-)
+export const getVocab = createAsyncThunk(`${name}/getVocab`, async ({ id }: GetVocab) => {
+  return await getVocabById({ id })
+})
 
 export type CreateFolder = { name: string; cardsToAdd?: number[] }
 
-export const createFolder = createAsyncThunkExtended(
+export const createFolder = createAsyncThunk(
   `${name}/createFolder`,
-  async ({ name, cardsToAdd }: CreateFolder, { token }) => {
-    return await createVocabFolder({ token, name, cardsToAdd })
+  async ({ name, cardsToAdd }: CreateFolder) => {
+    return await createVocabFolder({ name, cardsToAdd })
   },
 )
 
-export type EditFolder = Omit<EditVocabFolder, 'token'>
-
-export const editFolder = createAsyncThunkExtended<any, EditFolder>(
+export const editFolder = createAsyncThunk<any, EditVocabFolder>(
   `${name}/editFolder`,
-  async ({ id, name, cardsToAdd, cardsToRemove }, { token, state }) => {
+  async ({ id, name, cardsToAdd, cardsToRemove }, { getState }) => {
+    const state = getState()
     const defaultId = defaultVocabId(state)
 
     return await editVocabFolder({
-      token,
       id: id === defaultId ? 'default' : id,
       name,
       cardsToAdd,
@@ -74,10 +62,10 @@ export type RemoveFolder = {
   id: number
 }
 
-export const removeFolder = createAsyncThunkExtended(
+export const removeFolder = createAsyncThunk(
   `${name}/removeFolder`,
-  async ({ id }: RemoveFolder, { token }) => {
-    return await removeVocabFolder({ token, id })
+  async ({ id }: RemoveFolder) => {
+    return await removeVocabFolder({ id })
   },
 )
 
@@ -115,7 +103,7 @@ const editFolderSlice = makeExtraReducers({
       state,
       {
         meta: {
-          arg: { id, name, cardsToAdd, cardsToRemove },
+          arg: { id, name },
         },
       },
     ) => {

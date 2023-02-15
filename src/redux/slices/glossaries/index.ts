@@ -1,5 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
-import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { getGlossaryById } from '../../../api/requests/getGlossaryById'
 import type { HandlerAction } from '../../types'
@@ -23,12 +22,9 @@ export type GetVocab = {
   id: number
 }
 
-export const getGlossary = createAsyncThunkExtended(
-  `${name}/getGlossary`,
-  async ({ id }: GetVocab, { token }) => {
-    return await getGlossaryById({ token, id })
-  },
-)
+export const getGlossary = createAsyncThunk(`${name}/getGlossary`, async ({ id }: GetVocab) => {
+  return await getGlossaryById({ id })
+})
 
 const getGlossarySlice = makeExtraReducers({
   action: getGlossary,

@@ -1,38 +1,33 @@
-import secrets from 'secrets'
-
-const { API_URL } = secrets
+import axios from '../axios'
 
 export type UploadDocument = {
-  token: string
   data?: FormData
   documentHTML?: string
   documentName?: string
 }
 
-export const uploadDocument = async (
-  { token, data, documentHTML, documentName }: UploadDocument,
-  init?: RequestInit,
-) => {
+export const uploadDocument = async ({ data, documentHTML, documentName }: UploadDocument) => {
   try {
-    const headers = { 'X-USER-ID': token }
+    const headers = {}
 
     if (documentHTML) {
       headers['Content-Type'] = 'application/json'
+    } else {
+      headers['Content-Type'] = undefined
     }
 
-    const result = await fetch(`${API_URL}/documents/`, {
-      method: 'POST',
-      headers,
-      body:
-        data ||
-        JSON.stringify({
-          documentHTML,
-          documentName,
-        }),
-      ...init,
-    })
+    const response = await axios.post(
+      `/documents/`,
+      data || {
+        documentHTML,
+        documentName,
+      },
+      {
+        headers,
+      },
+    )
 
-    return await result.json()
+    return response.data
   } catch (error) {
     console.error('Echo extension request error:', error)
   }

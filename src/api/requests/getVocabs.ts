@@ -1,16 +1,9 @@
-import createRequest from '../../utils/createRequest'
+import axios from '../axios'
 
-export type GetVocabs = {
-  token: string
-}
+export type GetVocabs = {}
 
-export const getVocabs = async ({ token }: GetVocabs, init?: RequestInit) => {
-  return await createRequest(`/vocab`, {
-    method: 'GET',
-    headers: {
-      'X-USER-ID': token,
-      'Content-Type': 'application/json',
-    },
-    ...init,
-  })
+export const getVocabs = async () => {
+  const { data } = await axios.get(`/vocab`)
+
+  return data
 }

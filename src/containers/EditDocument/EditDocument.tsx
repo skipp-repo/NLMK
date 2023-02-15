@@ -46,7 +46,6 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const editorRef: EditorRef = React.useRef()
   const [selectedState, setSelectedState] = React.useState({ word: undefined, sentence: undefined })
   const currentDocument = useSelector(documentsSlice.selectors.documentById(id))
-  const token = useSelector(userSlice.selectors.token)
 
   const uploadDocument = reduxAction(documentsSlice.uploadDocument)
   const updateDocument = reduxAction(documentsSlice.updateDocument)
@@ -54,7 +53,7 @@ const EditDocument: React.FC<MyEditDocumentProps> = ({ params: { id } }) => {
   const renameDocument = reduxAction(documentsSlice.renameDocument)
 
   const downloadDocumentsByIds = useAsyncCallback(async () => {
-    return await downloadDocumentsByIdsRequest({ token, docIds: [Number(id)] })
+    return await downloadDocumentsByIdsRequest({ docIds: [Number(id)] })
   })
 
   const handleChange = useDebouncedCallback(async (content: ContentState) => {

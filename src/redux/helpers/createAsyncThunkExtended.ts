@@ -10,23 +10,19 @@ type ReduxApi = {
 
 type SecondArg = {
   state: any
-  token: string
   dispatch?: Dispatch
   getState: Function
 }
 
-type CB<T> = (params: T, { state, token, dispatch, getState }: SecondArg) => void
+type CB<T> = (params: T, { state, dispatch, getState }: SecondArg) => void
 
 const wrapThunk = <T>(cb: CB<T>) => {
   return async (params, api) => {
     try {
       const { getState, dispatch } = api
       const state = getState() as RootState
-      const { user } = state
 
-      const token = user.token || (await getUserToken())
-
-      return cb(params, { token, state, getState, dispatch })
+      return cb(params, { state, getState, dispatch })
     } catch (error) {
       throw error
     }

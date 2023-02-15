@@ -1,16 +1,9 @@
-import createRequest from '../../utils/createRequest'
+import axios from '../axios'
 
-export type GetDocuments = {
-  token: string
-}
+export type GetDocuments = {}
 
-export const getDocuments = async ({ token }: GetDocuments, init?: RequestInit) => {
-  return await createRequest(`/documents`, {
-    method: 'GET',
-    headers: {
-      'X-USER-ID': token,
-      'Content-Type': 'application/json',
-    },
-    ...init,
-  })
+export const getDocuments = async () => {
+  const { data } = await axios.get('/documents')
+
+  return data
 }

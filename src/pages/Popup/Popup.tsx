@@ -18,11 +18,14 @@ import { SpaceEnum } from '../../redux/slices/translation'
 import * as autocompleteSlice from '../../redux/slices/autocomplete'
 import * as appSlice from '../../redux/slices/app'
 import * as vocabsSlice from '../../redux/slices/vocabs'
-import { EditFolder } from '../../redux/slices/vocabs'
 import useDebouncedTranslate from '../../hooks/useDebouncedTranslate'
 import { DEBOUNCE_AUTOCOMPLETE_TIME } from '../../constantes'
+import { EditVocabFolder } from '../../api/requests/editVocabFolder'
+import useStatus from '../../hooks/useStatus'
 
 const Popup = () => {
+  useStatus()
+
   const reduxAction = useReduxAction()
 
   const queryRef = React.useRef('')
@@ -40,7 +43,7 @@ const Popup = () => {
   const autocomplete = reduxAction(autocompleteSlice.autocomplete)
   const hideTrainingSlider = reduxAction(appSlice.hideTrainingSlider)
   const clearState = reduxAction(userSlice.clearUserState)
-  const addToBookmarks = reduxAction(({ cardsToAdd }: Omit<EditFolder, 'id'>) =>
+  const addToBookmarks = reduxAction(({ cardsToAdd }: Omit<EditVocabFolder, 'id'>) =>
     vocabsSlice.editFolder({ id: 'default', cardsToAdd }),
   )
 

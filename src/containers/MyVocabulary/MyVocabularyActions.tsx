@@ -31,14 +31,12 @@ const MyVocabularyActions: React.FC<MyVocabularyActionsProps> = ({ activeTab }) 
   const editFolder = reduxAction(vocabsSlices.editFolder)
   const selectAll = reduxAction(vocabsSlice.selectAll)
 
-  const token = useSelector(userSlice.selectors.token)
-
   const downloadCurrentVocab = useAsyncCallback(async (id) => {
-    return await downloadVocabById({ token, id })
+    return await downloadVocabById({ id })
   })
 
   const downloadVocabByIds = useAsyncCallback(async () => {
-    return await downloadVocabByIdsRequest({ token, cardIds: selectedIds })
+    return await downloadVocabByIdsRequest({ cardIds: selectedIds })
   })
 
   const handleSelectAll = ({ target }) => {

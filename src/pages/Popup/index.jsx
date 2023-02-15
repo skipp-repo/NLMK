@@ -3,12 +3,12 @@ import { render } from 'react-dom'
 import Popup from './Popup'
 import './index.scss'
 import 'normalize.css'
-import Provider from '../../containers/Provider/Provider'
+import BaseContainer from '../../containers/BaseContainer/BaseContainer'
 
 const index = (
-  <Provider>
+  <BaseContainer>
     <Popup />
-  </Provider>
+  </BaseContainer>
 )
 
 render(index, window.document.querySelector('#app-container'))

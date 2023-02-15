@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as vocabsSlice from '../../redux/slices/vocabs'
-import { EditFolder } from '../../redux/slices/vocabs'
 import './content.styles.css'
 import VirtualElement from '../../utils/VirtualElement'
 import checkNodeContainsInNode from '../../utils/checkNodeContainsInNode'
@@ -10,22 +9,21 @@ import { useQuery } from '@tanstack/react-query'
 import createTranslationString from '../../utils/createTranslationString'
 import flatten from 'arr-flatten'
 import { translation } from '../../api/requests/translation'
-
+import { EditVocabFolder } from '../../api/requests/editVocabFolder'
+import useStatus from '../../hooks/useStatus'
 const Content = () => {
+  useStatus()
+
   const reduxAction = useReduxAction()
 
   const [selectedText, setSelectedText] = React.useState<string>()
 
-  const addToBookmarks = reduxAction(({ cardsToAdd }: Omit<EditFolder, 'id'>) =>
+  const addToBookmarks = reduxAction(({ cardsToAdd }: Omit<EditVocabFolder, 'id'>) =>
     vocabsSlice.editFolder({ id: 'default', cardsToAdd }),
   )
 
   const fetcher = async (text) => {
-    const token = 'testToken'
-
-    if (!selectedText) return null
-
-    return await translation({ token, q: text })
+    return await translation({ q: text })
   }
 
   const { data, error, isFetching } = useQuery(['translation', selectedText], () =>

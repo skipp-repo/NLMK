@@ -1,17 +1,10 @@
-import createRequest from '../../utils/createRequest'
+import axios from '../axios'
 
 export type RemoveDocument = {
-  token: string
   id: number
 }
 
-export const deleteDocument = async ({ token, id }: RemoveDocument, init?: RequestInit) => {
-  return await createRequest(`/documents/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'X-USER-ID': token,
-      'Content-Type': 'application/json',
-    },
-    ...init,
-  })
+export const deleteDocument = async ({ id }: RemoveDocument): Promise<any> => {
+  const { data } = await axios.delete(`/documents/${id}`)
+  return data
 }

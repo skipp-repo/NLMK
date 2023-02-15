@@ -29,11 +29,10 @@ const Documents: React.FC<MyDocumentsProps> = () => {
   const selectItem = reduxAction(documentsSlice.selectItem)
   const deleteDocument = reduxAction(documentsSlice.deleteDocument)
 
-  const token = useSelector(userSlice.selectors.token)
   const { getDocumentsLoading } = useSelector(documentsSlice.selectors.flags)
 
   const downloadDocumentById = useAsyncCallback(async (id) => {
-    return await downloadDocumentByIdRequest({ token, id })
+    return await downloadDocumentByIdRequest({ id })
   })
 
   const handleNewDocument = () => {

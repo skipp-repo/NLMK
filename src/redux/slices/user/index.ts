@@ -1,8 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { REHYDRATE } from 'redux-persist'
 import { UserStatus } from '../../../types'
-import getUserToken from '../../../utils/getUserToken'
-import createAsyncThunkExtended from '../../helpers/createAsyncThunkExtended'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 import { status } from '../../../api/requests/status'
 import { addGlossaries } from '../glossaries'
@@ -35,22 +33,17 @@ const initialState: InitialState = {
   newUser: undefined,
 }
 
-export const getStatus = createAsyncThunkExtended(
-  `${name}/getStatus`,
-  async (_, { dispatch, token }) => {
-    try {
-      const userToken = token || (await getUserToken())
+export const getStatus = createAsyncThunk(`${name}/getStatus`, async (_, { dispatch }) => {
+  try {
+    const result = await status()
 
-      const result = await status({ token: userToken })
+    dispatch(addGlossaries({ glossaries: result.data.glossaries }))
 
-      dispatch(addGlossaries({ glossaries: result.data.glossaries }))
-
-      return result
-    } catch (error) {
-      throw error
-    }
-  },
-)
+    return result
+  } catch (error) {
+    throw error
+  }
+})
 
 const getStatusSlice = makeExtraReducers({
   action: getStatus,

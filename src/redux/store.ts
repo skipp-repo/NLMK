@@ -32,9 +32,7 @@ const store = configureStore({
   devTools: true,
 })
 
-const persistor = persistStore(store, null, () => {
-  store.dispatch(getStatus())
-})
+const persistor = persistStore(store, null)
 
 export { store, persistor }
 

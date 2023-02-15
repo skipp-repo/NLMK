@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { autocomplete as autocompleteRequest } from '../../../api/requests/autocomplete'
-import getUserToken from '../../../utils/getUserToken'
 import { RootState } from '../../types'
 import makeExtraReducers from '../../helpers/makeExtraReducers'
 
@@ -32,7 +31,7 @@ export const autocomplete = createAsyncThunk(
   async ({ query }: Autocomplete, { getState }): Promise<AutoCompleteResult> => {
     try {
       const state = getState() as RootState
-      const { user, autocomplete } = state
+      const { autocomplete } = state
 
       if (autocomplete.data[query]) {
         return {
@@ -41,10 +40,7 @@ export const autocomplete = createAsyncThunk(
         }
       }
 
-      const token = user.token || (await getUserToken())
-
       return await autocompleteRequest({
-        token,
         q: query,
       })
     } catch (error) {

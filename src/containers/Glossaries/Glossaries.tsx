@@ -76,8 +76,6 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   const glossaryById = useSelector(glossariesSlice.selectors.glossaryById(activeTab))
   const { getGlossaryLoading } = useSelector(glossariesSlice.selectors.flags)
 
-  const token = useSelector(userSlice.selectors.token)
-
   const selectCard = reduxAction(glossariesSlice.selectCard)
   const selectAll = reduxAction(glossariesSlice.selectAll)
 
@@ -91,7 +89,7 @@ const Glossaries: React.FC<GlossariesProps> = () => {
   const downloadAllGlossarys = useAsyncCallback(async () => {
     const glossaryIds = glossaries.map(({ _id }) => _id)
 
-    return await downloadAllGlossarysRequest({ token, glossaryIds })
+    return await downloadAllGlossarysRequest({ glossaryIds })
   })
 
   const searchData = useSelector(translationSlice.selectors.glossariesSearchResults)

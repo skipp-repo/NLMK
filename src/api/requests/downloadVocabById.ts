@@ -1,29 +1,18 @@
+import axios from '../axios'
 import fileDownload from 'js-file-download'
-import secrets from 'secrets'
-
-const { API_URL } = secrets
 
 export type DownloadVocabById = {
-  token: string
   id: string
 }
 
-export const downloadVocabById = async ({ token, id }: DownloadVocabById, init?: RequestInit) => {
+export const downloadVocabById = async ({ id }: DownloadVocabById) => {
   try {
-    const result = await fetch(`${API_URL}/download/vocab/${id}`, {
-      method: 'GET',
-      headers: {
-        'X-USER-ID': token,
-        'Content-Type': 'application/json',
-        responseType: 'blob',
-      },
-      ...init,
+    const { data, headers } = await axios.get(`/download/vocab/${id}`, {
+      responseType: 'blob',
     })
 
-    const blob = await result.blob()
-
-    const contentDisposHeader = result.headers.get('Content-Disposition') as string
-
+    const blob = data
+    const contentDisposHeader = headers['content-disposition']
     const match = contentDisposHeader.match(/filename="(.+)"/)
 
     let filename = !match ? 'unnamed.csv' : match[1]

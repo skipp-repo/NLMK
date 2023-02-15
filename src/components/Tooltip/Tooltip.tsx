@@ -5,6 +5,7 @@ import * as PopperJS from '@popperjs/core'
 import BookmarkButton from '../BookmarkButton/BookmarkButton'
 import './Tooltip.scss'
 import Loader from '../Loader/Loader'
+import sameWidth from '../../utils/popper/sameWidth'
 
 export type TooltipProps = JSX.IntrinsicElements['div'] & {
   referenceElement: PopperJS.VirtualElement | null
@@ -47,6 +48,8 @@ const Tooltip: React.FC<TooltipProps> = React.forwardRef(
               offset,
             },
           },
+          // @ts-ignore
+          sameWidth,
         ],
       },
     )

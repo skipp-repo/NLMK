@@ -3,12 +3,12 @@ import { render } from 'react-dom'
 
 import Main from './Main'
 import './index.css'
-import Provider from '../../containers/Provider/Provider'
+import BaseContainer from '../../containers/BaseContainer/BaseContainer'
 
 const index = (
-  <Provider>
+  <BaseContainer>
     <Main />
-  </Provider>
+  </BaseContainer>
 )
 
 render(index, window.document.querySelector('#app-container'))
