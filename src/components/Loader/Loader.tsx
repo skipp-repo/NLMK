@@ -5,7 +5,7 @@ import { ReactComponent as LoaderIcon } from '../../assets/icons/loader.svg'
 
 export type LoaderProps = JSX.IntrinsicElements['div'] & { size?: number }
 
-const Loader: React.FC<LoaderProps> = ({ size = 100, children, className, ...props }) => {
+const Loader: React.FC<LoaderProps> = ({ size = 30, children, className, ...props }) => {
   return (
     <div {...props} className={clsx('Loader', className)}>
       <div className="loader-iconWrapper">
