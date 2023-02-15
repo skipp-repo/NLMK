@@ -61,10 +61,10 @@ const Popup = () => {
 
   const handleSpeech = () => {}
 
-  const renderTranslationCard = (data) => {
+  const renderTranslationCard = (data, index) => {
     return (
       <TranslationCard
-        // key={_id}
+        key={`translation-${index}`}
         className="Popup-cards-list-item"
         input={translationData?.searchPhrase}
         items={data}
@@ -77,10 +77,10 @@ const Popup = () => {
 
   const renderHistoryCard = React.useCallback(
     ({ results, request: { q } }) => {
-      return results?.map((data) => {
+      return results?.map((data, index) => {
         return (
           <TranslationCard
-            key={data?.translation?._id}
+            key={`history-${index}`}
             className="Popup-cards-list-item"
             input={q}
             items={data}

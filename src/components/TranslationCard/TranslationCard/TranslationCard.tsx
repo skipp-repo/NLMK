@@ -63,6 +63,7 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
 
     return (
       <TranslationCardItem
+        key={index}
         translation={translation}
         imgSrc={imgSrc}
         speech={speech}

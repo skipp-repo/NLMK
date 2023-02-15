@@ -43,10 +43,10 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
     onAdd(word)
   }
 
-  const renderTranslationCard = (data) => {
+  const renderTranslationCard = (data, index) => {
     return (
       <AddWordsItem
-        key={data._id}
+        key={`translation-${index}`}
         className="AddWordsPanel-list-item"
         items={data}
         speech
@@ -57,10 +57,10 @@ const AddWordsPanel: React.FC<AddWordsPanelProps> = ({
 
   const renderHistoryCard = React.useCallback(
     ({ results, request: { q } }) => {
-      return results?.map((data) => {
+      return results?.map((data, index) => {
         return (
           <AddWordsItem
-            key={data?.translation?._id}
+            key={`history-${index}`}
             className="Popup-cards-list-item"
             input={q}
             items={data}

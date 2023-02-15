@@ -58,7 +58,7 @@ const AddWordsItem: React.FC<AddWordsItemProps> = ({
     onAdd(firstItem.translation.translation)
   }
 
-  const renderTranslationItem = ({ translation, images }) => {
+  const renderTranslationItem = ({ translation, images }, key) => {
     const imgSrc = images?.length && images[0]
 
     const handleAdd = () => {
@@ -66,7 +66,7 @@ const AddWordsItem: React.FC<AddWordsItemProps> = ({
     }
 
     return (
-      <div className="AddWordsItem AddWordsItem_listItem">
+      <div className="AddWordsItem AddWordsItem_listItem" key={key}>
         <div className="AddWordsItem-wrapper">
           <TranslationCardImage src={imgSrc} className="AddWordsItem-image" />
 
