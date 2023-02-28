@@ -28,13 +28,11 @@ const Popup = () => {
 
   const reduxAction = useReduxAction()
 
-  const queryRef = React.useRef('')
+  const [queryString, setQueryString] = React.useState('')
 
   const translationData = useSelector(translationSlice.selectors.popupSearchResults)
   const { translateLoading } = useSelector(translationSlice.selectors.translationFlags)
-  const autoCompleteData = useSelector(
-    autocompleteSlice.selectors.autocompleteByQuery(queryRef.current),
-  )
+  const autoCompleteData = useSelector(autocompleteSlice.selectors.autocompleteByQuery(queryString))
   const translationHistory = useSelector(userSlice.selectors.history)
   const { getStatusLoading } = useSelector(userSlice.selectors.flags)
   const showTrainingSlider = useSelector(appSlice.selectors.showTrainingSlider)
@@ -103,9 +101,9 @@ const Popup = () => {
   }, DEBOUNCE_AUTOCOMPLETE_TIME)
 
   const handleSearch = (newValue) => {
-    if (queryRef.current.length < 2 && newValue.length < 2) return
+    if (queryString.length < 2 && newValue.length < 2) return
 
-    queryRef.current = newValue
+    setQueryString(newValue)
 
     debouncedTranslate(newValue)
     debouncedAutocomplete(newValue)
@@ -127,6 +125,8 @@ const Popup = () => {
   const isEmpty = isEmptyTranslationData && isEmptyTranslationHistory
 
   const isLoading = (!translationHistory?.length && getStatusLoading) || translateLoading
+
+  const isSearching = !!queryString.length && !!translationData?.searchPhrase
 
   return (
     <div className="Popup">
@@ -152,7 +152,7 @@ const Popup = () => {
         {!isLoading && (
           <div className="Popup-cards">
             <ErrorBoundary FallbackComponent={ErrorFallback} onReset={handleResetError}>
-              {!!translationData?.searchPhrase && (
+              {isSearching && (
                 <div className="Popup-cards-item">
                   <TranslationListTitle className="Popup-cards-title">
                     {translationData?.results?.length ? 'Результат поиска' : 'Ничего не найдено'}
