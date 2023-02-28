@@ -14,6 +14,7 @@ import TranslationCardGlossaries from '../TranslationCardGlossaries/TranslationC
 import { ReactComponent as ArrowIcon } from '../../../assets/icons/arrow.svg'
 import createTranslationString from '../../../utils/createTranslationString'
 import TranslationCardItem from './TranslationCardItem'
+import uniqBy from 'lodash.uniqBy'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
@@ -75,9 +76,19 @@ const TranslationCard: React.FC<TranslationCardProps> = ({
 
   const firstItem = items.find(({ images }) => !!images) || items[0]
 
-  const glossaries = flatten(
-    items.map(({ translation }) => translation.glossaries).filter((glossary) => glossary !== null),
+  const glossaries = uniqBy(
+    flatten(
+      items
+        .map(({ translation }) => translation.glossaries)
+        .filter((glossary) => glossary !== null),
+    ),
+    '_id',
   )
+
+  if (glossaries.length === 2 && glossaries[0]._id === 2 && glossaries[1]._id === 2) {
+    console.log(glossaries)
+    console.log(items)
+  }
 
   const imgSrc = firstItem?.images?.length && firstItem.images[0]
 

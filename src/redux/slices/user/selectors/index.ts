@@ -25,7 +25,7 @@ export const history = createSelector(
             const itemGlossaries = item?.translation?.glossaries
 
             const vocabsGlossaries = itemGlossaries
-              ? item?.translation?.glossaries.map((glossaryId) => {
+              ? itemGlossaries.map((glossaryId) => {
                   const { _id, name } = find(glossariesState, { _id: glossaryId })
 
                   return { _id, name }
