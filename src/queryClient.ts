@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
-import storage from './redux/storage'
+import storage from './storage'
 
 const queryClient = new QueryClient({
   defaultOptions: {

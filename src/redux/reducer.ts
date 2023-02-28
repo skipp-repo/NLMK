@@ -6,7 +6,7 @@ import autocompleteSlice from './slices/autocomplete'
 import vocabsSlice from './slices/vocabs'
 import glossariesSlice from './slices/glossaries'
 import documentsSlice from './slices/documents'
-import storage from './storage'
+import storage from '../storage'
 import { persistReducer } from 'redux-persist'
 
 const userPersistConfig = {

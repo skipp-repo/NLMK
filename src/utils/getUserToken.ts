@@ -1,34 +1,30 @@
 import { nanoid } from 'nanoid'
+import storage from '../storage'
+
+const tokenKey = 'echo:token'
 
 const createUserToken = () => `${nanoid(20)}-${Date.now()}`
 
 const getTokenFromStorage = (): Promise<string | null> =>
-  new Promise((resolve, reject) => {
-    chrome.storage.local.get('token', (data) => {
-      if (data.token) {
-        resolve(data.token)
-      } else {
-        resolve(null)
-      }
-    })
+  new Promise(async (resolve, reject) => {
+    const token = await storage.getItem(tokenKey)
+
+    if (token) {
+      resolve(token)
+    } else {
+      resolve(null)
+    }
   })
 
 const writeTokenToStorage = async (): Promise<string> => {
-  return new Promise((resolve) => {
-    const newToken = createUserToken()
+  const newToken = createUserToken()
 
-    chrome.storage.local.set(
-      {
-        token: newToken,
-      },
-      () => {
-        resolve(newToken)
-      },
-    )
-  })
+  await storage.setItem(tokenKey, newToken)
+
+  return newToken
 }
 
-export default async (): Promise<string | null> => {
+const getUserToken = async (): Promise<string | null> => {
   const storageToken = await getTokenFromStorage()
 
   if (storageToken) {
@@ -37,3 +33,5 @@ export default async (): Promise<string | null> => {
     return await writeTokenToStorage()
   }
 }
+
+export default getUserToken

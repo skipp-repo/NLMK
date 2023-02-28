@@ -10,7 +10,7 @@ import {
   REGISTER,
 } from 'redux-persist'
 import reducer from './reducer'
-import storage from './storage'
+import storage from '../storage'
 import { getStatus } from './slices/user'
 
 const persistConfig = {

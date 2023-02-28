@@ -1,4 +1,4 @@
-export const isLocalhost = location.hostname === 'localhost'
+export const isLocalhost = window.location.hostname === 'localhost'
 export const isDevServer = isLocalhost
 
 export const MAX_TRANSLATION_LENGTH = 500
