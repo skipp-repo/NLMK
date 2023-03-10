@@ -3,6 +3,7 @@ import { useAsyncCallback } from 'react-async-hook'
 import { useSelector } from 'react-redux'
 import { useDebouncedCallback } from 'use-debounce'
 import { useLocation } from 'wouter'
+import secrets from 'secrets'
 import { downloadDocumentById as downloadDocumentByIdRequest } from '../../api/requests/downloadDocumentById'
 import Button from '../../components/Button/Button'
 import Container from '../../components/Container/Container'
@@ -10,11 +11,12 @@ import PageTitle from '../../components/PageTitle/PageTitle'
 import './Documents.scss'
 import useReduxAction from '../../hooks/useReduxAction'
 import * as documentsSlice from '../../redux/slices/documents'
-import * as userSlice from '../../redux/slices/user'
 import DocumentsActions from './DocumentsActions'
 import Document from '../../components/Document/Document'
 import NewDocument from '../../components/Document/NewDocument'
 import Loader from '../../components/Loader/Loader'
+
+const { UPLOAD_DOCUMENTS } = secrets
 
 export type MyDocumentsProps = {}
 
@@ -87,17 +89,19 @@ const Documents: React.FC<MyDocumentsProps> = () => {
       <Container className="Documents-header">
         <PageTitle className="Documents-title">{title}</PageTitle>
 
-        <form className="Documents-button">
-          <input
-            type="file"
-            name="userDoc"
-            required
-            className="Documents-input-file"
-            accept=".doc,.docx"
-            onChange={handleFileInputChange}
-          />
-          <Button className="Documents-button">ЗАГРУЗИТЬ ДОКУМЕНТ</Button>
-        </form>
+        {UPLOAD_DOCUMENTS && (
+          <form className="Documents-button">
+            <input
+              type="file"
+              name="userDoc"
+              required
+              className="Documents-input-file"
+              accept=".doc,.docx"
+              onChange={handleFileInputChange}
+            />
+            <Button className="Documents-button">ЗАГРУЗИТЬ ДОКУМЕНТ</Button>
+          </form>
+        )}
       </Container>
 
       <DocumentsActions />
