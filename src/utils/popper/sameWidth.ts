@@ -7,6 +7,7 @@ const sameWidth = {
   requires: ['computeStyles'],
   fn: ({ state }) => {
     const width = state.rects.reference.width
+
     const minWidth = width
     const maxWidth = width > 150 ? width : width + MAX_WIDTH_DIFF
 
@@ -14,7 +15,8 @@ const sameWidth = {
     state.styles.popper.maxWidth = `${maxWidth}px`
   },
   effect: ({ state }) => {
-    const width = state.elements.reference.offsetWidth
+    const width = state.elements.reference.rect.width
+
     const minWidth = width
     const maxWidth = width > 150 ? width : width + MAX_WIDTH_DIFF
 

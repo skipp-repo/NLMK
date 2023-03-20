@@ -1,4 +1,3 @@
-import debounce from 'lodash.debounce'
 import { MIN_TRANSLATION_LENGTH } from '../constantes'
 
 type Rect = {
@@ -14,19 +13,25 @@ export default class VirtualElement {
   protected range: Range | null
   protected rect: Rect | null = null
 
+  private bannedTags = ['CODE', 'INPUT', 'TEXTAREA', 'BUTTON']
+
   checkNodeInTooltip: (node: HTMLElement) => boolean
 
   constructor(checkNodeInTooltip: (node: HTMLElement) => boolean) {
     this.checkNodeInTooltip = checkNodeInTooltip
 
-    this.addListeners(this.update)
+    this.addListeners(this.updateHandler)
   }
 
-  update = debounce((evt) => {
+  updateHandler = (evt) => {
     let selection = document.getSelection()
     let text = selection.toString()
 
     text = text.trim()
+
+    if (this.bannedTags.includes(evt?.target?.tagName)) {
+      return
+    }
 
     if (evt.type === 'selectionchange' && evt?.target instanceof Document) {
       return
@@ -45,7 +50,7 @@ export default class VirtualElement {
     this.updateRect()
 
     this.rectChangedCallback(this.rect, text)
-  }, 200)
+  }
 
   updateRect() {
     if (this.range) {
@@ -72,13 +77,13 @@ export default class VirtualElement {
   }
 
   removeListeners() {
-    document.removeEventListener('mouseup', this.update)
-    document.removeEventListener('keydown', this.update)
-    document.removeEventListener('selectionchange', this.update)
-    window.removeEventListener('scroll', this.update)
-    window.removeEventListener('resize', this.update)
+    document.removeEventListener('mouseup', this.updateHandler)
+    document.removeEventListener('keydown', this.updateHandler)
+    document.removeEventListener('selectionchange', this.updateHandler)
+    window.removeEventListener('scroll', this.updateHandler)
+    window.removeEventListener('resize', this.updateHandler)
 
-    document.scrollingElement.removeEventListener('scroll', this.update)
+    document.scrollingElement.removeEventListener('scroll', this.updateHandler)
   }
 
   destroy() {
