@@ -9,6 +9,9 @@
   },
   "scripts": {
     "build": "node utils/build.js",
+    "build:production": "NODE_ENV=production yarn build",
+    "build:test": "NODE_ENV=test yarn build",
+    "build:develop": "NODE_ENV=development yarn build",
     "start": "node utils/webserver.js",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'"
   },

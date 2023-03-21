@@ -26,3 +26,5 @@ secrets.*.js
 
 build.pem
 build.crx
+
+*.zip
