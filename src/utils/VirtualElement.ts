@@ -23,21 +23,25 @@ export default class VirtualElement {
     this.addListeners(this.updateHandler)
   }
 
+  preventUpdate = (evt) => {
+    if (
+      evt?.target instanceof Document ||
+      this.bannedTags.includes(evt?.target?.tagName) ||
+      (evt?.target?.closest && evt?.target?.closest('code')) ||
+      (evt?.target && this.checkNodeInTooltip(evt.target))
+    ) {
+      return true
+    }
+
+    return false
+  }
+
   updateHandler = (evt) => {
     let selection = document.getSelection()
     let text = selection.toString()
-
     text = text.trim()
 
-    if (this.bannedTags.includes(evt?.target?.tagName)) {
-      return
-    }
-
-    if (evt.type === 'selectionchange' && evt?.target instanceof Document) {
-      return
-    }
-
-    if (evt?.target && this.checkNodeInTooltip(evt.target)) {
+    if (this.preventUpdate(evt)) {
       return
     }
 
