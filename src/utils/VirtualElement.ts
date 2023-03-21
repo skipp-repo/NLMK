@@ -25,7 +25,7 @@ export default class VirtualElement {
 
   preventUpdate = (evt) => {
     if (
-      evt?.target instanceof Document ||
+      (evt.type === 'selectionchange' && evt?.target instanceof Document) ||
       this.bannedTags.includes(evt?.target?.tagName) ||
       (evt?.target?.closest && evt?.target?.closest('code')) ||
       (evt?.target && this.checkNodeInTooltip(evt.target))
