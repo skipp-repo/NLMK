@@ -8,11 +8,11 @@
     "url": "https://github.com/lxieyang/chrome-extension-boilerplate-react.git"
   },
   "scripts": {
-    "build": "node utils/build.js",
+    "start": "node utils/webserver.js",
     "build:production": "NODE_ENV=production yarn build",
     "build:test": "NODE_ENV=test yarn build",
     "build:develop": "NODE_ENV=development yarn build",
-    "start": "node utils/webserver.js",
+    "build": "node utils/build.js",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'"
   },
   "dependencies": {
@@ -106,7 +106,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "engines": {
-    "node": "~16.14.2"
+    "node": "^16.20.0"
   },
   "packageManager": "yarn@1.22.1"
 }
