@@ -14,7 +14,7 @@ import TranslationCardGlossaries from '../TranslationCardGlossaries/TranslationC
 import { ReactComponent as ArrowIcon } from '../../../assets/icons/arrow.svg'
 import createTranslationString from '../../../utils/createTranslationString'
 import TranslationCardItem from './TranslationCardItem'
-import uniqBy from 'lodash.uniqBy'
+import uniqBy from 'lodash.uniqby'
 
 export type TranslationCardProps = JSX.IntrinsicElements['div'] & {
   input?: string
